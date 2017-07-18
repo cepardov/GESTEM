@@ -56,19 +56,44 @@
             </ul>
 
             <ul id="slide-out" class="side-nav">
-                <li><div class="userView">
-                    <div class="background">
-                        <img src="http://materializecss.com/images/office.jpg">
-                    </div>
-                    <a href="#!user"><img class="circle" src="http://materializecss.com/images/yuna.jpg"></a>
-                    <a href="#!name"><span class="white-text name">John Doe</span></a>
-                    <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
-                </div></li>
-                <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-                <li><a href="#!">Second Link</a></li>
-                <li><div class="divider"></div></li>
-                <li><a class="subheader">Subheader</a></li>
-                <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+                <g:if test="${session.usuarioLogueado}">
+                    <li><div class="userView">
+                        <div class="background">
+                            <asset:image src="material-design.jpg"/>
+                        </div>
+                        <a href="#!user"><img class="circle" src="http://materializecss.com/images/yuna.jpg"></a>
+                        <a href="#!name"><span class="white-text name">${session.usuarioLogueado.nombre} ${session.usuarioLogueado.paterno}</span></a>
+                        <a href="#!email"><span class="white-text email">${session.usuarioLogueado.usuario}@liceopac.cl</span></a>
+                    </div></li>
+                    <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+                        <li><g:link controller="${c.logicalPropertyName}"><i class="material-icons">
+                            <g:if test="${c.name=="Usuario"}">person</g:if>
+                            <g:elseif test="${c.name=="Dashboard"}">dashboard</g:elseif>
+                            <g:elseif test="${c.name=="Ciudad"}">location_city</g:elseif>
+                            <g:elseif test="${c.name=="Comuna"}">location_on</g:elseif>
+                            <g:elseif test="${c.name=="Funcionario"}">face</g:elseif>
+                            <g:elseif test="${c.name=="Institucion"}">business</g:elseif>
+                            <g:else>settings_applications</g:else></i>${c.name}</g:link></li>
+                    </g:each>
+                    <li><g:link controller="login" action="logout"><i class="material-icons">exit_to_app</i>Cerrar Sesión</g:link></li>
+                    <li><div class="divider"></div></li>
+                    <li><a class="subheader">Subheader</a></li>
+                    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+                </g:if>
+                <g:else>
+                    <li><div class="userView">
+                        <div class="background">
+                            <asset:image src="material-design.jpg"/>
+                        </div>
+                        <a href="#!user"><asset:image src="cropped-Logo.png" width="128"/></a>
+                        <a href="#!name"><span class="white-text flow-text"><strong>Liceo Pedro Aguirre Cerda</strong></span></a>
+                    </div></li>
+                    <li><a href="http://gestem.liceopac.cl:8080"><i class="material-icons">home</i>Inicio</a></li>
+                    <li><g:link controller="login" action="login"><i class="material-icons">vpn_key</i>Inicio de Sesión</g:link></li>
+                    <li><div class="divider"></div></li>
+                    <li><a class="subheader">Subheader</a></li>
+                    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+                </g:else>
             </ul>
         </div>
     </nav>
@@ -83,6 +108,32 @@
                 <ul class="left">
                     <a class="flow-text m_title grey-text darken-1" href="<g:createLink controller="dashboard" action="index" />">Consola de administracion</a>
                 </ul>
+                <ul class="left grey-text flow-text"> | </ul>
+                <ul class="left">
+                    <a class="flow-text m_title grey-text darken-1" href="<g:createLink controller="${controllerName}" action="index" />"><g:layoutTitle/></a>
+                </ul>
+                <ul class="left grey-text"> &nbsp;</ul>
+                <ul class="left grey-text">
+                    <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
+                    <g:if test="${controllerName == 'vehiculo'}">${vehiculoCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'cliente'}">${clienteCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'contrato'}">${contratoCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
+                </ul>
+                <ul class="right">
+
+                </ul>
+                <!--
+                <g:if test="${controllerName == 'usuario'}">
+                    <a id="scale-demo" href="#!" class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
+                        <i class="material-icons">add</i>
+                    </a>
+                </g:if>
+                -->
+
                 <!--
             <ul class="right hide-on-med-and-down">
                 <li><a href="sass.html">Sass</a></li>
@@ -99,5 +150,13 @@
 <asset:javascript src="jquery-2.1.1.min.js"/>
 <asset:javascript src="config.js"/>
 <asset:javascript src="materialize.js"/>
+<g:if test="${flash.message}">
+    <script>Materialize.toast('${flash.message}', 10000);</script>
+</g:if>
+<script>
+    window.onload = function() {
+        document.getElementById('clickButton').click();
+    }
+</script>
 </body>
 </html>
