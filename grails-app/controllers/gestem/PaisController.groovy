@@ -8,13 +8,19 @@ class PaisController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
+    def index(Integer max,Pais pais) {
+        def paiss = Pais.list(params)
         params.max = Math.min(max ?: 10, 100)
-        respond Pais.list(params), model:[paisCount: Pais.count()]
+        if(params.id!=null){
+            respond pais, model:[paisCount: Pais.count(), paisList:paiss]
+        }else{
+            respond new Pais(params), model:[paisCount: Pais.count(), paisList:paiss]
+        }
+
     }
 
     def show(Pais pais) {
-        respond pais
+        redirect(controller:"pais", action: "index")
     }
 
     def create() {
@@ -39,8 +45,8 @@ class PaisController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id])
-                redirect pais
+                flash.message = message(code: 'default.created.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id, pais.code, pais.name, ''])
+                redirect(controller:"pais", action: "index")
             }
             '*' { respond pais, [status: CREATED] }
         }
@@ -48,6 +54,13 @@ class PaisController {
 
     def edit(Pais pais) {
         respond pais
+    }
+
+    def eliminar(){
+        def pais = Pais.get(params.id)
+        pais.delete(flush:true)
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id, pais.code, pais.name, ''])
+        redirect (controller: "pais", action: "index")
     }
 
     @Transactional
@@ -68,8 +81,8 @@ class PaisController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id])
-                redirect pais
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id, pais.code, pais.name, ''])
+                redirect(controller:"pais", action: "index")
             }
             '*'{ respond pais, [status: OK] }
         }
@@ -88,7 +101,7 @@ class PaisController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id, pais.code, pais.name])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }

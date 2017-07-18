@@ -110,14 +110,14 @@
                 </ul>
                 <ul class="left grey-text flow-text"> | </ul>
                 <ul class="left">
-                    <a class="flow-text m_title grey-text darken-1" href="<g:createLink controller="${controllerName}" action="index" />"><g:layoutTitle/></a>
+                    <a class="flow-text m_title grey-text darken-1" href="<g:createLink controller="${controllerName}" action="index" />"><g:layoutTitle/><g:if test="${params.paisName}"> de ${params.paisName}</g:if></a>
                 </ul>
                 <ul class="left grey-text"> &nbsp;</ul>
                 <ul class="left grey-text">
                     <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
-                    <g:if test="${controllerName == 'vehiculo'}">${vehiculoCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
                     <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
-                    <g:if test="${controllerName == 'cliente'}">${clienteCount ?: 0} elementos</g:if>
+                    <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
                     <g:if test="${controllerName == 'contrato'}">${contratoCount ?: 0} elementos</g:if>
                     <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
                     <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
