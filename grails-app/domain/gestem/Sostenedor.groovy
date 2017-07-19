@@ -1,10 +1,11 @@
 package gestem
 
 class Sostenedor {
-    String idSostenedor
-    String nombre
+    String code
+    String name
 
     static hasMany = [institucion:Institucion]
+    static belongsTo = [comuna:Comuna]
 
     static constraints = {
     }

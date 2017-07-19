@@ -1,13 +1,15 @@
 package gestem
 
-
-class UsuarioInterceptor {
-
+/**
+ * Created by cepardov on 19-07-17.
+ */
+class PaisInterceptor {
     boolean before() {
         if (session.usuarioLogueado){
             true
         } else {
             flash.message = "Para ingresar a esta pagina debe iniciar sesión"
+            printf("PaisInterceptor getRequestURI:"+request.getRequestURI()+"\n")
             redirect controller: "login", action: "login", params: [r: request.getRequestURI()]
         }
     }

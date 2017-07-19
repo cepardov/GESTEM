@@ -9,6 +9,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
+    <g:if test="${session.usuarioLogueado}"><meta http-equiv="refresh" content="${session.getMaxInactiveInterval()+1}; url=${request.getRequestURL()}" /></g:if>
     <g:layoutHead/>
 </head>
 

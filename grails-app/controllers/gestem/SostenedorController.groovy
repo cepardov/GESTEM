@@ -8,13 +8,31 @@ class SostenedorController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Sostenedor.list(params), model:[sostenedorCount: Sostenedor.count()]
+    def comunaId
+    def comunaName
+
+    def index(Integer max,Sostenedor sostenedor) {
+        def sostenedorsByComuna = Sostenedor.findAllByComuna(Comuna.findById(params.comunaId))
+        def sostenedors = Sostenedor.list(params)
+        def comuna = Comuna.findAll()
+
+        comunaId = params.comunaId
+        comunaName = params.comunaName
+
+        params.max = Math.min(max ?: 20, 100)
+
+        if(params.id!=null){
+            respond sostenedor, model:[sostenedorCount: Sostenedor.count(), sostenedorList:sostenedors]
+        }else if(params.comunaId!=null) {
+            respond new Sostenedor(params), model: [sostenedorCount: Sostenedor.countByComuna(Comuna.findById(params.comunaId)), sostenedorList: sostenedorsByComuna, comunaList:comuna]
+        }else {
+            respond new Sostenedor(params), model:[sostenedorCount: Sostenedor.count(), sostenedorList:sostenedors, comunaList:comuna]
+        }
+
     }
 
     def show(Sostenedor sostenedor) {
-        respond sostenedor
+        redirect(controller:"sostenedor", action: "index")
     }
 
     def create() {
@@ -31,7 +49,7 @@ class SostenedorController {
 
         if (sostenedor.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sostenedor.errors, view:'create'
+            respond sostenedor.errors, view:'index'
             return
         }
 
@@ -39,8 +57,8 @@ class SostenedorController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id])
-                redirect sostenedor
+                flash.message = message(code: 'default.created.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id, sostenedor.code, sostenedor.name, ''])
+                redirect(controller:"sostenedor", action: "index", params: [comunaId: comunaId,comunaName: comunaName])
             }
             '*' { respond sostenedor, [status: CREATED] }
         }
@@ -48,6 +66,13 @@ class SostenedorController {
 
     def edit(Sostenedor sostenedor) {
         respond sostenedor
+    }
+
+    def eliminar(Sostenedor sostenedor){
+        //def sostenedor = Sostenedor.get(params.id)
+        sostenedor.delete(flush:true)
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id, sostenedor.code, sostenedor.name, ''])
+        redirect (controller: "sostenedor", action: "index", params: [comunaId: comunaId,comunaName: comunaName])
     }
 
     @Transactional
@@ -68,8 +93,8 @@ class SostenedorController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id])
-                redirect sostenedor
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id, sostenedor.code, sostenedor.name, ''])
+                redirect(controller:"sostenedor", action: "index",  params: [comunaId: comunaId,comunaName: comunaName])
             }
             '*'{ respond sostenedor, [status: OK] }
         }
@@ -88,7 +113,7 @@ class SostenedorController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id, sostenedor.code, sostenedor.name, ''])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }

@@ -2,6 +2,8 @@ package gestem
 
 class LoginController {
 
+    def redirection
+
     def index() {
         if (session.usuarioLogueado){
             //en caso de llegar al login a pesar de haber iniciado sesion, redirige en base a su tipo
@@ -15,7 +17,10 @@ class LoginController {
             redirect(uri: 'http://gestem.liceopac.cl:8080')
         }
     }
-    def login(){}
+    def login(){
+        redirection = params.r
+        printf("\n")
+    }
 
     def signin = {
         if (request.method == 'POST') {
@@ -28,7 +33,11 @@ class LoginController {
                 //    case 1 : redirect controller: "administrador", action: "index"; break
                 //    case 2 : redirect controller: "ingeniero", action: "index"; break
                 //}
-                redirect controller: "dashboard", action: "index"
+                if (redirection != null){
+                    redirect(uri: redirection)
+                } else {
+                    redirect controller: "dashboard", action: "index"
+                }
             } else {
                 flash.message = "Usuario o clave incorrecta"
                 redirect controller: "login", action: "login"
