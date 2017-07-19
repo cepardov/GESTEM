@@ -8,13 +8,31 @@ class ComunaController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Comuna.list(params), model:[comunaCount: Comuna.count()]
+    def ciudadId
+    def ciudadName
+
+    def index(Integer max,Comuna comuna) {
+        def comunasByCiudad = Comuna.findAllByCiudad(Ciudad.findById(params.ciudadId))
+        def comunas = Comuna.list(params)
+        def ciudad = Ciudad.findAll()
+
+        ciudadId = params.ciudadId
+        ciudadName = params.ciudadName
+
+        params.max = Math.min(max ?: 20, 100)
+
+        if(params.id!=null){
+            respond comuna, model:[comunaCount: Comuna.count(), comunaList:comunas]
+        }else if(params.ciudadId!=null) {
+            respond new Comuna(params), model: [comunaCount: Comuna.countByCiudad(Ciudad.findById(params.ciudadId)), comunaList: comunasByCiudad, ciudadList:ciudad]
+        }else {
+            respond new Comuna(params), model:[comunaCount: Comuna.count(), comunaList:comunas, ciudadList:ciudad]
+        }
+
     }
 
     def show(Comuna comuna) {
-        respond comuna
+        redirect(controller:"comuna", action: "index")
     }
 
     def create() {
@@ -31,7 +49,7 @@ class ComunaController {
 
         if (comuna.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond comuna.errors, view:'create'
+            respond comuna.errors, view:'index'
             return
         }
 
@@ -39,8 +57,8 @@ class ComunaController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id])
-                redirect comuna
+                flash.message = message(code: 'default.created.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id, comuna.code, comuna.name, ''])
+                redirect(controller:"comuna", action: "index", params: [ciudadId: ciudadId,ciudadName: ciudadName])
             }
             '*' { respond comuna, [status: CREATED] }
         }
@@ -48,6 +66,13 @@ class ComunaController {
 
     def edit(Comuna comuna) {
         respond comuna
+    }
+
+    def eliminar(Comuna comuna){
+        //def comuna = Comuna.get(params.id)
+        comuna.delete(flush:true)
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id, comuna.code, comuna.name, ''])
+        redirect (controller: "comuna", action: "index", params: [ciudadId: ciudadId,ciudadName: ciudadName])
     }
 
     @Transactional
@@ -68,8 +93,8 @@ class ComunaController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id])
-                redirect comuna
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id, comuna.code, comuna.name, ''])
+                redirect(controller:"comuna", action: "index",  params: [ciudadId: ciudadId,ciudadName: ciudadName])
             }
             '*'{ respond comuna, [status: OK] }
         }
@@ -88,7 +113,7 @@ class ComunaController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id, comuna.code, comuna.name, ''])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
