@@ -8,13 +8,19 @@ class RegionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def paisId
+    def paisName
+
     def index(Integer max,Region region) {
-        //printf('\npais:'+params.pais)
         def regionsByPais = Region.findAllByPais(Pais.findById(params.paisId))
         def regions = Region.list(params)
         def pais = Pais.findAll()
 
-        params.max = Math.min(max ?: 10, 100)
+        paisId = params.paisId
+        paisName = params.paisName
+
+        params.max = Math.min(max ?: 20, 100)
+
         if(params.id!=null){
             respond region, model:[regionCount: Region.count(), regionList:regions]
         }else if(params.paisId!=null) {
@@ -52,7 +58,7 @@ class RegionController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'region.label', default: 'Region'), region.id, region.code, region.name, ''])
-                redirect(controller:"region", action: "index")
+                redirect(controller:"region", action: "index", params: [paisId: paisId,paisName: paisName])
             }
             '*' { respond region, [status: CREATED] }
         }
@@ -62,11 +68,11 @@ class RegionController {
         respond region
     }
 
-    def eliminar(){
-        def region = Region.get(params.id)
+    def eliminar(Region region){
+        //def region = Region.get(params.id)
         region.delete(flush:true)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'region.label', default: 'Region'), region.id, region.code, region.name, ''])
-        redirect (controller: "region", action: "index")
+        redirect (controller: "region", action: "index", params: [paisId: paisId,paisName: paisName])
     }
 
     @Transactional
@@ -88,7 +94,7 @@ class RegionController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'region.label', default: 'Region'), region.id, region.code, region.name, ''])
-                redirect(controller:"region", action: "index")
+                redirect(controller:"region", action: "index",  params: [paisId: paisId,paisName: paisName])
             }
             '*'{ respond region, [status: OK] }
         }

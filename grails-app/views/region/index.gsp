@@ -19,12 +19,12 @@
                 </thead>
                 <tbody>
                 <g:each var="v" in="${regionList}">
-                    <tr>
+                    <tr onclick="location='<g:createLink controller="ciudad" action="index" params="[regionId : v.id, regionName : v.name]"/>'">
                         <td>[${v.pais.code}] ${v.pais.name}</td>
                         <td>${v.code}</td>
                         <td>${v.name}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[paisId : params.paisId, paisName : params.paisName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
                             <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>

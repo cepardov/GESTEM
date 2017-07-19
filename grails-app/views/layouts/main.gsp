@@ -14,32 +14,6 @@
 
 <body>
 <div class="navbar-fixed">
-    <ul id="dropdown1" class="dropdown-content">
-        <li><g:link controller="login" action="logout">Salir</g:link></li>
-        <li class="divider"></li>
-        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
-        </g:each>
-        <!--
-        <li><a href="#!">one</a></li>
-        <li><a href="#!">two</a></li>
-        <li class="divider"></li>
-        <li><a href="#!">three</a></li>
-        -->
-    </ul>
-    <ul id="session" class="dropdown-content">
-        <li><g:link controller="login" action="logout">Cerrar Sesión</g:link></li>
-        <li class="divider"></li>
-        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
-        </g:each>
-    <!--
-        <li><a href="#!">one</a></li>
-        <li><a href="#!">two</a></li>
-        <li class="divider"></li>
-        <li><a href="#!">three</a></li>
-        -->
-    </ul>
     <nav>
         <div class="nav-wrapper blue darken-2">
             <a href="http://gestem.liceopac.cl:8080" class="brand-logo"><i class="material-icons">cloud</i>GESTEM</a>
@@ -54,52 +28,53 @@
                     <li><g:link controller="login" action="login">Inicio de Sesión</g:link></li>
                 </g:else>
             </ul>
-
-            <ul id="slide-out" class="side-nav">
-                <g:if test="${session.usuarioLogueado}">
-                    <li><div class="userView">
-                        <div class="background">
-                            <asset:image src="material-design.jpg"/>
-                        </div>
-                        <a href="#!user"><img class="circle" src="http://materializecss.com/images/yuna.jpg"></a>
-                        <a href="#!name"><span class="white-text name">${session.usuarioLogueado.nombre} ${session.usuarioLogueado.paterno}</span></a>
-                        <a href="#!email"><span class="white-text email">${session.usuarioLogueado.usuario}@liceopac.cl</span></a>
-                    </div></li>
-                    <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-                        <li><g:link controller="${c.logicalPropertyName}"><i class="material-icons">
-                            <g:if test="${c.name=="Usuario"}">person</g:if>
-                            <g:elseif test="${c.name=="Dashboard"}">dashboard</g:elseif>
-                            <g:elseif test="${c.name=="Ciudad"}">location_city</g:elseif>
-                            <g:elseif test="${c.name=="Comuna"}">location_on</g:elseif>
-                            <g:elseif test="${c.name=="Funcionario"}">face</g:elseif>
-                            <g:elseif test="${c.name=="Institucion"}">business</g:elseif>
-                            <g:else>settings_applications</g:else></i>${c.name}</g:link></li>
-                    </g:each>
-                    <li><g:link controller="login" action="logout"><i class="material-icons">exit_to_app</i>Cerrar Sesión</g:link></li>
-                    <li><div class="divider"></div></li>
-                    <li><a class="subheader">Subheader</a></li>
-                    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-                </g:if>
-                <g:else>
-                    <li><div class="userView">
-                        <div class="background">
-                            <asset:image src="material-design.jpg"/>
-                        </div>
-                        <a href="#!user"><asset:image src="cropped-Logo.png" width="128"/></a>
-                        <a href="#!name"><span class="white-text flow-text"><strong>Liceo Pedro Aguirre Cerda</strong></span></a>
-                    </div></li>
-                    <li><a href="http://gestem.liceopac.cl:8080"><i class="material-icons">home</i>Inicio</a></li>
-                    <li><g:link controller="login" action="login"><i class="material-icons">vpn_key</i>Inicio de Sesión</g:link></li>
-                    <li><div class="divider"></div></li>
-                    <li><a class="subheader">Subheader</a></li>
-                    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-                </g:else>
-            </ul>
         </div>
     </nav>
 </div>
+
+<ul id="slide-out" class="side-nav">
+    <g:if test="${session.usuarioLogueado}">
+        <li><div class="userView">
+            <div class="background">
+                <asset:image src="material-design.jpg"/>
+            </div>
+            <a href="#!user"><img class="circle" src="http://materializecss.com/images/yuna.jpg"></a>
+            <a href="#!name"><span class="white-text name">${session.usuarioLogueado.nombre} ${session.usuarioLogueado.paterno}</span></a>
+            <a href="#!email"><span class="white-text email">${session.usuarioLogueado.usuario}@liceopac.cl</span></a>
+        </div></li>
+        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+            <li><g:link controller="${c.logicalPropertyName}"><i class="material-icons">
+                <g:if test="${c.name=="Usuario"}">person</g:if>
+                <g:elseif test="${c.name=="Dashboard"}">dashboard</g:elseif>
+                <g:elseif test="${c.name=="Ciudad"}">location_city</g:elseif>
+                <g:elseif test="${c.name=="Comuna"}">location_on</g:elseif>
+                <g:elseif test="${c.name=="Funcionario"}">face</g:elseif>
+                <g:elseif test="${c.name=="Institucion"}">business</g:elseif>
+                <g:else>settings_applications</g:else></i>${c.name}</g:link></li>
+        </g:each>
+        <li><g:link controller="login" action="logout"><i class="material-icons">exit_to_app</i>Cerrar Sesión</g:link></li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </g:if>
+    <g:else>
+        <li><div class="userView">
+            <div class="background">
+                <asset:image src="material-design.jpg"/>
+            </div>
+            <a href="#!user"><asset:image src="cropped-Logo.png" width="128"/></a>
+            <a href="#!name"><span class="white-text flow-text"><strong>Liceo Pedro Aguirre Cerda</strong></span></a>
+        </div></li>
+        <li><a href="http://gestem.liceopac.cl:8080"><i class="material-icons">home</i>Inicio</a></li>
+        <li><g:link controller="login" action="login"><i class="material-icons">vpn_key</i>Inicio de Sesión</g:link></li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </g:else>
+</ul>
+
 <g:if test="${session.usuarioLogueado}">
-    <div class="navbar-fixed-2">
+    <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper white">
                 <ul class="left">
@@ -143,6 +118,32 @@
             </div>
         </nav>
     </div>
+    <ul id="dropdown1" class="dropdown-content">
+        <li><g:link controller="login" action="logout">Salir</g:link></li>
+        <li class="divider"></li>
+        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
+        </g:each>
+    <!--
+        <li><a href="#!">one</a></li>
+        <li><a href="#!">two</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">three</a></li>
+        -->
+    </ul>
+    <ul id="session" class="dropdown-content">
+        <li><g:link controller="login" action="logout">Cerrar Sesión</g:link></li>
+        <li class="divider"></li>
+        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
+        </g:each>
+    <!--
+        <li><a href="#!">one</a></li>
+        <li><a href="#!">two</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">three</a></li>
+        -->
+    </ul>
 </g:if>
 <br>
 <g:layoutBody/>
