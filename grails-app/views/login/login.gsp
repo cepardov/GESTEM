@@ -13,10 +13,6 @@
             <g:else>
                 <g:form controller="login" action="signin">
                     <h3 class="center">Inicio de Sesión</h3>
-                    <g:if test="${flash.message!=null}">
-                        <div class="message">${flash.message}</div>
-                        <script>Materialize.toast('${flash.message}', 5000)</script>
-                    </g:if>
                     <div class="input-field col s12">
                         <i class="material-icons prefix">account_circle</i>
                         <input id="icon_prefix" name="username" type="text" class="validate tooltipped" data-position="right" data-tooltip="Existe una nota de escritorio con los diferentes usuarios">
