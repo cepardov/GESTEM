@@ -6,7 +6,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class PaisController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
     def index(Integer max,Pais pais) {
         def paiss = Pais.list(params)
@@ -20,7 +20,7 @@ class PaisController {
     }
 
     def show(Pais pais) {
-        redirect(controller:"pais", action: "index")
+        respond(pais)
     }
 
     def create() {
@@ -58,8 +58,13 @@ class PaisController {
 
     def eliminar(){
         def pais = Pais.get(params.id)
-        pais.delete(flush:true)
-        flash.message = message(code: 'default.deleted.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id, pais.code, pais.name, ''])
+
+        if(Region.countByPais(pais)>0){
+            flash.message = "No tiene suficientes privilegios para eliminar en cascada"
+        } else {
+            pais.delete(flush:true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id, pais.code, pais.name, ''])
+        }
         redirect (controller: "pais", action: "index")
     }
 
@@ -85,26 +90,6 @@ class PaisController {
                 redirect(controller:"pais", action: "index")
             }
             '*'{ respond pais, [status: OK] }
-        }
-    }
-
-    @Transactional
-    def delete(Pais pais) {
-
-        if (pais == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        pais.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'pais.label', default: 'Pais'), pais.id, pais.code, pais.name])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
         }
     }
 

@@ -100,26 +100,6 @@ class ComunaController {
         }
     }
 
-    @Transactional
-    def delete(Comuna comuna) {
-
-        if (comuna == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        comuna.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'comuna.label', default: 'Comuna'), comuna.id, comuna.code, comuna.name, ''])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
     protected void notFound() {
         request.withFormat {
             form multipartForm {

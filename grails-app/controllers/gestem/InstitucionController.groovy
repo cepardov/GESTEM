@@ -8,13 +8,31 @@ class InstitucionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Institucion.list(params), model:[institucionCount: Institucion.count()]
+    def sostenedorId
+    def sostenedorName
+
+    def index(Integer max,Institucion institucion) {
+        def institucionsBySostenedor = Institucion.findAllBySostenedor(Sostenedor.findById(params.sostenedorId))
+        def institucions = Institucion.list(params)
+        def sostenedor = Sostenedor.findAll()
+
+        sostenedorId = params.sostenedorId
+        sostenedorName = params.sostenedorName
+
+        params.max = Math.min(max ?: 20, 100)
+
+        if(params.id!=null){
+            respond institucion, model:[institucionCount: Institucion.count(), institucionList:institucions]
+        }else if(params.sostenedorId!=null) {
+            respond new Institucion(params), model: [institucionCount: Institucion.countBySostenedor(Sostenedor.findById(params.sostenedorId)), institucionList: institucionsBySostenedor, sostenedorList:sostenedor]
+        }else {
+            respond new Institucion(params), model:[institucionCount: Institucion.count(), institucionList:institucions, sostenedorList:sostenedor]
+        }
+
     }
 
     def show(Institucion institucion) {
-        respond institucion
+        redirect(controller:"institucion", action: "index")
     }
 
     def create() {
@@ -31,7 +49,7 @@ class InstitucionController {
 
         if (institucion.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond institucion.errors, view:'create'
+            respond institucion.errors, view:'index'
             return
         }
 
@@ -39,8 +57,8 @@ class InstitucionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id])
-                redirect institucion
+                flash.message = message(code: 'default.created.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id, institucion.code, institucion.name, ''])
+                redirect(controller:"institucion", action: "index", params: [sostenedorId: sostenedorId,sostenedorName: sostenedorName])
             }
             '*' { respond institucion, [status: CREATED] }
         }
@@ -48,6 +66,13 @@ class InstitucionController {
 
     def edit(Institucion institucion) {
         respond institucion
+    }
+
+    def eliminar(Institucion institucion){
+        //def institucion = Institucion.get(params.id)
+        institucion.delete(flush:true)
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id, institucion.code, institucion.name, ''])
+        redirect (controller: "institucion", action: "index", params: [sostenedorId: sostenedorId,sostenedorName: sostenedorName])
     }
 
     @Transactional
@@ -68,30 +93,10 @@ class InstitucionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id])
-                redirect institucion
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id, institucion.code, institucion.name, ''])
+                redirect(controller:"institucion", action: "index",  params: [sostenedorId: sostenedorId,sostenedorName: sostenedorName])
             }
             '*'{ respond institucion, [status: OK] }
-        }
-    }
-
-    @Transactional
-    def delete(Institucion institucion) {
-
-        if (institucion == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        institucion.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
         }
     }
 

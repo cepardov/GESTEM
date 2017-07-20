@@ -88,26 +88,6 @@ class UsuarioController {
         }
     }
 
-    @Transactional
-    def delete(Usuario usuario) {
-
-        if (usuario == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        usuario.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuario.id, usuario.nombre, usuario.paterno, usuario.materno])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
     protected void notFound() {
         request.withFormat {
             form multipartForm {

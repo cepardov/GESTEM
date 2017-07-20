@@ -100,26 +100,6 @@ class SostenedorController {
         }
     }
 
-    @Transactional
-    def delete(Sostenedor sostenedor) {
-
-        if (sostenedor == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        sostenedor.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id, sostenedor.code, sostenedor.name, ''])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
     protected void notFound() {
         request.withFormat {
             form multipartForm {

@@ -75,26 +75,6 @@ class FuncionarioController {
         }
     }
 
-    @Transactional
-    def delete(Funcionario funcionario) {
-
-        if (funcionario == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        funcionario.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'funcionario.label', default: 'Funcionario'), funcionario.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
     protected void notFound() {
         request.withFormat {
             form multipartForm {

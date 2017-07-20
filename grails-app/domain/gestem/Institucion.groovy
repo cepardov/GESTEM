@@ -1,13 +1,11 @@
 package gestem
 
 class Institucion {
-    String rbd
-    String rut
-    String nombre
-    String region
-    String comuna
+    String code
+    String name
 
     static hasMany = [funcionario:Funcionario]
+    static belongsTo = [sostenedor:Sostenedor]
 
     static constraints = {
     }

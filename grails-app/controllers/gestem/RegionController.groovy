@@ -100,26 +100,6 @@ class RegionController {
         }
     }
 
-    @Transactional
-    def delete(Region region) {
-
-        if (region == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        region.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'region.label', default: 'Region'), region.id, region.code, region.name, ''])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
-    }
-
     protected void notFound() {
         request.withFormat {
             form multipartForm {
