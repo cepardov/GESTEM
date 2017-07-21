@@ -14,8 +14,7 @@
 </head>
 
 <body>
-<div class="navbar-fixed">
-    <nav>
+    <nav class="nav-extended white">
         <div class="nav-wrapper blue darken-2">
             <a href="http://gestem.liceopac.cl:8080" class="brand-logo"><i class="material-icons">cloud</i>GESTEM</a>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -30,8 +29,57 @@
                 </g:else>
             </ul>
         </div>
+        <div class="nav-content">
+            <!-- extend -->
+            <g:if test="${session.usuarioLogueado}">
+                <nav>
+                    <div class="nav-wrapper white">
+                        <ul class="left">
+                            <a href="#" data-activates="slide-out" class="button-collapse show-on-large grey-text"><i class="material-icons">menu</i></a>
+                        </ul>
+                        <ul class="left">
+                            <a class="flow-text grey-text darken-1" href="<g:createLink controller="dashboard" action="index" />">Consola de administracion</a>
+                        </ul>
+                        <ul class="left grey-text flow-text"> | </ul>
+                        <ul class="left">
+                            <a class="flow-text grey-text darken-1" href="<g:createLink controller="${controllerName}" action="index" />"><g:layoutTitle/><g:if test="${params.paisName}"> de ${params.paisName}</g:if></a>
+                        </ul>
+                        <ul class="left grey-text"> &nbsp;</ul>
+                        <ul class="left grey-text">
+                            <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
+                            <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
+                            <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
+                            <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
+                            <g:if test="${controllerName == 'contrato'}">${contratoCount ?: 0} elementos</g:if>
+                            <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
+                            <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
+                            <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
+                        </ul>
+                        <ul class="right">
+                        </ul>
+                    </div>
+                </nav>
+            </g:if>
+        </div>
     </nav>
-</div>
+
+<g:if test="${session.usuarioLogueado}">
+    <ul id="dropdown1" class="dropdown-content">
+        <li><g:link controller="login" action="logout">Salir</g:link></li>
+        <li class="divider"></li>
+        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
+        </g:each>
+    </ul>
+    <ul id="session" class="dropdown-content">
+        <li><g:link controller="login" action="logout">Cerrar Sesión</g:link></li>
+        <li class="divider"></li>
+        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
+        </g:each>
+    </ul>
+</g:if>
+
 
 <ul id="slide-out" class="side-nav">
     <g:if test="${session.usuarioLogueado}">
@@ -74,78 +122,6 @@
     </g:else>
 </ul>
 
-<g:if test="${session.usuarioLogueado}">
-    <div class="navbar-fixed">
-        <nav>
-            <div class="nav-wrapper white">
-                <ul class="left">
-                    <a href="#" data-activates="slide-out" class="button-collapse show-on-large grey-text"><i class="material-icons">menu</i></a>
-                </ul>
-                <ul class="left">
-                    <a class="flow-text m_title grey-text darken-1" href="<g:createLink controller="dashboard" action="index" />">Consola de administracion</a>
-                </ul>
-                <ul class="left grey-text flow-text"> | </ul>
-                <ul class="left">
-                    <a class="flow-text m_title grey-text darken-1" href="<g:createLink controller="${controllerName}" action="index" />"><g:layoutTitle/><g:if test="${params.paisName}"> de ${params.paisName}</g:if></a>
-                </ul>
-                <ul class="left grey-text"> &nbsp;</ul>
-                <ul class="left grey-text">
-                    <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
-                    <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
-                    <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
-                    <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
-                    <g:if test="${controllerName == 'contrato'}">${contratoCount ?: 0} elementos</g:if>
-                    <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
-                    <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
-                    <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
-                </ul>
-                <ul class="right">
-
-                </ul>
-                <!--
-                <g:if test="${controllerName == 'usuario'}">
-                    <a id="scale-demo" href="#!" class="btn-floating btn-large halfway-fab waves-effect waves-light teal">
-                        <i class="material-icons">add</i>
-                    </a>
-                </g:if>
-                -->
-
-                <!--
-            <ul class="right hide-on-med-and-down">
-                <li><a href="sass.html">Sass</a></li>
-                <li><a href="badges.html">Components</a></li>
-            </ul>
-            -->
-            </div>
-        </nav>
-    </div>
-    <ul id="dropdown1" class="dropdown-content">
-        <li><g:link controller="login" action="logout">Salir</g:link></li>
-        <li class="divider"></li>
-        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
-        </g:each>
-    <!--
-        <li><a href="#!">one</a></li>
-        <li><a href="#!">two</a></li>
-        <li class="divider"></li>
-        <li><a href="#!">three</a></li>
-        -->
-    </ul>
-    <ul id="session" class="dropdown-content">
-        <li><g:link controller="login" action="logout">Cerrar Sesión</g:link></li>
-        <li class="divider"></li>
-        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
-        </g:each>
-    <!--
-        <li><a href="#!">one</a></li>
-        <li><a href="#!">two</a></li>
-        <li class="divider"></li>
-        <li><a href="#!">three</a></li>
-        -->
-    </ul>
-</g:if>
 <br>
 <g:layoutBody/>
 <!--Import jQuery before materialize.js-->
@@ -155,10 +131,12 @@
 <g:if test="${flash.message}">
     <script>Materialize.toast('${flash.message}', 10000);</script>
 </g:if>
+<g:if test="${params.id}">
 <script>
     window.onload = function() {
         document.getElementById('clickButton').click();
     }
 </script>
+</g:if>
 </body>
 </html>
