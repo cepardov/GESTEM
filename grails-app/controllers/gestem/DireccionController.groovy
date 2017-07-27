@@ -19,14 +19,14 @@ class DireccionController {
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){
             if(params.idUsuario!=null){
-                respond new Direccion(params), model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
+                respond direccion, model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
             } else {
                 respond direccion, model:[direccionCount: Direccion.count(), direccionList:direccions]
             }
         } else if(params.idUsuario!=null){
-            respond new Direccion(params), model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
+            respond direccion, model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
         } else {
-            respond new Direccion(params), model:[direccionCount: Direccion.count(), direccionList:direccions]
+            respond direccion, model:[direccionCount: Direccion.count(), direccionList:direccions]
         }
 
     }
@@ -68,7 +68,9 @@ class DireccionController {
                     flash.message = "Error al guardar dirección En el campo comuna y/o usaurio debe seleccionar una opción válida"
                     redirect(controller: "direccion", action: "index")
                 }
+
                 def direccion = new Direccion(params)
+
                 if (direccion == null) {
                     transactionStatus.setRollbackOnly()
                     notFound()
