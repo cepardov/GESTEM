@@ -17,6 +17,7 @@ class DireccionController {
         idUsuario = params.idUsuario
 
         params.max = Math.min(max ?: 10, 100)
+
         if(params.id!=null){
             if(params.idUsuario!=null){
                 respond direccion, model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
@@ -24,9 +25,9 @@ class DireccionController {
                 respond direccion, model:[direccionCount: Direccion.count(), direccionList:direccions]
             }
         } else if(params.idUsuario!=null){
-            respond direccion, model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
+            respond new Direccion(params), model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
         } else {
-            respond direccion, model:[direccionCount: Direccion.count(), direccionList:direccions]
+            respond new Direccion(params), model:[direccionCount: Direccion.count(), direccionList:direccions]
         }
 
     }
