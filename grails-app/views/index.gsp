@@ -27,7 +27,7 @@
     <p>Fecha de inicio desarrollo: 23-03-2017</p>
     <p>Fecha de termino: 13-12-2017 (Aproximadamente)</p>
 
-    <p>Lista de cambios: <a href="https://github.com/cepardov/Gestem2/commits/master">Lista de cambios</a></p>
+    <p>Lista de cambios: <a href="https://github.com/cepardov/Gestem/commits/master">Lista de cambios</a></p>
 </div>
 </body>
 </html>
