@@ -14,6 +14,7 @@
 </head>
 
 <body>
+<div class="navbar-fixed">
     <nav class="nav-extended white">
         <div class="nav-wrapper blue darken-2">
             <a href="http://gestem.liceopac.cl:8080" class="brand-logo"><i class="material-icons">cloud</i>GESTEM</a>
@@ -30,7 +31,7 @@
             </ul>
         </div>
         <div class="nav-content">
-            <!-- extend -->
+        <!-- extend -->
             <g:if test="${session.usuarioLogueado}">
                 <nav>
                     <div class="nav-wrapper white">
@@ -52,14 +53,14 @@
                         </g:if>
                         <g:else>
                             <ul class="left grey-text">
-                            <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
-                            <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
-                            <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
-                            <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
-                            <g:if test="${controllerName == 'contrato'}">${contratoCount ?: 0} elementos</g:if>
-                            <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
-                            <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
-                            <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
+                                <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
+                                <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
+                                <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
+                                <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
+                                <g:if test="${controllerName == 'contrato'}">${contratoCount ?: 0} elementos</g:if>
+                                <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
+                                <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
+                                <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
                             </ul>
                         </g:else>
                         <ul class="right">
@@ -69,6 +70,7 @@
             </g:if>
         </div>
     </nav>
+</div>
 
 <g:if test="${session.usuarioLogueado}">
     <ul id="dropdown1" class="dropdown-content">

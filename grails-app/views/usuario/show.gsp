@@ -38,12 +38,10 @@
             </div>
         </div>
         <!-- Menu Modal Update-->
-        <!--
         <div class="fixed-action-btn">
             <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
             <g:link action="index" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
         </div>
-        -->
     </g:form>
     <h3>Direcciones</h3>
     <div class="slider col s12 m12">

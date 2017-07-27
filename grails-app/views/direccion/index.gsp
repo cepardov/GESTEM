@@ -13,17 +13,15 @@
             <table class="responsive-table bordered highlight centered">
                 <thead>
                 <tr>
-                    <th>Pais</th>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Usuario</th>
                 </tr>
                 </thead>
                 <tbody>
                 <g:each var="v" in="${direccionList}">
-                    <tr onclick="location='<g:createLink controller="ciudad" action="index" params="[]"/>'">
-                        <td>${v.comuna}</td>
-                        <td>${v.address}</td>
-                        <td>${v.usuario}</td>
+                    <tr>
+                        <td>${v.comuna.ciudad.region.pais.name}, ${v.comuna.ciudad.region.name}, ${v.comuna.name},${v.address}</td>
+                        <td>${v.usuario.nombre} ${v.usuario.paterno} ${v.usuario.materno}</td>
                         <td>
                             <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[paisId : params.paisId, paisName : params.paisName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
                             <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
