@@ -67,7 +67,12 @@
                 <!-- Menu Modal Create-->
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.create.label', default: 'Create')}" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <a class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                    <g:if test="${params.r}">
+                        <g:link controller="usuario" action="show" id="${params.idUsuario}" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    </g:if>
+                    <g:else>
+                        <a class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+                    </g:else>
                 </div>
             </g:form>
         </div>
@@ -87,7 +92,12 @@
                 <!-- Menu Modal Update-->
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <g:link action="index" params="[paisId : params.paisId, paisName : params.paisName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    <g:if test="${params.r}">
+                        <g:link controller="usuario" action="show" id="${params.idUsuario}" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    </g:if>
+                    <g:else>
+                        <g:link action="index" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    </g:else>
                 </div>
             </g:form>
         </div>
@@ -95,6 +105,9 @@
 </div>
 <g:if test="${params.id}">
     <a type="hidden" href="#modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
+</g:if>
+<g:if test="${params.r}">
+    <a type="hidden" href="#modalCreate" data-position="left" data-delay="50" id="clickButtonCreate"></a>
 </g:if>
 <g:hasErrors bean="${this.direccion}">
     <ul class="errors" role="alert">

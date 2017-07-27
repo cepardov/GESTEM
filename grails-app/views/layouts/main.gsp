@@ -72,6 +72,9 @@
     </nav>
 </div>
 
+<br>
+<br>
+
 <g:if test="${session.usuarioLogueado}">
     <ul id="dropdown1" class="dropdown-content">
         <li><g:link controller="login" action="logout">Salir</g:link></li>
@@ -148,5 +151,14 @@
     }
 </script>
 </g:if>
+<g:else>
+    <g:if test="${params.r}">
+        <script>
+            window.onload = function() {
+                document.getElementById('clickButtonCreate').click();
+            }
+        </script>
+    </g:if>
+</g:else>
 </body>
 </html>

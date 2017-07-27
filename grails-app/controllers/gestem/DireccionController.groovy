@@ -8,12 +8,24 @@ class DireccionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def idUsuario
+
     def index(Integer max,Direccion direccion) {
+        def direccionByUsuario = Direccion.findAllByUsuario(Usuario.findById(params.idUsuario))
         def direccions = Direccion.list(params)
+
+        idUsuario = params.idUsuario
+
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){
-            respond direccion, model:[direccionCount: Direccion.count(), direccionList:direccions]
-        }else{
+            if(params.idUsuario!=null){
+                respond new Direccion(params), model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
+            } else {
+                respond direccion, model:[direccionCount: Direccion.count(), direccionList:direccions]
+            }
+        } else if(params.idUsuario!=null){
+            respond new Direccion(params), model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
+        } else {
             respond new Direccion(params), model:[direccionCount: Direccion.count(), direccionList:direccions]
         }
 
@@ -48,14 +60,11 @@ class DireccionController {
                 flash.message = "Debe seleccionar un usuario de la lista, en el campo usuario correctamente."
                 redirect(controller: "direccion", action: "index")
             } else {
-                printf('\nTodo ok\n')
                 try {
-                    printf('\nComuna:'+Comuna.findById(comunaSplit[0]).name)
-                    printf('\nUsuario::'+Usuario.findById(comunaSplit[0]).nombre)
                     params.comuna = Comuna.findById(comunaSplit[0]).id
                     params.usuario = Usuario.findById(usuarioSplit[0]).id
                 } catch (Exception e){
-                    println('\nError:'+e.getMessage())
+                    println('\nError Save try:'+e.getMessage())
                     flash.message = "Error al guardar dirección En el campo comuna y/o usaurio debe seleccionar una opción válida"
                     redirect(controller: "direccion", action: "index")
                 }
