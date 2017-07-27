@@ -37,13 +37,20 @@ class LoginController {
                 printf("Login true\n")
             }else{
                 if(user){
-                    printf("Login password error\n")
                     flash.message = "Error de inicio sesión clave incorrecta"
-                    redirect controller: "login", action: "login"
+                    if (redirection != null){
+                        redirect(uri: redirection)
+                    } else {
+                        redirect controller: "login", action: "login"
+                    }
                 } else {
                     printf("Login password and user error\n")
                     flash.message = "Error de inicio sesión usuario y contraseña incorrecta"
-                    redirect controller: "login", action: "login"
+                    if (redirection != null){
+                        redirect(uri: redirection)
+                    } else {
+                        redirect controller: "login", action: "login"
+                    }
                 }
             }
         }
