@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                 <g:each var="v" in="${usuarioList}">
-                    <tr>
+                    <tr onclick="location='<g:createLink controller="usuario" action="show" id="${v.id}" params="[name : v.nombre, lastName : v.paterno]"/>'">
                         <td>${v.rut}</td>
                         <td>${v.usuario}</td>
                         <td>${v.nombre}</td>

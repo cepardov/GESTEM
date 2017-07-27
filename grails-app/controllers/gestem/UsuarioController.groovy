@@ -20,7 +20,7 @@ class UsuarioController {
     }
 
     def show(Usuario usuario) {
-        redirect(controller:"usuario", action: "index")
+        respond usuario
     }
 
     def create() {

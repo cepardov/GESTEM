@@ -7,7 +7,8 @@ class Usuario {
     String materno
     String usuario
     String clave
-    byte[] photo
+
+    static hasMany = [direccion:Direccion, telefono:Telefono, correo:Correo]
 
     static constraints = {
         //rut unique: true
@@ -17,6 +18,5 @@ class Usuario {
         //materno blank:false
         //username  blank:false, size:5..15, matches:/[\S]+/, unique:true
         //clave  blank:false
-        photo nullable: true
     }
 }

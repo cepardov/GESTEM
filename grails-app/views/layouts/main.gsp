@@ -45,7 +45,13 @@
                             <a class="flow-text grey-text darken-1" href="<g:createLink controller="${controllerName}" action="index" />"><g:layoutTitle/><g:if test="${params.paisName}"> de ${params.paisName}</g:if></a>
                         </ul>
                         <ul class="left grey-text"> &nbsp;</ul>
-                        <ul class="left grey-text">
+                        <g:if test="${actionName == 'show'}">
+                            <ul class="left flow-text grey-text">
+                                | ${params.name} ${params.lastName}
+                            </ul>
+                        </g:if>
+                        <g:else>
+                            <ul class="left grey-text">
                             <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
                             <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
                             <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
@@ -54,7 +60,8 @@
                             <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
                             <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
                             <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
-                        </ul>
+                            </ul>
+                        </g:else>
                         <ul class="right">
                         </ul>
                     </div>
@@ -126,8 +133,9 @@
 <g:layoutBody/>
 <!--Import jQuery before materialize.js-->
 <asset:javascript src="jquery-2.1.1.min.js"/>
-<asset:javascript src="config.js"/>
 <asset:javascript src="materialize.js"/>
+<asset:javascript src="config.js"/>
+<asset:javascript src="typeahead.bundle.min.js"/>
 <g:if test="${flash.message}">
     <script>Materialize.toast('${flash.message}', 10000);</script>
 </g:if>
