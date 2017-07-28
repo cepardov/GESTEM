@@ -54,7 +54,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <g:each var="v" in="${gestem.Direccion.findAllWhere(usuario: this.usuario)}">
+                    <g:each var="v" in="${direccionList}">
                         <tr>
                             <td>${v.comuna.ciudad.region.pais.name}, ${v.comuna.ciudad.region.name}, ${v.comuna.name}, ${v.address}</td>
                             <td>

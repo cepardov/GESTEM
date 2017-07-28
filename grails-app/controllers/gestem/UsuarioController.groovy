@@ -9,7 +9,8 @@ class UsuarioController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max,Usuario usuario) {
-        def usuarios = Usuario.list(params);
+        def usuarios = Usuario.list(params)
+
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){
             respond usuario, model:[usuarioCount: Usuario.count(), usuarioList:usuarios]
@@ -20,6 +21,8 @@ class UsuarioController {
     }
 
     def show(Usuario usuario) {
+        def direccion = Direccion.findAllByUsuario(Usuario.findById(params.id))
+        respond usuario, model:[direccionList:direccion]
         respond usuario
     }
 
