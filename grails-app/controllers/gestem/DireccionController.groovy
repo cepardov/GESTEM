@@ -62,6 +62,7 @@ class DireccionController {
                 redirect(controller: "direccion", action: "index")
             } else {
                 try {
+                    printf('\nUsuario:'+usuarioSplit[0])
                     params.comuna = Comuna.findById(comunaSplit[0]).id
                     params.usuario = Usuario.findById(usuarioSplit[0]).id
                 } catch (Exception e){
@@ -86,9 +87,12 @@ class DireccionController {
 
                 direccion.save flush:true
 
+                printf('\nr:'+params.r)
+
                 request.withFormat {
                     form multipartForm {
                         flash.message = message(code: 'default.created.message', args: [message(code: 'direccion.label', default: 'Direccion'), direccion.id])
+
                         if(params.r != "showUsuario"){
                             redirect (controller: "direccion", action: "index")
                         } else {

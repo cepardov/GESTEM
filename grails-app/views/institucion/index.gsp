@@ -9,7 +9,7 @@
 <div class="slider col s12 m12">
     <div id="list-institucion" class="content scaffold-list" role="main">
         <div class="row">
-            <table class="responsive-table bordered highlight centered">
+            <table class="responsive-table bordered highlight-2 centered">
                 <thead>
                 <tr>
                     <th>Sostenedor</th>

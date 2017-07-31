@@ -4,3 +4,10 @@
 .activo {
     font-weight: 500;
 }
+table.highlight-2 > tbody > tr {
+    transition: background-color .25s ease;
+}
+
+table.highlight-2 > tbody > tr:hover {
+    background-color: #c4c8c1;
+}

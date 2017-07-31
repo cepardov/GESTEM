@@ -6,6 +6,5 @@ class Telefono {
     static belongsTo = [usuario:Usuario]
 
     static constraints = {
-        phoneNumber nullable: true, blank: true
     }
 }

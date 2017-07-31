@@ -9,7 +9,7 @@
 <div class="slider col s12 m12">
     <div id="list-pais" class="content scaffold-list" role="main">
         <div class="row">
-            <table class="responsive-table bordered highlight centered">
+            <table class="responsive-table bordered highlight-2 centered">
                 <thead>
                 <tr>
                     <th>Codigo</th>
@@ -45,7 +45,6 @@
     <div class="modal-content">
         <h5>Crear ${controllerName}</h5>
         <div class="row">
-        <!---rut, nombre, paterno, clave, materno, valor, estado, pais, valorHoraExtra--->
             <g:form action="save">
                 <div class="row">
                     <div class="input-field col s12 m2">

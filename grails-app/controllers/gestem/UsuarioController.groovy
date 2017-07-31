@@ -21,9 +21,13 @@ class UsuarioController {
     }
 
     def show(Usuario usuario) {
-        def direccion = Direccion.findAllByUsuario(Usuario.findById(params.id))
-        respond usuario, model:[direccionList:direccion]
-        respond usuario
+        def direccionList = Direccion.findAllByUsuario(Usuario.findById(params.id))
+        def telefono = Telefono.findAllByUsuario(Usuario.findById(params.id))
+        def direccion
+        if(params.idDireccion){
+            direccion = Direccion.findById(params.idDireccion).address
+        }
+        respond usuario, model:[direccionList:direccionList, direccion:direccion, telefonoList:telefono]
     }
 
     def create() {

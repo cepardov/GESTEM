@@ -1,21 +1,27 @@
 .tt-suggestion {
+    margin-top: -20px;
+    width: 160%;
     padding: 3px 20px;
     font-size: 18px;
     line-height: 24px;
+    border: solid 1px #e9e9e9;
 }
 
 .tt-suggestion:hover {
     cursor: pointer;
-    color: #fff;
-    background-color: #0097cf;
+    background-color: #e9e9e9;
 }
 
 .tt-suggestion.tt-cursor {
-    color: #fff;
-    background-color: #0097cf;
+    background-color: #e9e9e9;
 
 }
 
 .tt-suggestion p {
     margin: 0;
+}
+
+input.typeahead {
+    float: left;
+    width: 160%;
 }

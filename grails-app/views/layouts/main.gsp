@@ -13,7 +13,7 @@
     <g:layoutHead/>
 </head>
 
-<body>
+<body class="grey lighten-4">
 <div class="navbar-fixed">
     <nav class="nav-extended white">
         <div class="nav-wrapper blue darken-2">
