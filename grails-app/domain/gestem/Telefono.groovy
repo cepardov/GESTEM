@@ -1,7 +1,7 @@
 package gestem
 
 class Telefono {
-    Integer phoneNumber
+    String phoneNumber
 
     static belongsTo = [usuario:Usuario]
 

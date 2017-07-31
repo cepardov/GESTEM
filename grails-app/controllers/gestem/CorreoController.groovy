@@ -8,9 +8,28 @@ class CorreoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
+    def idUsuario
+
+    def index(Integer max,Correo correo) {
+        def correoByUsuario = Correo.findAllByUsuario(Usuario.findById(params.idUsuario))
+        def correos = Correo.list(params)
+
+        idUsuario = params.idUsuario
+
         params.max = Math.min(max ?: 10, 100)
-        respond Correo.list(params), model:[correoCount: Correo.count()]
+
+        if(params.id!=null){
+            if(params.idUsuario!=null){
+                respond correo, model:[correoCount: Correo.countByUsuario(Usuario.findById(params.idUsuario)), correoList: correoByUsuario]
+            } else {
+                respond correo, model:[correoCount: Correo.count(), correoList:correos]
+            }
+        } else if(params.idUsuario!=null){
+            respond new Correo(params), model:[correoCount: Correo.countByUsuario(Usuario.findById(params.idUsuario)), correoList: correoByUsuario]
+        } else {
+            respond new Correo(params), model:[correoCount: Correo.count(), correoList:correos]
+        }
+
     }
 
     def show(Correo correo) {
@@ -37,10 +56,16 @@ class CorreoController {
 
         correo.save flush:true
 
+        printf('\nReturn:'+params.r)
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'correo.label', default: 'Correo'), correo.id])
-                redirect correo
+
+                if(params.r != "showUsuario"){
+                    redirect (controller: "correo", action: "index")
+                } else {
+                    redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                }
             }
             '*' { respond correo, [status: CREATED] }
         }
@@ -48,6 +73,17 @@ class CorreoController {
 
     def edit(Correo correo) {
         respond correo
+    }
+
+    def eliminar(){
+        def correo = Correo.get(params.id)
+        correo.delete(flush:true)
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'correo.label', default: 'Correo'), correo.id])
+        if(params.r != "showUsuario"){
+            redirect (controller: "correo", action: "index")
+        } else {
+            redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+        }
     }
 
     @Transactional
@@ -69,30 +105,18 @@ class CorreoController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'correo.label', default: 'Correo'), correo.id])
-                redirect correo
+                if(params.r != "showUsuario"){
+                    redirect (controller: "correo", action: "index")
+                } else {
+                    redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                }
             }
             '*'{ respond correo, [status: OK] }
         }
     }
 
-    @Transactional
-    def delete(Correo correo) {
-
-        if (correo == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        correo.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'correo.label', default: 'Correo'), correo.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
+    def delete(){
+        eliminar()
     }
 
     protected void notFound() {
