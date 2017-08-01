@@ -29,6 +29,11 @@
                 <f:input property="materno" id="materno" bean="usuario"/>
             </div>
             <div class="input-field col s12 m2">
+                <label for="materno">Fecha Nacimiento</label>
+                <input type="text" value="${fechaNacimientoOut}" name="fechaNacimientoDat" class="datepicker">
+            </div>
+
+            <div class="input-field col s12 m2">
                 <label for="clave">clave</label>
                 <f:input property="clave" id="clave" bean="usuario"/>
             </div>
@@ -37,13 +42,15 @@
                 <label for="usuario">usuario</label>
             </div>
         </div>
+        <!-- Menu Modal Create-->
+        <div class="fixed-action-btn">
+            <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.create.label', default: 'Create')}" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar ${controllerName}"><i class="material-icons right">send</i></button>
+            <a class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+        </div>
     </g:form>
 
-<!-- Menu flotante Crear
-    <div class="fixed-action-btn">
-        <a class="create waves-effect waves-light btn-floating btn-large teal tooltipped" href="#modalCreateDireccion" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
-    </div>
--->
+
+
     <h3>Direcciones</h3>
     <div class="row">
         <table class="responsive-table bordered highlight-2 centered">

@@ -6,7 +6,8 @@ class BootStrap {
 
     def init = { servletContext ->
         if(Environment.current == Environment.DEVELOPMENT) {
-            new Usuario(rut: "172132332", nombre: "Cristian", paterno: "Pardo", materno: "Velasquez", usuario: "cepardov", clave: "123").save(failOnError: true)
+            new Funcion(code: "001", name: "Super Admin", descripcion: "Cuenta administrador").save(failOnError: true)
+            new Usuario(rut: "172132332", nombre: "Cristian", paterno: "Pardo", materno: "Velasquez", usuario: "cepardov", clave: "123", funcion: "1").save(failOnError: true)
             new Correo(email: "cepardov@gmail.com", usuario: "1").save(failOnError: true)
             new Telefono(phoneNumber: "123123123", usuario: "1").save(failOnError: true)
             new Pais(code: "CL", name: "Chile").save(failOnError: true)

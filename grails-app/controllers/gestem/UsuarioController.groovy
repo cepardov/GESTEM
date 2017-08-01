@@ -8,9 +8,9 @@ class UsuarioController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+
     def index(Integer max,Usuario usuario) {
         def usuarios = Usuario.list(params)
-
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){
             respond usuario, model:[usuarioCount: Usuario.count(), usuarioList:usuarios]
@@ -18,6 +18,29 @@ class UsuarioController {
             respond new Usuario(params), model:[usuarioCount: Usuario.count(), usuarioList:usuarios]
         }
 
+    }
+
+    def getFechaNacimiento(Usuario usuario){
+        def fechaNacimiento
+        printf('\ngetFechaNacimiento in:'+usuario.fechaNacimiento)
+        printf('\nid usuario:'+usuario.id)
+
+        if(usuario.fechaNacimiento){
+            def fechaNacimientoIn = usuario.fechaNacimiento.toString().replace(' ',' | ')
+            printf('\nFecha remplace:'+fechaNacimientoIn)
+            String[] fechaNacimientoSplit0 = fechaNacimientoIn.split(' | ')
+            String[] fechaNacimientoSplit1 = fechaNacimientoSplit0[0].split('-')
+
+            def dd = fechaNacimientoSplit1[2]
+            def mm = fechaNacimientoSplit1[1]
+            def yyyy = fechaNacimientoSplit1[0]
+
+            fechaNacimiento = dd+'/'+mm+'/'+yyyy
+            printf('\nFinal Fecha:'+ fechaNacimiento)
+
+        }
+
+        return fechaNacimiento
     }
 
     def show(Usuario usuario) {
@@ -36,7 +59,7 @@ class UsuarioController {
         if(params.idCorreo){
             correo = Correo.findById(params.idCorreo).email
         }
-        respond usuario, model:[direccionList:direccionList, direccion:direccion, telefonoList:telefonoList, telefono:telefono, correoList:correoList, correo:correo]
+        respond usuario, model:[direccionList:direccionList, direccion:direccion, telefonoList:telefonoList, telefono:telefono, correoList:correoList, correo:correo, fechaNacimientoOut: getFechaNacimiento()]
     }
 
     def create() {
@@ -68,9 +91,9 @@ class UsuarioController {
         }
     }
 
-    def edit(Usuario usuario) {
-        respond usuario
-    }
+    //def edit(Usuario usuario) {
+    //    respond usuario
+    //}
 
     def eliminar(){
         def usuario = Usuario.get(params.id)
@@ -81,6 +104,18 @@ class UsuarioController {
 
     @Transactional
     def update(Usuario usuario) {
+        if(params.fechaNacimientoDat){
+            printf('\nFecha Inicial:'+params.fechaNacimientoDat+'\n')
+            String[] fechaNacimientoSplit = ((String) params.fechaNacimientoDat).split('/')
+            def dd = fechaNacimientoSplit[0]
+            def mm = fechaNacimientoSplit[1]
+            def yyyy = fechaNacimientoSplit[2]
+            Date date = new Date().parse("d/M/yyyy H:m:s", dd+'/'+mm+'/'+yyyy+' 00:00:00.0')
+            usuario.setFechaNacimiento(date)
+        } else {
+
+        }
+
         if (usuario == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -89,7 +124,7 @@ class UsuarioController {
 
         if (usuario.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond usuario.errors, view:'edit'
+            respond usuario.errors, view:'index'
             return
         }
 
