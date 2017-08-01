@@ -5,6 +5,16 @@ import grails.util.Environment
 class BootStrap {
 
     def init = { servletContext ->
+        def adminRole = new Role(authority: 'ROLE_ADMIN').save()
+
+        def testUser = new User(username: 'admin', password: '123').save()
+
+        UserRole.create testUser, adminRole
+
+        UserRole.withSession {
+            it.flush()
+            it.clear()
+        }
         if(Environment.current == Environment.DEVELOPMENT) {
             new Funcion(code: "001", name: "Super Admin", descripcion: "Cuenta administrador").save(failOnError: true)
             new Usuario(rut: "172132332", nombre: "Cristian", paterno: "Pardo", materno: "Velasquez", usuario: "cepardov", clave: "123", funcion: "1").save(failOnError: true)

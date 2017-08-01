@@ -2,13 +2,14 @@ package gestem
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 
 @Transactional(readOnly = true)
 class UsuarioController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-
+    @Secured('ROLE_ADMIN')
     def index(Integer max,Usuario usuario) {
         def usuarios = Usuario.list(params)
         params.max = Math.min(max ?: 10, 100)
