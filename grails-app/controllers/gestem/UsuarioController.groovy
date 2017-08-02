@@ -9,7 +9,7 @@ class UsuarioController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     def index(Integer max,Usuario usuario) {
         def usuarios = Usuario.list(params)
         params.max = Math.min(max ?: 10, 100)
@@ -44,6 +44,7 @@ class UsuarioController {
         return fechaNacimiento
     }
 
+    @Secured('ROLE_SUPERADMIN')
     def show(Usuario usuario) {
         def direccionList = Direccion.findAllByUsuario(Usuario.findById(params.id))
         def telefonoList = Telefono.findAllByUsuario(Usuario.findById(params.id))
@@ -63,10 +64,12 @@ class UsuarioController {
         respond usuario, model:[direccionList:direccionList, direccion:direccion, telefonoList:telefonoList, telefono:telefono, correoList:correoList, correo:correo, fechaNacimientoOut: getFechaNacimiento()]
     }
 
+    @Secured('ROLE_SUPERADMIN')
     def create() {
         respond new Usuario(params)
     }
 
+    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def save(Usuario usuario) {
         if (usuario == null) {
@@ -96,6 +99,7 @@ class UsuarioController {
     //    respond usuario
     //}
 
+    @Secured('ROLE_SUPERADMIN')
     def eliminar(){
         def usuario = Usuario.get(params.id)
         usuario.delete(flush:true)
@@ -103,6 +107,7 @@ class UsuarioController {
         redirect (controller: "usuario", action: "index")
     }
 
+    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def update(Usuario usuario) {
         if(params.fechaNacimientoDat){
@@ -140,6 +145,7 @@ class UsuarioController {
         }
     }
 
+    @Secured('ROLE_SUPERADMIN')
     protected void notFound() {
         request.withFormat {
             form multipartForm {

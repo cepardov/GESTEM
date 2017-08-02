@@ -5,91 +5,91 @@ import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
 @Transactional(readOnly = true)
-class FuncionController {
+class RoleController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Funcion.list(params), model:[funcionCount: Funcion.count()]
+        respond Role.list(params), model:[roleCount: Role.count()]
     }
 
-    def show(Funcion funcion) {
-        respond funcion
+    def show(Role role) {
+        respond role
     }
 
     def create() {
-        respond new Funcion(params)
+        respond new Role(params)
     }
 
     @Transactional
-    def save(Funcion funcion) {
-        if (funcion == null) {
+    def save(Role role) {
+        if (role == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (funcion.hasErrors()) {
+        if (role.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond funcion.errors, view:'create'
+            respond role.errors, view:'create'
             return
         }
 
-        funcion.save flush:true
+        role.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'funcion.label', default: 'Funcion'), funcion.id])
-                redirect funcion
+                flash.message = message(code: 'default.created.message', args: [message(code: 'role.label', default: 'Role'), role.id])
+                redirect role
             }
-            '*' { respond funcion, [status: CREATED] }
+            '*' { respond role, [status: CREATED] }
         }
     }
 
-    def edit(Funcion funcion) {
-        respond funcion
+    def edit(Role role) {
+        respond role
     }
 
     @Transactional
-    def update(Funcion funcion) {
-        if (funcion == null) {
+    def update(Role role) {
+        if (role == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (funcion.hasErrors()) {
+        if (role.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond funcion.errors, view:'edit'
+            respond role.errors, view:'edit'
             return
         }
 
-        funcion.save flush:true
+        role.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'funcion.label', default: 'Funcion'), funcion.id])
-                redirect funcion
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'role.label', default: 'Role'), role.id])
+                redirect role
             }
-            '*'{ respond funcion, [status: OK] }
+            '*'{ respond role, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Funcion funcion) {
+    def delete(Role role) {
 
-        if (funcion == null) {
+        if (role == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        funcion.delete flush:true
+        role.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'funcion.label', default: 'Funcion'), funcion.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'role.label', default: 'Role'), role.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -99,7 +99,7 @@ class FuncionController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'funcion.label', default: 'Funcion'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'role.label', default: 'Role'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }

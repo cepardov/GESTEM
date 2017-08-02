@@ -5,11 +5,14 @@ import grails.util.Environment
 class BootStrap {
 
     def init = { servletContext ->
+        //Roles
+        def superRole = new Role(authority: 'ROLE_SUPERADMIN').save()
         def adminRole = new Role(authority: 'ROLE_ADMIN').save()
 
-        def testUser = new User(username: 'admin', password: '123').save()
+        //Users
+        def superUser = new User(username: 'admin', password: 'admin').save()
 
-        UserRole.create testUser, adminRole
+        UserRole.create superUser, superRole
 
         UserRole.withSession {
             it.flush()

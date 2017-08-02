@@ -1,5 +1,7 @@
 package gestem
 
+import grails.plugin.springsecurity.annotation.Secured
+
 class LoginController {
 
     def redirection

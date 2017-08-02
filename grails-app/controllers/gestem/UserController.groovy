@@ -5,91 +5,96 @@ import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
 @Transactional(readOnly = true)
-class FuncionController {
+class UserController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    @Secured('ROLE_ADMIN')
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Funcion.list(params), model:[funcionCount: Funcion.count()]
+        respond User.list(params), model:[userCount: User.count()]
     }
 
-    def show(Funcion funcion) {
-        respond funcion
+    @Secured('ROLE_ADMIN')
+    def show(User user) {
+        respond user
     }
 
+    @Secured('ROLE_ADMIN')
     def create() {
-        respond new Funcion(params)
+        respond new User(params)
     }
 
+    @Secured('ROLE_ADMIN')
     @Transactional
-    def save(Funcion funcion) {
-        if (funcion == null) {
+    def save(User user) {
+        if (user == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (funcion.hasErrors()) {
+        if (user.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond funcion.errors, view:'create'
+            respond user.errors, view:'create'
             return
         }
 
-        funcion.save flush:true
+        user.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'funcion.label', default: 'Funcion'), funcion.id])
-                redirect funcion
+                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id])
+                redirect user
             }
-            '*' { respond funcion, [status: CREATED] }
+            '*' { respond user, [status: CREATED] }
         }
     }
 
-    def edit(Funcion funcion) {
-        respond funcion
+    @Secured('ROLE_ADMIN')
+    def edit(User user) {
+        respond user
     }
 
     @Transactional
-    def update(Funcion funcion) {
-        if (funcion == null) {
+    def update(User user) {
+        if (user == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        if (funcion.hasErrors()) {
+        if (user.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond funcion.errors, view:'edit'
+            respond user.errors, view:'edit'
             return
         }
 
-        funcion.save flush:true
+        user.save flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'funcion.label', default: 'Funcion'), funcion.id])
-                redirect funcion
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), user.id])
+                redirect user
             }
-            '*'{ respond funcion, [status: OK] }
+            '*'{ respond user, [status: OK] }
         }
     }
 
     @Transactional
-    def delete(Funcion funcion) {
+    def delete(User user) {
 
-        if (funcion == null) {
+        if (user == null) {
             transactionStatus.setRollbackOnly()
             notFound()
             return
         }
 
-        funcion.delete flush:true
+        user.delete flush:true
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'funcion.label', default: 'Funcion'), funcion.id])
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'user.label', default: 'User'), user.id])
                 redirect action:"index", method:"GET"
             }
             '*'{ render status: NO_CONTENT }
@@ -99,7 +104,7 @@ class FuncionController {
     protected void notFound() {
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.not.found.message', args: [message(code: 'funcion.label', default: 'Funcion'), params.id])
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
                 redirect action: "index", method: "GET"
             }
             '*'{ render status: NOT_FOUND }

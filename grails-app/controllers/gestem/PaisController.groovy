@@ -2,12 +2,14 @@ package gestem
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import grails.plugin.springsecurity.annotation.Secured
 
 @Transactional(readOnly = true)
 class PaisController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
+    @Secured('ROLE_SUPERADMIN')
     def index(Integer max,Pais pais) {
         def paiss = Pais.list(params)
         params.max = Math.min(max ?: 10, 100)
@@ -19,14 +21,17 @@ class PaisController {
 
     }
 
+    @Secured('ROLE_SUPERADMIN')
     def show(Pais pais) {
         respond(pais)
     }
 
+    @Secured('ROLE_SUPERADMIN')
     def create() {
         respond new Pais(params)
     }
 
+    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def save(Pais pais) {
         if (pais == null) {
@@ -52,10 +57,12 @@ class PaisController {
         }
     }
 
+    @Secured('ROLE_SUPERADMIN')
     def edit(Pais pais) {
         respond pais
     }
 
+    @Secured('ROLE_SUPERADMIN')
     def eliminar(){
         def pais = Pais.get(params.id)
 
@@ -68,6 +75,7 @@ class PaisController {
         redirect (controller: "pais", action: "index")
     }
 
+    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def update(Pais pais) {
         if (pais == null) {
@@ -93,6 +101,7 @@ class PaisController {
         }
     }
 
+    @Secured('ROLE_SUPERADMIN')
     protected void notFound() {
         request.withFormat {
             form multipartForm {
