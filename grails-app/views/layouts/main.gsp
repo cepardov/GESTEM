@@ -9,7 +9,6 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
-    <g:if test="${session.usuarioLogueado}"><meta http-equiv="refresh" content="${session.getMaxInactiveInterval()+1}; url=${request.getRequestURL()}" /></g:if>
     <g:layoutHead/>
 </head>
 
@@ -20,19 +19,19 @@
             <a href="http://gestem.liceopac.cl:8080" class="brand-logo"><i class="material-icons">cloud</i>GESTEM</a>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                <g:if test="${session.usuarioLogueado}">
+                <sec:ifLoggedIn>
                     <li><a href="http://gestem.liceopac.cl:8080">Inicio</a></li>
-                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">${session.usuarioLogueado.nombre} ${session.usuarioLogueado.paterno} ${session.usuarioLogueado.materno}<i class="material-icons right">arrow_drop_down</i></a></li>
-                </g:if>
-                <g:else>
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">NEW_SECURITY<i class="material-icons right">arrow_drop_down</i></a></li>
+                </sec:ifLoggedIn>
+                <sec:ifNotLoggedIn>
                     <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Controladores<i class="material-icons right">arrow_drop_down</i></a></li>
-                    <li><g:link controller="login" action="login">Inicio de Sesión</g:link></li>
-                </g:else>
+                    <li><g:link controller="login" action="auth">Inicio de Sesión</g:link></li>
+                </sec:ifNotLoggedIn>
             </ul>
         </div>
         <div class="nav-content">
         <!-- extend -->
-            <g:if test="${session.usuarioLogueado}">
+            <sec:ifLoggedIn>
                 <nav>
                     <div class="nav-wrapper white">
                         <ul class="left">
@@ -67,7 +66,7 @@
                         </ul>
                     </div>
                 </nav>
-            </g:if>
+            </sec:ifLoggedIn>
         </div>
     </nav>
 </div>
@@ -75,7 +74,7 @@
 <br>
 <br>
 
-<g:if test="${session.usuarioLogueado}">
+<sec:ifLoggedIn>
     <ul id="dropdown1" class="dropdown-content">
         <li><g:link controller="login" action="logout">Salir</g:link></li>
         <li class="divider"></li>
@@ -90,18 +89,19 @@
             <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
         </g:each>
     </ul>
-</g:if>
+</sec:ifLoggedIn>
+
 
 
 <ul id="slide-out" class="side-nav">
-    <g:if test="${session.usuarioLogueado}">
+    <sec:ifLoggedIn>
         <li><div class="userView">
             <div class="background">
                 <asset:image src="material-design.jpg"/>
             </div>
             <a href="#!user"><img class="circle" src="http://materializecss.com/images/yuna.jpg"></a>
-            <a href="#!name"><span class="white-text name">${session.usuarioLogueado.nombre} ${session.usuarioLogueado.paterno}</span></a>
-            <a href="#!email"><span class="white-text email">${session.usuarioLogueado.usuario}@liceopac.cl</span></a>
+            <a href="#!name"><span class="white-text name">NEW_SECURITY</span></a>
+            <a href="#!email"><span class="white-text email">NEW_SECURITY@liceopac.cl</span></a>
         </div></li>
         <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
             <li><g:link controller="${c.logicalPropertyName}"><i class="material-icons">
@@ -117,8 +117,8 @@
         <li><div class="divider"></div></li>
         <li><a class="subheader">Subheader</a></li>
         <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-    </g:if>
-    <g:else>
+    </sec:ifLoggedIn>
+    <sec:ifNotLoggedIn>
         <li><div class="userView">
             <div class="background">
                 <asset:image src="material-design.jpg"/>
@@ -131,7 +131,7 @@
         <li><div class="divider"></div></li>
         <li><a class="subheader">Subheader</a></li>
         <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-    </g:else>
+    </sec:ifNotLoggedIn>
 </ul>
 
 <br>

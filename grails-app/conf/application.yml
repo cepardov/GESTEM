@@ -144,4 +144,4 @@ environments:
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
 server:
    session:
-      timeout: 30
+      timeout: 1600
