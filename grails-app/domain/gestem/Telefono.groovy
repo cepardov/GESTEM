@@ -3,7 +3,7 @@ package gestem
 class Telefono {
     String phoneNumber
 
-    static belongsTo = [usuario:Usuario]
+    static belongsTo = [user:User]
 
     static constraints = {
     }

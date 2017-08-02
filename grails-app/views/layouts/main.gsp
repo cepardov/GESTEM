@@ -21,7 +21,7 @@
             <ul class="right hide-on-med-and-down">
                 <sec:ifLoggedIn>
                     <li><a href="http://gestem.liceopac.cl:8080">Inicio</a></li>
-                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">NEW_SECURITY<i class="material-icons right">arrow_drop_down</i></a></li>
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1"><sec:loggedInUserInfo field='fullName'/><i class="material-icons right">arrow_drop_down</i></a></li>
                 </sec:ifLoggedIn>
                 <sec:ifNotLoggedIn>
                     <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Controladores<i class="material-icons right">arrow_drop_down</i></a></li>

@@ -1,5 +1,3 @@
-
-
 // Added by the Spring Security Core plugin:
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'gestem.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'gestem.UserRole'

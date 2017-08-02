@@ -5,30 +5,30 @@ import grails.util.Environment
 class BootStrap {
 
     def init = { servletContext ->
-        //Roles
-        def superRole = new Role(authority: 'ROLE_SUPERADMIN').save()
-        def adminRole = new Role(authority: 'ROLE_ADMIN').save()
-
-        //Users
-        def superUser = new User(username: 'admin', password: 'admin').save()
-
-        UserRole.create superUser, superRole
-
-        UserRole.withSession {
-            it.flush()
-            it.clear()
-        }
         if(Environment.current == Environment.DEVELOPMENT) {
-            new Funcion(code: "001", name: "Super Admin", descripcion: "Cuenta administrador").save(failOnError: true)
-            new Usuario(rut: "172132332", nombre: "Cristian", paterno: "Pardo", materno: "Velasquez", usuario: "cepardov", clave: "123", funcion: "1").save(failOnError: true)
-            new Correo(email: "cepardov@gmail.com", usuario: "1").save(failOnError: true)
-            new Telefono(phoneNumber: "123123123", usuario: "1").save(failOnError: true)
+            //Roles
+            def superRole = new Role(authority: 'ROLE_SUPERADMIN').save(failOnError: true)
+            def adminRole = new Role(authority: 'ROLE_ADMIN').save(failOnError: true)
+
+            //Users
+            def superUser = new User(rut: "172132332", nombre: "Cristian", paterno: "Pardo", materno: "Velasquez", username: 'admin', password: 'admin').save(failOnError: true)
+
+            UserRole.create superUser, superRole
+
+            new Correo(email: "cepardov@gmail.com", user: "1").save(failOnError: true)
+            new Telefono(phoneNumber: "123123123", user: "1").save(failOnError: true)
             new Pais(code: "CL", name: "Chile").save(failOnError: true)
             new Region(code: "X", name: "Los Lagos", pais: "1").save(failOnError: true)
             new Ciudad(code: "LLH", name: "Llanquihue", region: "1").save(failOnError: true)
             new Comuna(code: "PVS", name: "Puerto Varas", ciudad: "1").save(failOnError: true)
-            new Direccion(address: "Siempre Viva 123", usuario: "1", comuna: "1").save(failOnError: true)
+            new Direccion(address: "Siempre Viva 123", user: "1", comuna: "1").save(failOnError: true)
             new Sostenedor(code: "69220200", name: "I. Municipalidad Puerto Varas", comuna: "1").save(failOnError: true)
+
+            printf('User ID:'+User.findByUsername('admin').id)
+            UserRole.withSession {
+                it.flush()
+                it.clear()
+            }
         }
     }
     def destroy = {

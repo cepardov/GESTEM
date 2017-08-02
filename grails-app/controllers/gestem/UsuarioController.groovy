@@ -9,8 +9,11 @@ class UsuarioController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def springSecurityService
+
     @Secured('ROLE_SUPERADMIN')
     def index(Integer max,Usuario usuario) {
+        printf('User='+springSecurityService.currentUserId)
         def usuarios = Usuario.list(params)
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){

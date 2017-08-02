@@ -3,7 +3,21 @@ package gestem
 import grails.plugin.springsecurity.annotation.Secured
 
 class LoginController extends grails.plugin.springsecurity.LoginController {
+
+    //def springSecurityService
     //nuevas funciones
+
+    def index() {
+        if (springSecurityService.isLoggedIn()) {
+            //printf('\nLogged ID:'+springSecurityService.currentUserId)
+            //redirect uri: conf.successHandler.defaultTargetUrl
+            redirect(controller: "dashboard", action: "index")
+        }
+        else {
+            redirect action: 'auth', params: params
+        }
+    }
+
     def auth() {
 
         def conf = getConf()
@@ -22,7 +36,6 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
     }
 
     def logout = {
-        flash.message = "Sesión cerrada correctamente"
         redirect(uri:'/logoff')
     }
 

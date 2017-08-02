@@ -3,7 +3,7 @@ package gestem
 class Correo {
     String email
 
-    static belongsTo = [usuario:Usuario]
+    static belongsTo = [user:User]
 
     static constraints = {
         email nullable: true, blank: true

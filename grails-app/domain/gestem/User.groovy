@@ -13,10 +13,19 @@ class User implements Serializable {
 
 	String username
 	String password
+	String rut
+	String nombre
+	String paterno
+	String materno
+	Date fechaNacimiento
+	String genero
+	String nacionalidad
 	boolean enabled = true
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+
+	static hasMany = [direccion:Direccion, telefono:Telefono, correo:Correo]
 
 	Set<Role> getAuthorities() {
 		(UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
@@ -25,9 +34,12 @@ class User implements Serializable {
 	static constraints = {
 		password blank: false, password: true
 		username blank: false, unique: true
+		fechaNacimiento blank:true, nullable: true
+		genero blank:true, nullable: true
+		nacionalidad blank:true, nullable: true
 	}
 
-	static mapping = {
-		password column: '`password`'
-	}
+	//static mapping = {
+	//	password column: '`password`'
+	//}
 }
