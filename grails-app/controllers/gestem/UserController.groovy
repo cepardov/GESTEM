@@ -123,8 +123,13 @@ class UserController {
     
     def eliminar(){
         def user = User.get(params.id)
-        user.delete(flush:true)
-        flash.message = message(code: 'default.deleted.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
+        int roleUser = UserRole.countByUser(user)
+        if(roleUser>0){
+            flash.message = "Error: Este usuario tiene "+roleUser+" asignados, elimine los roles primero."
+        } else {
+            user.delete(flush:true)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
+        }
         redirect (controller: "user", action: "index")
     }
 
