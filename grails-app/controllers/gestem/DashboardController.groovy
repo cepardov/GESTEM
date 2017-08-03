@@ -2,8 +2,8 @@ package gestem
 
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured('ROLE_SUPERADMIN')
 class DashboardController {
 
-    @Secured('ROLE_SUPERADMIN')
     def index() { }
 }

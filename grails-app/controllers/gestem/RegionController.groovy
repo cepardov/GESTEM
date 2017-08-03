@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class RegionController {
 
@@ -12,7 +13,7 @@ class RegionController {
     def paisId
     def paisName
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def index(Integer max,Region region) {
         def regionsByPais = Region.findAllByPais(Pais.findById(params.paisId))
         def regions = Region.list(params)
@@ -33,17 +34,17 @@ class RegionController {
 
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def show(Region region) {
         redirect(controller:"region", action: "index")
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def create() {
         respond new Region(params)
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     @Transactional
     def save(Region region) {
         if (region == null) {
@@ -69,12 +70,12 @@ class RegionController {
         }
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def edit(Region region) {
         respond region
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def eliminar(Region region){
         //def region = Region.get(params.id)
         region.delete(flush:true)
@@ -82,7 +83,7 @@ class RegionController {
         redirect (controller: "region", action: "index", params: [paisId: paisId,paisName: paisName])
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     @Transactional
     def update(Region region) {
         if (region == null) {
@@ -108,7 +109,7 @@ class RegionController {
         }
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     protected void notFound() {
         request.withFormat {
             form multipartForm {

@@ -4,28 +4,44 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class UserRoleController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    @Secured('ROLE_SUPERADMIN')
-    def index(Integer max) {
+    def idUser
+
+    def index(Integer max,UserRole userRole) {
+        def userRoleByUser = UserRole.findAllByUser(User.findById(params.idUser))
+        def userRoles = UserRole.list(params)
+
+        idUser = params.idUser
+
         params.max = Math.min(max ?: 10, 100)
-        respond UserRole.list(params), model:[userRoleCount: UserRole.count()]
+
+        if(params.id!=null){
+            if(params.idUser!=null){
+                respond userRole, model:[userRoleCount: UserRole.countByUser(User.findById(params.idUser)), userRoleList: userRoleByUser]
+            } else {
+                respond userRole, model:[userRoleCount: UserRole.count(), userRoleList:userRoles]
+            }
+        } else if(params.idUser!=null){
+            respond new UserRole(params), model:[userRoleCount: UserRole.countByUser(User.findById(params.idUser)), userRoleList: userRoleByUser]
+        } else {
+            respond new UserRole(params), model:[userRoleCount: UserRole.count(), userRoleList:userRoles]
+        }
+
     }
 
-    @Secured('ROLE_SUPERADMIN')
     def show(UserRole userRole) {
         respond userRole
     }
 
-    @Secured('ROLE_SUPERADMIN')
     def create() {
         respond new UserRole(params)
     }
 
-    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def save(UserRole userRole) {
         if (userRole == null) {
@@ -42,21 +58,38 @@ class UserRoleController {
 
         userRole.save flush:true
 
+        printf('\nReturn:'+params.r)
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'userRole.label', default: 'UserRole'), userRole.id])
-                redirect (controller: "userRole", action: "index")
+
+                if(params.r != "showUser"){
+                    redirect (controller: "userRole", action: "index")
+                } else {
+                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+                }
             }
             '*' { respond userRole, [status: CREATED] }
         }
     }
 
-    @Secured('ROLE_SUPERADMIN')
     def edit(UserRole userRole) {
         respond userRole
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    def eliminar(){
+        def role = params.idRole
+        def user = params.idUser
+        UserRole.remove(User.findById(user),Role.findById(role))
+        //userRole.delete(flush:true)
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'userRole.label', default: 'UserRole'), ''])
+        if(params.r != "showUser"){
+            redirect (controller: "userRole", action: "index")
+        } else {
+            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+        }
+    }
+
     @Transactional
     def update(UserRole userRole) {
         if (userRole == null) {
@@ -76,34 +109,20 @@ class UserRoleController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'userRole.label', default: 'UserRole'), userRole.id])
-                redirect userRole
+                if(params.r != "showUser"){
+                    redirect (controller: "userRole", action: "index")
+                } else {
+                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+                }
             }
             '*'{ respond userRole, [status: OK] }
         }
     }
 
-    @Secured('ROLE_SUPERADMIN')
-    @Transactional
-    def delete(UserRole userRole) {
-
-        if (userRole == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
-
-        userRole.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'userRole.label', default: 'UserRole'), userRole.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
+    def delete(){
+        eliminar()
     }
 
-    @Secured('ROLE_SUPERADMIN')
     protected void notFound() {
         request.withFormat {
             form multipartForm {

@@ -4,29 +4,30 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class CorreoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def idUsuario
+    def idUser
 
     def index(Integer max,Correo correo) {
-        def correoByUsuario = Correo.findAllByUsuario(Usuario.findById(params.idUsuario))
+        def correoByUser = Correo.findAllByUser(User.findById(params.idUser))
         def correos = Correo.list(params)
 
-        idUsuario = params.idUsuario
+        idUser = params.idUser
 
         params.max = Math.min(max ?: 10, 100)
 
         if(params.id!=null){
-            if(params.idUsuario!=null){
-                respond correo, model:[correoCount: Correo.countByUsuario(Usuario.findById(params.idUsuario)), correoList: correoByUsuario]
+            if(params.idUser!=null){
+                respond correo, model:[correoCount: Correo.countByUser(User.findById(params.idUser)), correoList: correoByUser]
             } else {
                 respond correo, model:[correoCount: Correo.count(), correoList:correos]
             }
-        } else if(params.idUsuario!=null){
-            respond new Correo(params), model:[correoCount: Correo.countByUsuario(Usuario.findById(params.idUsuario)), correoList: correoByUsuario]
+        } else if(params.idUser!=null){
+            respond new Correo(params), model:[correoCount: Correo.countByUser(User.findById(params.idUser)), correoList: correoByUser]
         } else {
             respond new Correo(params), model:[correoCount: Correo.count(), correoList:correos]
         }
@@ -62,10 +63,10 @@ class CorreoController {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'correo.label', default: 'Correo'), correo.id])
 
-                if(params.r != "showUsuario"){
+                if(params.r != "showUser"){
                     redirect (controller: "correo", action: "index")
                 } else {
-                    redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*' { respond correo, [status: CREATED] }
@@ -80,10 +81,10 @@ class CorreoController {
         def correo = Correo.get(params.id)
         correo.delete(flush:true)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'correo.label', default: 'Correo'), correo.id])
-        if(params.r != "showUsuario"){
+        if(params.r != "showUser"){
             redirect (controller: "correo", action: "index")
         } else {
-            redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
         }
     }
 
@@ -106,10 +107,10 @@ class CorreoController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'correo.label', default: 'Correo'), correo.id])
-                if(params.r != "showUsuario"){
+                if(params.r != "showUser"){
                     redirect (controller: "correo", action: "index")
                 } else {
-                    redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*'{ respond correo, [status: OK] }

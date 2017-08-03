@@ -4,29 +4,30 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class TelefonoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def idUsuario
+    def idUser
 
     def index(Integer max,Telefono telefono) {
-        def telefonoByUsuario = Telefono.findAllByUsuario(Usuario.findById(params.idUsuario))
+        def telefonoByUser = Telefono.findAllByUser(User.findById(params.idUser))
         def telefonos = Telefono.list(params)
 
-        idUsuario = params.idUsuario
+        idUser = params.idUser
 
         params.max = Math.min(max ?: 10, 100)
 
         if(params.id!=null){
-            if(params.idUsuario!=null){
-                respond telefono, model:[telefonoCount: Telefono.countByUsuario(Usuario.findById(params.idUsuario)), telefonoList: telefonoByUsuario]
+            if(params.idUser!=null){
+                respond telefono, model:[telefonoCount: Telefono.countByUser(User.findById(params.idUser)), telefonoList: telefonoByUser]
             } else {
                 respond telefono, model:[telefonoCount: Telefono.count(), telefonoList:telefonos]
             }
-        } else if(params.idUsuario!=null){
-            respond new Telefono(params), model:[telefonoCount: Telefono.countByUsuario(Usuario.findById(params.idUsuario)), telefonoList: telefonoByUsuario]
+        } else if(params.idUser!=null){
+            respond new Telefono(params), model:[telefonoCount: Telefono.countByUser(User.findById(params.idUser)), telefonoList: telefonoByUser]
         } else {
             respond new Telefono(params), model:[telefonoCount: Telefono.count(), telefonoList:telefonos]
         }
@@ -62,10 +63,10 @@ class TelefonoController {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'telefono.label', default: 'Telefono'), telefono.id])
 
-                if(params.r != "showUsuario"){
+                if(params.r != "showUser"){
                     redirect (controller: "telefono", action: "index")
                 } else {
-                    redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*' { respond telefono, [status: CREATED] }
@@ -80,10 +81,10 @@ class TelefonoController {
         def telefono = Telefono.get(params.id)
         telefono.delete(flush:true)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'telefono.label', default: 'Telefono'), telefono.id])
-        if(params.r != "showUsuario"){
+        if(params.r != "showUser"){
             redirect (controller: "telefono", action: "index")
         } else {
-            redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
         }
     }
 
@@ -106,10 +107,10 @@ class TelefonoController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'telefono.label', default: 'Telefono'), telefono.id])
-                if(params.r != "showUsuario"){
+                if(params.r != "showUser"){
                     redirect (controller: "telefono", action: "index")
                 } else {
-                    redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*'{ respond telefono, [status: OK] }

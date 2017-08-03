@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class UserController {
 
@@ -11,7 +12,7 @@ class UserController {
 
     def springSecurityService
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def index(Integer max,User user) {
         //printf('User='+springSecurityService.currentUserId)
         def users = User.list(params)
@@ -47,16 +48,17 @@ class UserController {
         return fechaNacimiento
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def show(User user) {
         def direccionList = Direccion.findAllByUser(User.findById(params.id))
         def telefonoList = Telefono.findAllByUser(User.findById(params.id))
         def correoList = Correo.findAllByUser(User.findById(params.id))
-        def roleList = UserRole.findAllByUser(User.findAllById(params.id))
+        def userRoleList = UserRole.findAllByUser(User.findAllById(params.id))
+        def roleList = Role.findAll()
         def direccion
         def telefono
         def correo
-        def role
+        def userRole
         if(params.idDireccion){
             direccion = Direccion.findById(params.idDireccion).address
         }
@@ -67,17 +69,28 @@ class UserController {
             correo = Correo.findById(params.idCorreo).email
         }
         if(params.idRole){
-            role = UserRole.findAllById(params.idRole).id
+            userRole = UserRole.findAllById(params.idRole).id
         }
-        respond user, model:[direccionList:direccionList, direccion:direccion, telefonoList:telefonoList, telefono:telefono, correoList:correoList, correo:correo, roleList:roleList, role:role, fechaNacimientoOut: getFechaNacimiento()]
+        respond user, model:[
+                direccionList:direccionList,
+                direccion:direccion,
+                telefonoList:telefonoList,
+                telefono:telefono,
+                correoList:correoList,
+                correo:correo,
+                userRoleList:userRoleList,
+                userRole:userRole,
+                fechaNacimientoOut: getFechaNacimiento(),
+                roleList:roleList
+        ]
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def create() {
         respond new User(params)
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     @Transactional
     def save(User user) {
         if (user == null) {
@@ -107,7 +120,7 @@ class UserController {
     //    respond user
     //}
 
-    @Secured('ROLE_SUPERADMIN')
+    
     def eliminar(){
         def user = User.get(params.id)
         user.delete(flush:true)
@@ -115,7 +128,7 @@ class UserController {
         redirect (controller: "user", action: "index")
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     @Transactional
     def update(User user) {
         if(params.fechaNacimientoDat){
@@ -153,7 +166,7 @@ class UserController {
         }
     }
 
-    @Secured('ROLE_SUPERADMIN')
+    
     protected void notFound() {
         request.withFormat {
             form multipartForm {

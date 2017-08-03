@@ -42,8 +42,8 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
             return
         }
         flash.message = "No tiene los privilegios suficientes para acceder a esta página"
-        redirect controller: 'dashboard', action: 'index'
-        //[gspLayout: conf.gsp.layoutDenied]
+        //redirect controller: 'dashboard', action: 'index'
+        [gspLayout: conf.gsp.layoutDenied]
     }
 
     def logout = {

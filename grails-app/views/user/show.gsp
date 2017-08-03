@@ -147,37 +147,35 @@
             </tr>
             </thead>
             <tbody>
-            <g:each var="v" in="${roleList}">
+            <g:each var="v" in="${userRoleList}">
                 <tr>
-                    <td>${v.role.name}</td>
+                    <td>[100${v.role.id}] ${v.role.name}</td>
                     <td>${v.role.description}</td>
                     <td>
-                        <g:link class="btn-floating waves-effect waves-light red tooltipped" controller="correo" action="eliminar" id="${v.id}" params="[r : 'showUser',idUser : this.user.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
+                        <g:link class="btn-floating waves-effect waves-light red tooltipped" controller="userRole" action="eliminar" params="[r : 'showUser',idUser : this.user.id, idRole:v.role.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
                     </td>
                 </tr>
             </g:each>
-            <g:form action="save" controller="userRole" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
-                <tr>
-                    <td></td>
-                    <td>
-                            <div class="input-field col s12 m6">
-                                <select name="pais.id" required="" id="pais">
-                                    <option value="" disabled <g:if test="${!params.paisName}">selected</g:if>>Seleccione Rol</option>
-                                    <g:each var="v" in="${roleList}">
-                                        <option value="${v.id}" <g:if test="${v.role.name == params.roleName}">selected</g:if>>${v.role.name}</option>
-                                    </g:each>
-                                </select>
-                                <label>Agregar Roles</label>
-                            </div>
-                    </td>
-                    <td>
-                        <a class="create btn-floating waves-effect waves-light green tooltipped" href="#modalCreateCorreo" data-position="left" data-delay="50" data-tooltip="Agregar Correo"><i class="material-icons">add</i></a>
-                    </td>
-                </tr>
-            </g:form>
             </tbody>
         </table>
     </div>
+    <g:form action="save" controller="userRole" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
+        <input name="user" value="${this.user.id}" hidden>
+        <div class="input-field col s12 m6">
+            <select name="role" required="" id="role">
+                <option value="" disabled selected>Seleccione Rol</option>
+                <g:each var="v" in="${roleList}">
+                    <option value="${v.id}">${v.name}</option>
+                </g:each>
+            </select>
+            <label>Agregar Roles</label>
+        </div>
+        <div class="col s12 m6">
+            <button name="create" class="btn waves-effect waves-light tooltipped" type="submit" data-position="left" data-delay="50" data-tooltip="Agregar Rol Seleccionado">Agregar
+                <i class="material-icons left">save</i>
+            </button>
+        </div>
+    </g:form>
     <div class="pagination">
         <g:paginate total="${userCount ?: 0}" />
     </div>
@@ -307,7 +305,7 @@
     <div class="modal-content">
         <h5>Editar Correo</h5>
         <div class="row">
-            <g:form class="col s12" action="update" controller="correo" id="${params.idTelefono}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
+            <g:form class="col s12" action="update" controller="correo" id="${params.idCorreo}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
                 <div class="row">
                     <div class="input-field col s12 m6">
                         <input id="emailE" name="email" value="${correo}" type="email" class="validate">

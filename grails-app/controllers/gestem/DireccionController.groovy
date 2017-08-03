@@ -4,29 +4,30 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class DireccionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def idUsuario
+    def idUser
 
     def index(Integer max,Direccion direccion) {
-        def direccionByUsuario = Direccion.findAllByUsuario(Usuario.findById(params.idUsuario))
+        def direccionByUser = Direccion.findAllByUser(User.findById(params.idUser))
         def direccions = Direccion.list(params)
 
-        idUsuario = params.idUsuario
+        idUser = params.idUser
 
         params.max = Math.min(max ?: 10, 100)
 
         if(params.id!=null){
-            if(params.idUsuario!=null){
-                respond direccion, model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
+            if(params.idUser!=null){
+                respond direccion, model:[direccionCount: Direccion.countByUser(User.findById(params.idUser)), direccionList: direccionByUser]
             } else {
                 respond direccion, model:[direccionCount: Direccion.count(), direccionList:direccions]
             }
-        } else if(params.idUsuario!=null){
-            respond new Direccion(params), model:[direccionCount: Direccion.countByUsuario(Usuario.findById(params.idUsuario)), direccionList: direccionByUsuario]
+        } else if(params.idUser!=null){
+            respond new Direccion(params), model:[direccionCount: Direccion.countByUser(User.findById(params.idUser)), direccionList: direccionByUser]
         } else {
             respond new Direccion(params), model:[direccionCount: Direccion.count(), direccionList:direccions]
         }
@@ -48,24 +49,24 @@ class DireccionController {
             flash.message = "Debe completar el campo comuna correctamente."
             redirect(controller: "direccion", action: "index")
 
-        } else if (params.usuario.empty){
-            flash.message = "Debe completar el campo usuario correctamente."
+        } else if (params.user.empty){
+            flash.message = "Debe completar el campo user correctamente."
             redirect(controller: "direccion", action: "index")
         } else {
             String[] comunaSplit = ((String) params.comuna).split('|')
-            String[] usuarioSplit = ((String) params.usuario).split('|')
+            String[] userSplit = ((String) params.user).split('|')
 
             if(!comunaSplit.grep("|")){
                 flash.message = "Debe seleccionar una comuna de la lista, en el campo comuna correctamente."
                 redirect(controller: "direccion", action: "index")
-            } else if(!usuarioSplit.grep("|")){
-                flash.message = "Debe seleccionar un usuario de la lista, en el campo usuario correctamente."
+            } else if(!userSplit.grep("|")){
+                flash.message = "Debe seleccionar un user de la lista, en el campo user correctamente."
                 redirect(controller: "direccion", action: "index")
             } else {
                 try {
-                    printf('\nUsuario:'+usuarioSplit[0])
+                    printf('\nUser:'+userSplit[0])
                     params.comuna = Comuna.findById(comunaSplit[0]).id
-                    params.usuario = Usuario.findById(usuarioSplit[0]).id
+                    params.user = User.findById(userSplit[0]).id
                 } catch (Exception e){
                     println('\nError Save try:'+e.getMessage())
                     flash.message = "Error al guardar dirección En el campo comuna y/o usaurio debe seleccionar una opción válida"
@@ -94,10 +95,10 @@ class DireccionController {
                     form multipartForm {
                         flash.message = message(code: 'default.created.message', args: [message(code: 'direccion.label', default: 'Direccion'), direccion.id])
 
-                        if(params.r != "showUsuario"){
+                        if(params.r != "showUser"){
                             redirect (controller: "direccion", action: "index")
                         } else {
-                            redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                         }
                     }
                     '*' { respond direccion, [status: CREATED] }
@@ -114,10 +115,10 @@ class DireccionController {
         def direccion = Direccion.get(params.id)
         direccion.delete(flush:true)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'direccion.label', default: 'Direccion'), direccion.id])
-        if(params.r != "showUsuario"){
+        if(params.r != "showUser"){
             redirect (controller: "direccion", action: "index")
         } else {
-            redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
         }
     }
 
@@ -140,10 +141,10 @@ class DireccionController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'direccion.label', default: 'Direccion'), direccion.id])
-                if(params.r != "showUsuario"){
+                if(params.r != "showUser"){
                     redirect (controller: "direccion", action: "index")
                 } else {
-                    redirect(controller: "usuario", action: "show", id: params.idUsuario, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*'{ respond direccion, [status: OK] }
