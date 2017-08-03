@@ -9,23 +9,23 @@ class UserRoleController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond UserRole.list(params), model:[userRoleCount: UserRole.count()]
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     def show(UserRole userRole) {
         respond userRole
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     def create() {
         respond new UserRole(params)
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def save(UserRole userRole) {
         if (userRole == null) {
@@ -51,12 +51,12 @@ class UserRoleController {
         }
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     def edit(UserRole userRole) {
         respond userRole
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def update(UserRole userRole) {
         if (userRole == null) {
@@ -82,7 +82,7 @@ class UserRoleController {
         }
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     @Transactional
     def delete(UserRole userRole) {
 
@@ -103,7 +103,7 @@ class UserRoleController {
         }
     }
 
-    @Secured('ROLE_ADMIN')
+    @Secured('ROLE_SUPERADMIN')
     protected void notFound() {
         request.withFormat {
             form multipartForm {

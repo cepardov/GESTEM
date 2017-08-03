@@ -14,7 +14,8 @@
                 <tr>
                     <th>RUT</th>
                     <th>User</th>
-                    <th>nombre</th>
+                    <th>Nombre</th>
+                    <th>Nombres</th>
                     <th>Paterno</th>
                     <th>Materno</th>
                 </tr>
@@ -25,11 +26,13 @@
                         <td>${v.rut}</td>
                         <td>${v.username}</td>
                         <td>${v.nombre}</td>
+                        <td>${v.segNombre}</td>
                         <td>${v.paterno}</td>
                         <td>${v.materno}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
-                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light blue tooltipped" action="show" params="[name : v.nombre, lastName : v.paterno]" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Ver Usuario"><i class="material-icons">remove_red_eye</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Editar Usuario"><i class="material-icons">edit</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar Usuario"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>
                 </g:each>
@@ -59,8 +62,12 @@
                         <label for="rut">RUT</label>
                     </div>
                     <div class="input-field col s12 m2">
-                        <label for="nombre">nombre</label>
+                        <label for="nombre">Primer Nombre</label>
                         <f:input property="nombre" id="nombre" bean="user"/>
+                    </div>
+                    <div class="input-field col s12 m2">
+                        <label for="nombre">Nombres</label>
+                        <f:input property="segNombre" id="segNombre" bean="user"/>
                     </div>
                     <div class="input-field col s12 m2">
                         <label for="paterno">Paterno</label>
@@ -74,7 +81,7 @@
                         <label for="password">password</label>
                         <f:input property="password" id="password" bean="user"/>
                     </div>
-                    <div class="input-field inline col s12 m4">
+                    <div class="input-field inline col s12 m2">
                         <f:input property="username" id="username" bean="user"/>
                         <label for="username">username</label>
                     </div>
@@ -114,11 +121,7 @@
                         <label for="materno">Materno</label>
                         <f:input property="materno" id="materno" bean="user"/>
                     </div>
-                    <div class="input-field col s12 m2">
-                        <label for="password">password</label>
-                        <f:input property="password" id="password" bean="user"/>
-                    </div>
-                    <div class="input-field inline col s12 m4">
+                    <div class="input-field inline col s12 m2">
                         <f:input property="username" id="username" bean="user"/>
                         <label for="username">username</label>
                     </div>

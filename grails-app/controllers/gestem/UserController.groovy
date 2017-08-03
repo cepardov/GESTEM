@@ -13,7 +13,7 @@ class UserController {
 
     @Secured('ROLE_SUPERADMIN')
     def index(Integer max,User user) {
-        printf('User='+springSecurityService.currentUserId)
+        //printf('User='+springSecurityService.currentUserId)
         def users = User.list(params)
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){
@@ -52,9 +52,11 @@ class UserController {
         def direccionList = Direccion.findAllByUser(User.findById(params.id))
         def telefonoList = Telefono.findAllByUser(User.findById(params.id))
         def correoList = Correo.findAllByUser(User.findById(params.id))
+        def roleList = UserRole.findAllByUser(User.findAllById(params.id))
         def direccion
         def telefono
         def correo
+        def role
         if(params.idDireccion){
             direccion = Direccion.findById(params.idDireccion).address
         }
@@ -64,7 +66,10 @@ class UserController {
         if(params.idCorreo){
             correo = Correo.findById(params.idCorreo).email
         }
-        respond user, model:[direccionList:direccionList, direccion:direccion, telefonoList:telefonoList, telefono:telefono, correoList:correoList, correo:correo, fechaNacimientoOut: getFechaNacimiento()]
+        if(params.idRole){
+            role = UserRole.findAllById(params.idRole).id
+        }
+        respond user, model:[direccionList:direccionList, direccion:direccion, telefonoList:telefonoList, telefono:telefono, correoList:correoList, correo:correo, roleList:roleList, role:role, fechaNacimientoOut: getFechaNacimiento()]
     }
 
     @Secured('ROLE_SUPERADMIN')

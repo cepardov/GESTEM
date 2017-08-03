@@ -12,13 +12,17 @@
     <g:form class="col s12" resource="${this.user}" method="PUT">
         <h3>Datos Personales</h3>
         <div class="row">
-            <div class="input-field col s12 m2">
+            <div class="input-field col s12 m1">
                 <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k"/>
                 <label for="rut">RUT</label>
             </div>
-            <div class="input-field col s12 m2">
-                <label for="nombre">nombre</label>
+            <div class="input-field col s12 m1">
+                <label for="nombre">Primer Nombre</label>
                 <f:input property="nombre" id="nombre" bean="user"/>
+            </div>
+            <div class="input-field col s12 m2">
+                <label for="nombre">Nombres</label>
+                <f:input property="segNombre" id="segNombre" bean="user"/>
             </div>
             <div class="input-field col s12 m2">
                 <label for="paterno">Paterno</label>
@@ -32,25 +36,17 @@
                 <label for="materno">Fecha Nacimiento</label>
                 <input type="text" value="${fechaNacimientoOut}" name="fechaNacimientoDat" class="datepicker">
             </div>
-
-            <div class="input-field col s12 m2">
-                <label for="password">password</label>
-                <f:input property="password" id="password" bean="user"/>
-            </div>
-            <div class="input-field inline col s12 m4">
+            <div class="input-field inline col s12 m2">
                 <f:input property="username" id="username" bean="user"/>
                 <label for="username">username</label>
             </div>
-        </div>
-        <!-- Menu Modal Create-->
-        <div class="fixed-action-btn">
-            <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.create.label', default: 'Create')}" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar ${controllerName}"><i class="material-icons right">send</i></button>
-            <a class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
+            <div class="col s12 right-align">
+                <button name="create" class="btn waves-effect waves-light tooltipped" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar Datos Personales">Guardar
+                    <i class="material-icons left">save</i>
+                </button>
+            </div>
         </div>
     </g:form>
-
-
-
     <h3>Direcciones</h3>
     <div class="row">
         <table class="responsive-table bordered highlight-2 centered">
@@ -135,6 +131,50 @@
                     <a class="create btn-floating waves-effect waves-light green tooltipped" href="#modalCreateCorreo" data-position="left" data-delay="50" data-tooltip="Agregar Correo"><i class="material-icons">add</i></a>
                 </td>
             </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        <g:paginate total="${userCount ?: 0}" />
+    </div>
+    <h3>Roles de Usuario</h3>
+    <div class="row">
+        <table class="responsive-table bordered highlight-2 centered">
+            <thead>
+            <tr>
+                <th>Role</th>
+                <th>Role Descipción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <g:each var="v" in="${roleList}">
+                <tr>
+                    <td>${v.role.name}</td>
+                    <td>${v.role.description}</td>
+                    <td>
+                        <g:link class="btn-floating waves-effect waves-light red tooltipped" controller="correo" action="eliminar" id="${v.id}" params="[r : 'showUser',idUser : this.user.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
+                    </td>
+                </tr>
+            </g:each>
+            <g:form action="save" controller="userRole" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
+                <tr>
+                    <td></td>
+                    <td>
+                            <div class="input-field col s12 m6">
+                                <select name="pais.id" required="" id="pais">
+                                    <option value="" disabled <g:if test="${!params.paisName}">selected</g:if>>Seleccione Rol</option>
+                                    <g:each var="v" in="${roleList}">
+                                        <option value="${v.id}" <g:if test="${v.role.name == params.roleName}">selected</g:if>>${v.role.name}</option>
+                                    </g:each>
+                                </select>
+                                <label>Agregar Roles</label>
+                            </div>
+                    </td>
+                    <td>
+                        <a class="create btn-floating waves-effect waves-light green tooltipped" href="#modalCreateCorreo" data-position="left" data-delay="50" data-tooltip="Agregar Correo"><i class="material-icons">add</i></a>
+                    </td>
+                </tr>
+            </g:form>
             </tbody>
         </table>
     </div>

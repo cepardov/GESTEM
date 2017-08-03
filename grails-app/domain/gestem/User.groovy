@@ -15,6 +15,7 @@ class User implements Serializable {
 	String password
 	String rut
 	String nombre
+	String segNombre
 	String paterno
 	String materno
 	Date fechaNacimiento
