@@ -10,20 +10,21 @@ class InstitucionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def sostenedorId
-    def sostenedorName
+    //def sostenedorId
+    //def sostenedorName
 
     def index(Integer max,Institucion institucion) {
         def institucionsBySostenedor = Institucion.findAllBySostenedor(Sostenedor.findById(params.sostenedorId))
         def institucions = Institucion.list(params)
         def sostenedor = Sostenedor.findAll()
 
-        sostenedorId = params.sostenedorId
-        sostenedorName = params.sostenedorName
+        //sostenedorId = params.sostenedorId
+        //sostenedorName = params.sostenedorName
 
         params.max = Math.min(max ?: 20, 100)
-
-        if(params.id!=null){
+        if(params.id!=null&&params.sostenedorId!=null){
+            respond institucion, model:[institucionCount: Institucion.countBySostenedor(Sostenedor.findById(params.sostenedorId)), institucionList:institucionsBySostenedor]
+        }else if(params.id!=null){
             respond institucion, model:[institucionCount: Institucion.count(), institucionList:institucions]
         }else if(params.sostenedorId!=null) {
             respond new Institucion(params), model: [institucionCount: Institucion.countBySostenedor(Sostenedor.findById(params.sostenedorId)), institucionList: institucionsBySostenedor, sostenedorList:sostenedor]
@@ -60,7 +61,11 @@ class InstitucionController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.created.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id, institucion.code, institucion.name, ''])
-                redirect(controller:"institucion", action: "index", params: [sostenedorId: sostenedorId,sostenedorName: sostenedorName])
+                if(params.sostenedorId!=null&&params.sostenedorId!=null&&params.sostenedorId!=''){
+                    redirect(controller:"institucion", action: "index", params: [sostenedorId: params.sostenedorId,sostenedorName: params.sostenedorName])
+                } else {
+                    redirect(controller:"institucion", action: "index")
+                }
             }
             '*' { respond institucion, [status: CREATED] }
         }
@@ -74,7 +79,12 @@ class InstitucionController {
         //def institucion = Institucion.get(params.id)
         institucion.delete(flush:true)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id, institucion.code, institucion.name, ''])
-        redirect (controller: "institucion", action: "index", params: [sostenedorId: sostenedorId,sostenedorName: sostenedorName])
+
+        if(params.sostenedorId!=null&&params.sostenedorId!=null&&params.sostenedorId!=''){
+            redirect(controller:"institucion", action: "index", params: [sostenedorId: params.sostenedorId,sostenedorName: params.sostenedorName])
+        } else {
+            redirect(controller:"institucion", action: "index")
+        }
     }
 
     @Transactional
@@ -96,7 +106,11 @@ class InstitucionController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'institucion.label', default: 'Institucion'), institucion.id, institucion.code, institucion.name, ''])
-                redirect(controller:"institucion", action: "index",  params: [sostenedorId: sostenedorId,sostenedorName: sostenedorName])
+                if(params.sostenedorId!=null&&params.sostenedorId!=null&&params.sostenedorId!=''){
+                    redirect(controller:"institucion", action: "index", params: [sostenedorId: params.sostenedorId,sostenedorName: params.sostenedorName])
+                } else {
+                    redirect(controller:"institucion", action: "index")
+                }
             }
             '*'{ respond institucion, [status: OK] }
         }

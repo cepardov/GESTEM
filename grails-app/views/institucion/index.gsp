@@ -19,13 +19,13 @@
                 </thead>
                 <tbody>
                 <g:each var="v" in="${institucionList}">
-                    <tr onclick="location='<g:createLink controller="institucion" action="index" params="[institucionId : v.id, institucionName : v.name]"/>'">
+                    <tr>
                         <td>[${v.sostenedor.code}] ${v.sostenedor.name}</td>
                         <td>${v.code}</td>
                         <td>${v.name}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[sostenedorId : params.sostenedorId, sostenedorName : params.sostenedorName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
-                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[sostenedorId:params.sostenedorId, sostenedorName:params.sostenedorName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" params="[sostenedorId:params.sostenedorId, sostenedorName:params.sostenedorName]" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>
                 </g:each>
@@ -47,8 +47,7 @@
     <div class="modal-content">
         <h5>Crear ${controllerName}</h5>
         <div class="row">
-        <!---rut, nombre, paterno, clave, materno, valor, estado, institucion, valorHoraExtra--->
-            <g:form action="save">
+            <g:form action="save" params="[sostenedorId : params.sostenedorId, sostenedorName : params.sostenedorName]">
                 <div class="row">
                     <div class="input-field col s12 m2">
                         <f:input property="code" id="code" bean="institucion"/>
@@ -60,12 +59,12 @@
                     </div>
                     <div class="input-field col s12 m2">
                         <select name="sostenedor.id" required="" id="sostenedor">
-                            <option value="" disabled <g:if test="${!params.sostenedorName}">selected</g:if>>Seleccione Pais</option>
+                            <option value="" disabled <g:if test="${!params.sostenedorName}">selected</g:if>>Seleccione Sostenedor</option>
                             <g:each var="v" in="${sostenedorList}">
                                 <option value="${v.id}" <g:if test="${v.name == params.sostenedorName}">selected</g:if>>${v.name}</option>
                             </g:each>
                         </select>
-                        <label>Materialize Select</label>
+                        <label>Sostenedor</label>
                     </div>
                 </div>
 
@@ -84,8 +83,7 @@
     <div class="modal-content">
         <h5>Editar ${controllerName}</h5>
         <div class="row">
-        <!---rut, nombre, paterno, clave, materno, valor, estado, institucion, valorHoraExtra--->
-            <g:form class="col s12" resource="${this.institucion}" method="PUT">
+            <g:form class="col s12" resource="${this.institucion}" method="PUT" params="[sostenedorId : params.sostenedorId, sostenedorName : params.sostenedorName]">
                 <div class="row">
                     <div class="input-field col s12 m2">
                         <f:input property="code" id="code" bean="institucion"/>
