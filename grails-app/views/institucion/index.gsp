@@ -39,7 +39,7 @@
 </div>
 <!-- Menu flotante Crear -->
 <div class="fixed-action-btn">
-    <a class="create waves-effect waves-light btn-floating btn-large teal tooltipped" href="#modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
+    <a class="create modal-trigger waves-effect waves-light btn-floating btn-large teal tooltipped" data-target="modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
 </div>
 
 <!-- Modal Creacion Structure -->
@@ -104,7 +104,7 @@
     </div>
 </div>
 <g:if test="${params.id}">
-    <a type="hidden" href="#modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
+    <a type="hidden" class="modal-trigger" data-target="modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
 </g:if>
 <g:hasErrors bean="${this.institucion}">
     <ul class="errors" role="alert">

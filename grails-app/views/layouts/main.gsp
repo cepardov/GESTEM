@@ -37,8 +37,32 @@
                         <ul class="left">
                             <a href="#" data-activates="slide-out" class="button-collapse show-on-large grey-text"><i class="material-icons">menu</i></a>
                         </ul>
+                        <div class="col s12 light">
+                            <g:if test="${request.getRequestURI().toString()=='/'}">
+                                <a href="" class="breadcrumb-2 flow-text"><g:message code="controllerName.null.name" /></a>
+                            </g:if>
+                            <g:else>
+                                <a href="/" class="breadcrumb-2 flow-text"><g:message code="controllerName.null.name" /></a>
+                                <g:if test="${controllerName != 'dashboard'}">
+                                    <a href="<g:createLink controller="dashboard" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.dashboard.name" /></a>
+                                </g:if>
+                                <g:if test="${actionName == 'show'}">
+                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.${controllerName}.name" /></a>
+                                    <a href="<g:createLink controller="${controllerName}" action="show"/>" class="breadcrumb-2 flow-text">Mostar <g:message code="controllerName.${controllerName}.name" /></a>
+                                </g:if>
+                                <g:else>
+                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.${controllerName}.name" /></a>
+                                </g:else>
+                            </g:else>
+
+
+                        </div>
+                        <!--
+
+
+
                         <ul class="left">
-                            <a class="flow-text grey-text darken-1" href="<g:createLink controller="dashboard" action="index" />">Consola de administracion</a>
+                            <a class="flow-text grey-text darken-1" href="">Consola de administracion</a>
                         </ul>
                         <ul class="left grey-text flow-text"> | </ul>
                         <ul class="left">
@@ -62,8 +86,10 @@
                                 <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
                             </ul>
                         </g:else>
+
                         <ul class="right">
                         </ul>
+                        -->
                     </div>
                 </nav>
             </sec:ifLoggedIn>

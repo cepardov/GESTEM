@@ -7,6 +7,7 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class UserController {
+    def name = 'Usuario'
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
