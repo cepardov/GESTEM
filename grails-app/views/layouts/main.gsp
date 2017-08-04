@@ -2,11 +2,8 @@
 <html>
 <head>
     <title><g:layoutTitle default="Grails"/></title>
-    <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!--Import materialize.css-->
     <asset:stylesheet src="materialize.css" media="screen,projection"/>
-    <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
     <g:layoutHead/>
@@ -16,24 +13,25 @@
 <div class="navbar-fixed">
     <nav class="nav-extended white">
         <div class="nav-wrapper blue darken-2">
-            <a href="http://gestem.liceopac.cl:8080" class="brand-logo"><i class="material-icons">cloud</i>GESTEM</a>
-            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-            <ul class="right hide-on-med-and-down">
-                <sec:ifLoggedIn>
-                    <li><a href="http://gestem.liceopac.cl:8080">Inicio</a></li>
-                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1"><sec:loggedInUserInfo field='fullName'/><i class="material-icons right">arrow_drop_down</i></a></li>
-                </sec:ifLoggedIn>
-                <sec:ifNotLoggedIn>
-                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Controladores<i class="material-icons right">arrow_drop_down</i></a></li>
-                    <li><g:link controller="login" action="auth">Inicio de Sesión</g:link></li>
-                </sec:ifNotLoggedIn>
+            <ul class="left">
+                <a href="http://gestem.liceopac.cl:8080" class="brand-logo"><i class="material-icons">cloud</i>GESTEM</a>
+                <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+            </ul>
+            <ul class="right">
+                <ul class="hide-on-med-and-down">
+                    <sec:ifLoggedIn>
+                        <li><a class="dropdown-button" href="#!" data-activates="dropdown1"><sec:loggedInUserInfo field='fullName'/><i class="material-icons right">arrow_drop_down</i></a></li>
+                    </sec:ifLoggedIn>
+                    <sec:ifNotLoggedIn>
+                        <li><g:link controller="login" action="auth">Inicio de Sesión</g:link></li>
+                    </sec:ifNotLoggedIn>
+                </ul>
             </ul>
         </div>
         <div class="nav-content">
-        <!-- extend -->
             <sec:ifLoggedIn>
                 <nav>
-                    <div class="nav-wrapper white">
+                    <div class="nav-wrapper white z-depth-1">
                         <ul class="left">
                             <a href="#" data-activates="slide-out" class="button-collapse show-on-large grey-text"><i class="material-icons">menu</i></a>
                         </ul>
@@ -46,6 +44,16 @@
                                 <g:if test="${controllerName != 'dashboard'}">
                                     <a href="<g:createLink controller="dashboard" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.dashboard.name" /></a>
                                 </g:if>
+                                <g:if test="${params.paisId}">
+                                    <a href="<g:createLink controller="pais" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.pais.name" /></a>
+                                </g:if>
+                                <g:if test="${params.regionId}">
+                                    <a href="<g:createLink controller="region" action="index" params="[paisId: params.paisId]"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.region.name" /></a>
+                                </g:if>
+                                <g:if test="${params.ciudadId}">
+                                    <a href="<g:createLink controller="ciudad" action="index" params="[regionId: params.regionId]"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.ciudad.name" /></a>
+                                </g:if>
+
                                 <g:if test="${actionName == 'show'}">
                                     <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.${controllerName}.name" /></a>
                                     <a href="<g:createLink controller="${controllerName}" action="show"/>" class="breadcrumb-2 flow-text">Mostar <g:message code="controllerName.${controllerName}.name" /></a>

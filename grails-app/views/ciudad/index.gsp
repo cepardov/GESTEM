@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                 <g:each var="v" in="${ciudadList}">
-                    <tr onclick="location='<g:createLink controller="comuna" action="index" params="[ciudadId : v.id, ciudadName : v.name]"/>'">
+                    <tr onclick="location='<g:createLink controller="comuna" action="index" params="[paisId: params.paisId, regionId: params.regionId, ciudadId : v.id, ciudadName : v.name]"/>'">
                         <td>[${v.region.code}] ${v.region.name}</td>
                         <td>${v.code}</td>
                         <td>${v.name}</td>
