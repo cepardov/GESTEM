@@ -7,7 +7,6 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class UserController {
-    def name = 'Usuario'
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -44,7 +43,6 @@ class UserController {
             printf('\nFinal Fecha:'+ fechaNacimiento)
 
         }
-
         return fechaNacimiento
     }
 
@@ -88,7 +86,6 @@ class UserController {
             redirect(controller:"user", action: "index")
         }
     }
-
     
     def create() {
         respond new User(params)
@@ -97,6 +94,7 @@ class UserController {
     
     @Transactional
     def save(User user) {
+        printf('Params save user='+params)
         if (user == null) {
             transactionStatus.setRollbackOnly()
             notFound()
@@ -119,11 +117,6 @@ class UserController {
             '*' { respond user, [status: CREATED] }
         }
     }
-
-    //def edit(User user) {
-    //    respond user
-    //}
-
     
     def eliminar(){
         def user = User.get(params.id)
@@ -177,6 +170,7 @@ class UserController {
 
     
     protected void notFound() {
+        printf('\nNOT FOUND\n')
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.not.found.message', args: [message(code: 'user.label', default: 'User'), params.id])
