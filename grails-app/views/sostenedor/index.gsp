@@ -47,7 +47,6 @@
     <div class="modal-content">
         <h5>Crear ${controllerName}</h5>
         <div class="row">
-        <!---rut, nombre, paterno, clave, materno, valor, estado, sostenedor, valorHoraExtra--->
             <g:form action="save">
                 <div class="row">
                     <div class="input-field col s12 m2">
