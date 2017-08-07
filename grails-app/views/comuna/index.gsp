@@ -39,7 +39,7 @@
 </div>
 <!-- Menu flotante Crear -->
 <div class="fixed-action-btn">
-    <a class="create waves-effect waves-light btn-floating btn-large teal tooltipped" href="#modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
+    <a class="create modal-trigger waves-effect waves-light btn-floating btn-large teal tooltipped" data-target="modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
 </div>
 
 <!-- Modal Creacion Structure -->
@@ -47,7 +47,6 @@
     <div class="modal-content">
         <h5>Crear ${controllerName}</h5>
         <div class="row">
-        <!---rut, nombre, paterno, clave, materno, valor, estado, comuna, valorHoraExtra--->
             <g:form action="save">
                 <div class="row">
                     <div class="input-field col s12 m2">
