@@ -32,7 +32,7 @@
                 <label for="materno">Materno</label>
                 <f:input property="materno" id="materno" bean="user"/>
             </div>
-            <div class="input-field col s12 m2">
+            <div class="col s12 m2">
                 <label for="materno">Fecha Nacimiento</label>
                 <input type="text" value="${fechaNacimientoOut}" name="fechaNacimientoDat" class="datepicker">
             </div>
@@ -47,7 +47,7 @@
             </div>
         </div>
     </g:form>
-    <h3>Direcciones</h3>
+    <h3 id="direccion">Direcciones</h3>
     <div class="row">
         <table class="responsive-table bordered highlight-2 centered">
             <thead>
@@ -68,7 +68,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <a class="create btn-floating waves-effect waves-light green tooltipped" href="#modalCreateDireccion" data-position="left" data-delay="50" data-tooltip="Agregar Dirección"><i class="material-icons">add</i></a>
+                    <a class="create modal-trigger btn-floating waves-effect waves-light green tooltipped" data-target="modalCreateDireccion" data-position="left" data-delay="50" data-tooltip="Agregar Dirección"><i class="material-icons">add</i></a>
                 </td>
             </tr>
             </tbody>
@@ -77,7 +77,7 @@
     <div class="pagination">
         <g:paginate total="${userCount ?: 0}" />
     </div>
-    <h3>Teléfono</h3>
+    <h3 id="telefono">Teléfono</h3>
     <div class="row">
         <table class="responsive-table bordered highlight-2 centered">
             <thead>
@@ -98,7 +98,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <a class="create btn-floating waves-effect waves-light green tooltipped" href="#modalCreateTelefono" data-position="left" data-delay="50" data-tooltip="Agregar Teléfono"><i class="material-icons">add</i></a>
+                    <a class="create modal-trigger btn-floating waves-effect waves-light green tooltipped" data-target="modalCreateTelefono" data-position="left" data-delay="50" data-tooltip="Agregar Teléfono"><i class="material-icons">add</i></a>
                 </td>
             </tr>
             </tbody>
@@ -107,7 +107,7 @@
     <div class="pagination">
         <g:paginate total="${userCount ?: 0}" />
     </div>
-    <h3>Correo Electrónico</h3>
+    <h3 id="correo">Correo Electrónico</h3>
     <div class="row">
         <table class="responsive-table bordered highlight-2 centered">
             <thead>
@@ -128,7 +128,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <a class="create btn-floating waves-effect waves-light green tooltipped" href="#modalCreateCorreo" data-position="left" data-delay="50" data-tooltip="Agregar Correo"><i class="material-icons">add</i></a>
+                    <a class="create modal-trigger btn-floating waves-effect waves-light green tooltipped" data-target="modalCreateCorreo" data-position="left" data-delay="50" data-tooltip="Agregar Correo"><i class="material-icons">add</i></a>
                 </td>
             </tr>
             </tbody>
@@ -208,27 +208,30 @@
     </div>
 </div>
 
-<!-- Modal Edicion Direccion Structure -->
-<div id="modalEdicionDireccion" class="modal bottom-sheet">
-    <div class="modal-content">
-        <h5>Editar Direccion</h5>
-        <div class="row">
-            <g:form class="col s12" action="update" controller="direccion" id="${params.idDireccion}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
-                <div class="row">
-                    <div class="input-field col s12 m9">
-                        <input id="addressEdit" value="${direccion}" name="address" type="text" class="validate">
-                        <label for="addressEdit">Direccion</label>
+<g:if test="${params.idDireccion}">
+    <!-- Modal Edicion Direccion Structure -->
+    <div id="modalEdicionDireccion" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>Editar Direccion</h5>
+            <div class="row">
+                <g:form class="col s12" action="update" controller="direccion" id="${params.idDireccion}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
+                    <div class="row">
+                        <div class="input-field col s12 m9">
+                            <input id="addressEdit" value="${direccion}" name="address" type="text" class="validate">
+                            <label for="addressEdit">Direccion</label>
+                        </div>
                     </div>
-                </div>
-                <!-- Menu Modal Update-->
-                <div class="fixed-action-btn">
-                    <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <g:link action="show" id="${this.user.id}" params="[name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
-                </div>
-            </g:form>
+                    <!-- Menu Modal Update-->
+                    <div class="fixed-action-btn">
+                        <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
+                        <g:link action="show" id="${this.user.id}" fragment="direccion" params="[name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    </div>
+                </g:form>
+            </div>
         </div>
     </div>
-</div>
+
+</g:if>
 
 <!-- Modal Create Telefono Structure -->
 <div id="modalCreateTelefono" class="modal bottom-sheet">
@@ -254,28 +257,30 @@
     </div>
 </div>
 
-<!-- Modal Edicion Telefono Structure -->
-<div id="modalEdicionTelefono" class="modal bottom-sheet">
-    <div class="modal-content">
-        <h5>Editar Direccion</h5>
-        <div class="row">
-            <g:form class="col s12" action="update" controller="telefono" id="${params.idTelefono}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <i class="material-icons prefix">phone</i>
-                        <input id="icon_telephoneE" value="${telefono}" name="phoneNumber" type="tel" class="validate">
-                        <label for="icon_telephoneE">Teléfono</label>
+<g:if test="${params.idTelefono}">
+    <!-- Modal Edicion Telefono Structure -->
+    <div id="modalEdicionTelefono" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>Editar Direccion</h5>
+            <div class="row">
+                <g:form class="col s12" action="update" controller="telefono" id="${params.idTelefono}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <i class="material-icons prefix">phone</i>
+                            <input id="icon_telephoneE" value="${telefono}" name="phoneNumber" type="tel" class="validate">
+                            <label for="icon_telephoneE">Teléfono</label>
+                        </div>
                     </div>
-                </div>
-                <!-- Menu Modal Update-->
-                <div class="fixed-action-btn">
-                    <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar Teléfono"><i class="material-icons right">send</i></button>
-                    <g:link action="show" id="${this.user.id}" params="[name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
-                </div>
-            </g:form>
+                    <!-- Menu Modal Update-->
+                    <div class="fixed-action-btn">
+                        <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar Teléfono"><i class="material-icons right">send</i></button>
+                        <g:link action="show" id="${this.user.id}" fragment="telefono" params="[name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    </div>
+                </g:form>
+            </div>
         </div>
     </div>
-</div>
+</g:if>
 
 <!-- Modal Create Correo Structure -->
 <div id="modalCreateCorreo" class="modal bottom-sheet">
@@ -300,38 +305,31 @@
     </div>
 </div>
 
-<!-- Modal Edicion Correo Structure -->
-<div id="modalEdicionCorreo" class="modal bottom-sheet">
-    <div class="modal-content">
-        <h5>Editar Correo</h5>
-        <div class="row">
-            <g:form class="col s12" action="update" controller="correo" id="${params.idCorreo}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
-                <div class="row">
-                    <div class="input-field col s12 m6">
-                        <input id="emailE" name="email" value="${correo}" type="email" class="validate">
-                        <label for="emailE">Correo Electrónico</label>
+<g:if test="${params.idCorreo}">
+    <!-- Modal Edicion Correo Structure -->
+    <div id="modalEdicionCorreo" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>Editar Correo</h5>
+            <div class="row">
+                <g:form class="col s12" action="update" controller="correo" id="${params.idCorreo}" method="PUT" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <input id="emailE" name="email" value="${correo}" type="email" class="validate">
+                            <label for="emailE">Correo Electrónico</label>
+                        </div>
                     </div>
-                </div>
-                <!-- Menu Modal Update-->
-                <div class="fixed-action-btn">
-                    <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar Correo"><i class="material-icons right">send</i></button>
-                    <g:link action="show" id="${this.user.id}" params="[name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
-                </div>
-            </g:form>
+                    <!-- Menu Modal Update-->
+                    <div class="fixed-action-btn">
+                        <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar Correo"><i class="material-icons right">send</i></button>
+                        <g:link action="show" id="${this.user.id}" fragment="correo" params="[name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    </div>
+                </g:form>
+            </div>
         </div>
     </div>
-</div>
+</g:if>
 
-<g:if test="${params.idDireccion}">
-    <a type="hidden" href="#modalEdicionDireccion" data-position="left" data-delay="50" id="clickButton"></a>
-</g:if>
-<g:if test="${params.idTelefono}">
-    <a type="hidden" href="#modalEdicionTelefono" data-position="left" data-delay="50" id="clickButton"></a>
-</g:if>
-<g:if test="${params.idCorreo}">
-    <a type="hidden" href="#modalEdicionCorreo" data-position="left" data-delay="50" id="clickButton"></a>
-</g:if>
-<asset:javascript src="jquery-2.1.1.min.js"/>
+<asset:javascript src="jquery-3.2.1.min.js"/>
 <asset:javascript src="typeahead.bundle.min.js"/>
 <script>
     $(document).ready(function() {

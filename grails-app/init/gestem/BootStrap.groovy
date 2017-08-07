@@ -5,6 +5,7 @@ import grails.util.Environment
 class BootStrap {
 
     def init = { servletContext ->
+        printf('Init BootStrap...\n')
         if(Environment.current == Environment.DEVELOPMENT) {
             //Roles
             def superRole = new Role(authority: 'ROLE_SUPERADMIN', name: 'Super Usuario', description: 'Super Usuario').save(failOnError: true)
@@ -24,12 +25,13 @@ class BootStrap {
             new Direccion(address: "Siempre Viva 123", user: "1", comuna: "1").save(failOnError: true)
             new Sostenedor(code: "69220200", name: "I. Municipalidad Puerto Varas", comuna: "1").save(failOnError: true)
 
-            printf('User ID:'+User.findByUsername('admin').id)
+            //printf('User ID:'+User.findByUsername('admin').id)
             UserRole.withSession {
                 it.flush()
                 it.clear()
             }
         }
+        printf('...Init BootStrap\n')
     }
     def destroy = {
     }

@@ -62,42 +62,24 @@
                                     <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.${controllerName}.name" /></a>
                                 </g:else>
                             </g:else>
-
-
+                            <g:if test="${actionName == 'show'}">
+                                <a class="flow-text grey-text">
+                                    | ${params.name} ${params.lastName}
+                                </a>
+                            </g:if>
+                            <g:else>
+                                <a class="flow-text right grey-text">
+                                    <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
+                                    <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
+                                    <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
+                                    <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
+                                    <g:if test="${controllerName == 'user'}">${userCount ?: 0} elementos</g:if>
+                                    <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
+                                    <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
+                                    <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
+                                </a>
+                            </g:else>
                         </div>
-                        <!--
-
-
-
-                        <ul class="left">
-                            <a class="flow-text grey-text darken-1" href="">Consola de administracion</a>
-                        </ul>
-                        <ul class="left grey-text flow-text"> | </ul>
-                        <ul class="left">
-                            <a class="flow-text grey-text darken-1" href="<g:createLink controller="${controllerName}" action="index" />"><g:layoutTitle/><g:if test="${params.paisName}"> de ${params.paisName}</g:if></a>
-                        </ul>
-                        <ul class="left grey-text"> &nbsp;</ul>
-                        <g:if test="${actionName == 'show'}">
-                            <ul class="left flow-text grey-text">
-                                | ${params.name} ${params.lastName}
-                            </ul>
-                        </g:if>
-                        <g:else>
-                            <ul class="left grey-text">
-                                <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
-                                <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
-                                <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
-                                <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
-                                <g:if test="${controllerName == 'contrato'}">${contratoCount ?: 0} elementos</g:if>
-                                <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
-                                <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
-                                <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
-                            </ul>
-                        </g:else>
-
-                        <ul class="right">
-                        </ul>
-                        -->
                     </div>
                 </nav>
             </sec:ifLoggedIn>
@@ -171,28 +153,47 @@
 <br>
 <g:layoutBody/>
 <!--Import jQuery before materialize.js-->
-<asset:javascript src="jquery-2.1.1.min.js"/>
+<asset:javascript src="jquery-3.2.1.min.js"/>
 <asset:javascript src="materialize.js"/>
 <asset:javascript src="config.js"/>
 <asset:javascript src="typeahead.bundle.min.js"/>
 <g:if test="${flash.message}">
     <script>Materialize.toast('${flash.message}', 10000);</script>
 </g:if>
-<g:if test="${params.id}">
-<script>
-    window.onload = function() {
-        document.getElementById('clickButton').click();
-    }
-</script>
-</g:if>
-<g:else>
-    <g:if test="${params.r}">
-        <script>
-            window.onload = function() {
-                document.getElementById('clickButtonCreate').click();
-            }
-        </script>
+
+<g:if test="${controllerName == 'user'}">
+    <g:if test="${actionName == 'index'}">
+        <g:if test="${params.id}">
+            <script>
+                $(document).ready(function(){
+                    $('#modalEdicion').modal('open');
+                });
+            </script>
+        </g:if>
     </g:if>
-</g:else>
+    <g:if test="${actionName == 'show'}">
+        <g:if test="${params.idDireccion}">
+            <script>
+                $(document).ready(function(){
+                    $('#modalEdicionDireccion').modal('open');
+                });
+            </script>
+        </g:if>
+        <g:if test="${params.idTelefono}">
+            <script>
+                $(document).ready(function(){
+                    $('#modalEdicionTelefono').modal('open');
+                });
+            </script>
+        </g:if>
+        <g:if test="params.idCorreo">
+            <script>
+                $(document).ready(function(){
+                    $('#modalEdicionCorreo').modal('open');
+                });
+            </script>
+        </g:if>
+    </g:if>
+</g:if>
 </body>
 </html>

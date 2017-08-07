@@ -23,7 +23,6 @@ class UserController {
         }else{
             respond new User(params), model:[userCount: User.count(), userList:users]
         }
-
     }
 
     def getFechaNacimiento(User user){
@@ -51,39 +50,43 @@ class UserController {
 
     
     def show(User user) {
-        def direccionList = Direccion.findAllByUser(User.findById(params.id))
-        def telefonoList = Telefono.findAllByUser(User.findById(params.id))
-        def correoList = Correo.findAllByUser(User.findById(params.id))
-        def userRoleList = UserRole.findAllByUser(User.findAllById(params.id))
-        def roleList = Role.findAll()
-        def direccion
-        def telefono
-        def correo
-        def userRole
-        if(params.idDireccion){
-            direccion = Direccion.findById(params.idDireccion).address
+        if(params.id!=null){
+            def direccionList = Direccion.findAllByUser(User.findById(params.id))
+            def telefonoList = Telefono.findAllByUser(User.findById(params.id))
+            def correoList = Correo.findAllByUser(User.findById(params.id))
+            def userRoleList = UserRole.findAllByUser(User.findAllById(params.id))
+            def roleList = Role.findAll()
+            def direccion
+            def telefono
+            def correo
+            def userRole
+            if(params.idDireccion){
+                direccion = Direccion.findById(params.idDireccion).address
+            }
+            if(params.idTelefono){
+                telefono = Telefono.findById(params.idTelefono).phoneNumber
+            }
+            if(params.idCorreo){
+                correo = Correo.findById(params.idCorreo).email
+            }
+            if(params.idRole){
+                userRole = UserRole.findAllById(params.idRole).id
+            }
+            respond user, model:[
+                    direccionList:direccionList,
+                    direccion:direccion,
+                    telefonoList:telefonoList,
+                    telefono:telefono,
+                    correoList:correoList,
+                    correo:correo,
+                    userRoleList:userRoleList,
+                    userRole:userRole,
+                    fechaNacimientoOut: getFechaNacimiento(),
+                    roleList:roleList
+            ]
+        } else {
+            redirect(controller:"user", action: "index")
         }
-        if(params.idTelefono){
-            telefono = Telefono.findById(params.idTelefono).phoneNumber
-        }
-        if(params.idCorreo){
-            correo = Correo.findById(params.idCorreo).email
-        }
-        if(params.idRole){
-            userRole = UserRole.findAllById(params.idRole).id
-        }
-        respond user, model:[
-                direccionList:direccionList,
-                direccion:direccion,
-                telefonoList:telefonoList,
-                telefono:telefono,
-                correoList:correoList,
-                correo:correo,
-                userRoleList:userRoleList,
-                userRole:userRole,
-                fechaNacimientoOut: getFechaNacimiento(),
-                roleList:roleList
-        ]
     }
 
     
@@ -102,7 +105,7 @@ class UserController {
 
         if (user.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond user.errors, view:'create'
+            respond user.errors, view:'show'
             return
         }
 

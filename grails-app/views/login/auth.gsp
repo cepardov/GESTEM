@@ -12,12 +12,12 @@
                 <h3 class="center">Inicio de Sesión</h3>
                 <div class="input-field col s12">
                     <i class="material-icons prefix">account_circle</i>
-                    <input id="icon_prefix" name="${usernameParameter ?: 'username'}" type="text" class="validate tooltipped" data-position="right" data-tooltip="Existe una nota de escritorio con los diferentes usuarios">
+                    <input id="icon_prefix" name="${usernameParameter ?: 'username'}" type="text" class="validate tooltipped" data-position="right" data-tooltip="Ingrese su nombre de usuario">
                     <label for="icon_prefix">Correo electrónico</label>
                 </div>
                 <div class="input-field col s12">
                     <i class="material-icons prefix">vpn_key</i>
-                    <input id="icon_telephone" name="${passwordParameter ?: 'password'}" type="password" class="validate tooltipped" data-position="right" data-tooltip="Ingeniero: qwerty | Administrador: qwerty">
+                    <input id="icon_telephone" name="${passwordParameter ?: 'password'}" type="password" class="validate tooltipped" data-position="right" data-tooltip="Ingrese su contraseña">
                     <label for="icon_telephone">Contraseña</label>
                 </div>
                 <div class="input-field col s12">

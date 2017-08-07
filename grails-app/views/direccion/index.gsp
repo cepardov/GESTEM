@@ -117,7 +117,7 @@
     </ul>
 </g:hasErrors>
 
-<asset:javascript src="jquery-2.1.1.min.js"/>
+<asset:javascript src="jquery-3.2.1.min.js"/>
 <asset:javascript src="typeahead.bundle.min.js"/>
 <script>
     $(document).ready(function() {

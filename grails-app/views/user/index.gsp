@@ -52,9 +52,8 @@
 <!-- Modal Creacion Structure -->
 <div id="modalCreate" class="modal bottom-sheet">
     <div class="modal-content">
-        <h5>Crear ${controllerName}</h5>
+        <h5>Crear Usuario</h5>
         <div class="row">
-        <!---rut, nombre, paterno, password, materno, valor, estado, user, valorHoraExtra--->
             <g:form action="save">
                 <div class="row">
                     <div class="input-field col s12 m2">
@@ -97,47 +96,45 @@
     </div>
 </div>
 
-<!-- Modal Edicion Structure -->
-<div id="modalEdicion" class="modal bottom-sheet">
-    <div class="modal-content">
-        <h5>Editar ${controllerName}</h5>
-        <div class="row">
-        <!---rut, nombre, paterno, password, materno, valor, estado, user, valorHoraExtra--->
-            <g:form class="col s12" resource="${this.user}" method="PUT">
-                <div class="row">
-                    <div class="input-field col s12 m2">
-                        <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k"/>
-                        <label for="rut">RUT</label>
+<g:if test="${params.id}">
+    <!-- Modal Edicion Structure -->
+    <div id="modalEdicion" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h5>Editar Usuario</h5>
+            <div class="row">
+                <g:form class="col s12" resource="${this.user}" method="PUT">
+                    <div class="row">
+                        <div class="input-field col s12 m2">
+                            <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k"/>
+                            <label for="rut">RUT</label>
+                        </div>
+                        <div class="input-field col s12 m2">
+                            <label for="nombre">nombre</label>
+                            <f:input property="nombre" id="nombre" bean="user"/>
+                        </div>
+                        <div class="input-field col s12 m2">
+                            <label for="paterno">Paterno</label>
+                            <f:input property="paterno" id="paterno" bean="user"/>
+                        </div>
+                        <div class="input-field col s12 m2">
+                            <label for="materno">Materno</label>
+                            <f:input property="materno" id="materno" bean="user"/>
+                        </div>
+                        <div class="input-field inline col s12 m2">
+                            <f:input property="username" id="username" bean="user"/>
+                            <label for="username">username</label>
+                        </div>
                     </div>
-                    <div class="input-field col s12 m2">
-                        <label for="nombre">nombre</label>
-                        <f:input property="nombre" id="nombre" bean="user"/>
-                    </div>
-                    <div class="input-field col s12 m2">
-                        <label for="paterno">Paterno</label>
-                        <f:input property="paterno" id="paterno" bean="user"/>
-                    </div>
-                    <div class="input-field col s12 m2">
-                        <label for="materno">Materno</label>
-                        <f:input property="materno" id="materno" bean="user"/>
-                    </div>
-                    <div class="input-field inline col s12 m2">
-                        <f:input property="username" id="username" bean="user"/>
-                        <label for="username">username</label>
-                    </div>
-                </div>
 
-                <!-- Menu Modal Update-->
-                <div class="fixed-action-btn">
-                    <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <g:link action="index" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
-                </div>
-            </g:form>
+                    <!-- Menu Modal Update-->
+                    <div class="fixed-action-btn">
+                        <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
+                        <g:link action="index" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    </div>
+                </g:form>
+            </div>
         </div>
     </div>
-</div>
-<g:if test="${params.id}">
-    <a type="hidden" class="modal-trigger" data-target="modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
 </g:if>
 <g:hasErrors bean="${this.user}">
     <ul class="errors" role="alert">

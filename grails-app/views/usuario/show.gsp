@@ -293,7 +293,7 @@
 <g:if test="${params.idCorreo}">
     <a type="hidden" href="#modalEdicionCorreo" data-position="left" data-delay="50" id="clickButton"></a>
 </g:if>
-<asset:javascript src="jquery-2.1.1.min.js"/>
+<asset:javascript src="jquery-3.2.1.min.js"/>
 <asset:javascript src="typeahead.bundle.min.js"/>
 <script>
     $(document).ready(function() {
