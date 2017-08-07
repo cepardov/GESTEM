@@ -37,7 +37,7 @@
 </div>
 <!-- Menu flotante Crear -->
 <div class="fixed-action-btn">
-    <a class="create waves-effect waves-light btn-floating btn-large teal tooltipped" href="#modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
+    <a class="create modal-trigger waves-effect waves-light btn-floating btn-large teal tooltipped" data-target="modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
 </div>
 
 <!-- Modal Creacion Structure -->
@@ -72,7 +72,6 @@
     <div class="modal-content">
         <h5>Editar ${controllerName}</h5>
         <div class="row">
-        <!---rut, nombre, paterno, clave, materno, valor, estado, pais, valorHoraExtra--->
             <g:form class="col s12" resource="${this.pais}" method="PUT">
                 <div class="row">
                     <div class="input-field col s12 m2">
@@ -93,9 +92,6 @@
         </div>
     </div>
 </div>
-<g:if test="${params.id}">
-    <a type="hidden" href="#modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
-</g:if>
 <g:hasErrors bean="${this.pais}">
     <ul class="errors" role="alert">
         <g:eachError bean="${this.pais}" var="error">

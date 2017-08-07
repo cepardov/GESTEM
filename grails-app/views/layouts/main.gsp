@@ -161,16 +161,8 @@
     <script>Materialize.toast('${flash.message}', 10000);</script>
 </g:if>
 
+<!-- Specific modals -->
 <g:if test="${controllerName == 'user'}">
-    <g:if test="${actionName == 'index'}">
-        <g:if test="${params.id}">
-            <script>
-                $(document).ready(function(){
-                    $('#modalEdicion').modal('open');
-                });
-            </script>
-        </g:if>
-    </g:if>
     <g:if test="${actionName == 'show'}">
         <g:if test="${params.idDireccion}">
             <script>
@@ -193,6 +185,17 @@
                 });
             </script>
         </g:if>
+    </g:if>
+</g:if>
+
+<!-- Generic Modals -->
+<g:if test="${actionName == 'index'}">
+    <g:if test="${params.id}">
+        <script>
+            $(document).ready(function(){
+                $('#modalEdicion').modal('open');
+            });
+        </script>
     </g:if>
 </g:if>
 </body>
