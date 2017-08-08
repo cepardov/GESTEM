@@ -7,12 +7,13 @@ class BootStrap {
     def init = { servletContext ->
         printf('Init BootStrap...\n')
         if(Environment.current == Environment.DEVELOPMENT) {
+            new UserType(name: 'Administrador', description: 'Primer usuario del sistema').save(failOnError: true)
             //Roles
             def superRole = new Role(authority: 'ROLE_SUPERADMIN', name: 'Super Usuario', description: 'Super Usuario').save(failOnError: true)
             def adminRole = new Role(authority: 'ROLE_ADMIN', name: 'Administrador', description: 'Usuario admiinistrador').save(failOnError: true)
 
             //Users
-            def superUser = new User(rut: "172132332", nombre: "Cristian", segNombre: "Esteban", paterno: "Pardo", materno: "Velasquez", username: 'admin', password: 'admin').save(failOnError: true)
+            def superUser = new User(rut: "172132332", nombre: "Cristian", segNombre: "Esteban", paterno: "Pardo", materno: "Velasquez", userType: '1', username: 'admin', password: 'admin').save(failOnError: true)
 
             UserRole.create superUser, superRole
 

@@ -2,29 +2,27 @@
 <html>
 <head>
     <meta name="layout" content="main" />
-    <g:set var="entityName" value="${message(code: 'region.label', default: 'Region')}" />
+    <g:set var="entityName" value="${message(code: 'userType.label', default: 'UserType')}" />
     <title><g:message code="default.list.label" args="[entityName]" /></title>
 </head>
 <body>
 <div class="slider col s12 m12">
-    <div id="list-region" class="content scaffold-list" role="main">
+    <div id="list-userType" class="content scaffold-list" role="main">
         <div class="row">
             <table class="responsive-table bordered highlight-2 centered">
                 <thead>
                 <tr>
-                    <th>Pais</th>
-                    <th>Codigo</th>
-                    <th>Nombre</th>
+                    <th>Tipo Usuario</th>
+                    <th>Descripción</th>
                 </tr>
                 </thead>
                 <tbody>
-                <g:each var="v" in="${regionList}">
-                    <tr onclick="location='<g:createLink controller="ciudad" action="index" params="[paisId: params.paisId, regionId : v.id, regionName : v.name]"/>'">
-                        <td>[${v.pais.code}] ${v.pais.name}</td>
-                        <td>${v.code}</td>
+                <g:each var="v" in="${userTypeList}">
+                    <tr onclick="location='<g:createLink controller="region" action="index" params="[userTypeId : v.id, userTypeName : v.name]"/>'">
                         <td>${v.name}</td>
+                        <td>${v.description}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[paisId : params.paisId, paisName : params.paisName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
                             <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>
@@ -33,7 +31,7 @@
             </table>
         </div>
         <div class="pagination">
-            <g:paginate total="${regionCount ?: 0}" />
+            <g:paginate total="${userTypeCount ?: 0}" />
         </div>
     </div>
 </div>
@@ -50,21 +48,12 @@
             <g:form action="save">
                 <div class="row">
                     <div class="input-field col s12 m2">
-                        <f:input property="code" id="code" bean="region"/>
-                        <label for="code">Codigo</label>
+                        <f:input property="name" id="name" bean="userType"/>
+                        <label for="name">Tipo Usuario</label>
                     </div>
                     <div class="input-field col s12 m2">
-                        <f:input property="name" id="name" bean="region"/>
-                        <label for="name">Nombre</label>
-                    </div>
-                    <div class="input-field col s12 m2">
-                        <select name="pais.id" required="" id="pais">
-                            <option value="" disabled <g:if test="${!params.paisName}">selected</g:if>>Seleccione Pais</option>
-                            <g:each var="v" in="${paisList}">
-                                <option value="${v.id}" <g:if test="${v.name == params.paisName}">selected</g:if>>${v.name}</option>
-                            </g:each>
-                        </select>
-                        <label>País</label>
+                        <f:input property="description" id="description" bean="userType"/>
+                        <label for="description">Descripción</label>
                     </div>
                 </div>
 
@@ -83,33 +72,29 @@
     <div class="modal-content">
         <h5>Editar ${controllerName}</h5>
         <div class="row">
-        <!---rut, nombre, paterno, clave, materno, valor, estado, region, valorHoraExtra--->
-            <g:form class="col s12" resource="${this.region}" method="PUT">
+            <g:form class="col s12" resource="${this.userType}" method="PUT">
                 <div class="row">
                     <div class="input-field col s12 m2">
-                        <f:input property="code" id="code" bean="region"/>
-                        <label for="code">Codigo</label>
+                        <f:input property="name" id="name" bean="userType"/>
+                        <label for="name">Tipo Usuario</label>
                     </div>
                     <div class="input-field col s12 m2">
-                        <f:input property="name" id="name" bean="region"/>
-                        <label for="name">Nombre</label>
+                        <f:input property="description" id="description" bean="userType"/>
+                        <label for="description">Descripción</label>
                     </div>
                 </div>
                 <!-- Menu Modal Update-->
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <g:link action="index" params="[paisId : params.paisId, paisName : params.paisName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    <g:link action="index" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
                 </div>
             </g:form>
         </div>
     </div>
 </div>
-<g:if test="${params.id}">
-    <a type="hidden" href="#modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
-</g:if>
-<g:hasErrors bean="${this.region}">
+<g:hasErrors bean="${this.userType}">
     <ul class="errors" role="alert">
-        <g:eachError bean="${this.region}" var="error">
+        <g:eachError bean="${this.userType}" var="error">
             <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
         </g:eachError>
     </ul>

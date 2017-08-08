@@ -84,11 +84,20 @@
                         <f:input property="username" id="username" bean="user"/>
                         <label for="username">username</label>
                     </div>
+                    <div class="input-field col s12 m2">
+                        <select name="userType.id" required="" id="userType">
+                            <option value="" disabled <g:if test="${!params.userType}">selected</g:if>>Seleccione Tipo Usuario</option>
+                            <g:each var="v" in="${userTypeList}">
+                                <option value="${v.id}" <g:if test="${v.name == params.userTipe}">selected</g:if>>${v.name}</option>
+                            </g:each>
+                        </select>
+                        <label>País</label>
+                    </div>
                 </div>
 
                 <!-- Menu Modal Create-->
                 <div class="fixed-action-btn">
-                    <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.create.label', default: 'Create')}" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar ${controllerName}"><i class="material-icons right">send</i></button>
+                    <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.create.label', default: 'Create')}" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar Usuario"><i class="material-icons right">send</i></button>
                     <a class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
                 </div>
             </g:form>
@@ -137,11 +146,13 @@
     </div>
 </g:if>
 <g:hasErrors bean="${this.user}">
-    <ul class="errors" role="alert">
-        <g:eachError bean="${this.user}" var="error">
-            <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-        </g:eachError>
-    </ul>
+    <g:eachError bean="${this.user}" var="error">
+        <script>
+            window.onload=function(){
+                Materialize.toast('<g:message error="${error}"/>', 10000);
+            }
+        </script>
+    </g:eachError>
 </g:hasErrors>
 </body>
 </html>

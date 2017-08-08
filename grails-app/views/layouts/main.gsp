@@ -158,9 +158,10 @@
 <asset:javascript src="config.js"/>
 <asset:javascript src="typeahead.bundle.min.js"/>
 <g:if test="${flash.message}">
-    <script>Materialize.toast('${flash.message}', 10000);</script>
+    <script>
+        window.onload=function(){Materialize.toast('${flash.message}', 10000);}
+    </script>
 </g:if>
-
 <!-- Specific modals -->
 <g:if test="${controllerName == 'user'}">
     <g:if test="${actionName == 'show'}">

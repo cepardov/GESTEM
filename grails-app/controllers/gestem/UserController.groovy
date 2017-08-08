@@ -16,11 +16,12 @@ class UserController {
     def index(Integer max,User user) {
         //printf('User='+springSecurityService.currentUserId)
         def users = User.list(params)
+        def userType = UserType.list()
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){
-            respond user, model:[userCount: User.count(), userList:users]
+            respond user, model:[userCount: User.count(), userList:users, userTypeList:userType]
         }else{
-            respond new User(params), model:[userCount: User.count(), userList:users]
+            respond new User(params), model:[userCount: User.count(), userList:users, userTypeList:userType]
         }
     }
 
@@ -89,7 +90,6 @@ class UserController {
 
     @Transactional
     def save(User user) {
-        printf('Params save user='+params)
         if (user == null) {
             transactionStatus.setRollbackOnly()
             notFound()
