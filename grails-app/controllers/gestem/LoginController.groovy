@@ -4,9 +4,6 @@ import grails.plugin.springsecurity.annotation.Secured
 
 class LoginController extends grails.plugin.springsecurity.LoginController {
 
-    //def springSecurityService
-    //nuevas funciones
-
     def index() {
         if (springSecurityService.isLoggedIn()) {
             //printf('\nLogged ID:'+springSecurityService.currentUserId)
@@ -37,7 +34,6 @@ class LoginController extends grails.plugin.springsecurity.LoginController {
 
     def denied() {
         if (springSecurityService.isLoggedIn() && authenticationTrustResolver.isRememberMe(authentication)) {
-            // have cookie but the page is guarded with IS_AUTHENTICATED_FULLY (or the equivalent expression)
             redirect action: 'full', params: params
             return
         }

@@ -71,7 +71,6 @@ class SostenedorController {
     }
 
     def eliminar(Sostenedor sostenedor){
-        //def sostenedor = Sostenedor.get(params.id)
         sostenedor.delete(flush:true)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'sostenedor.label', default: 'Sostenedor'), sostenedor.id, sostenedor.code, sostenedor.name, ''])
         redirect (controller: "sostenedor", action: "index", params: [comunaId: comunaId,comunaName: comunaName])

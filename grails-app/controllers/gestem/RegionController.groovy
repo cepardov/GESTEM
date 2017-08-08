@@ -12,7 +12,6 @@ class RegionController {
 
     def paisId
     def paisName
-
     
     def index(Integer max,Region region) {
         def regionsByPais = Region.findAllByPais(Pais.findById(params.paisId))

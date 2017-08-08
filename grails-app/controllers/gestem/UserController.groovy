@@ -87,7 +87,6 @@ class UserController {
         respond new User(params)
     }
 
-    
     @Transactional
     def save(User user) {
         printf('Params save user='+params)

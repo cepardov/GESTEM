@@ -10,16 +10,10 @@ class InstitucionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    //def sostenedorId
-    //def sostenedorName
-
     def index(Integer max,Institucion institucion) {
         def institucionsBySostenedor = Institucion.findAllBySostenedor(Sostenedor.findById(params.sostenedorId))
         def institucions = Institucion.list(params)
         def sostenedor = Sostenedor.findAll()
-
-        //sostenedorId = params.sostenedorId
-        //sostenedorName = params.sostenedorName
 
         params.max = Math.min(max ?: 20, 100)
         if(params.id!=null&&params.sostenedorId!=null){

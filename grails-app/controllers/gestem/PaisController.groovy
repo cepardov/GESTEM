@@ -18,7 +18,6 @@ class PaisController {
         }else{
             respond new Pais(params), model:[paisCount: Pais.count(), paisList:paiss]
         }
-
     }
 
     def show(Pais pais) {
