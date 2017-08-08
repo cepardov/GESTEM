@@ -26,12 +26,9 @@ class UserController {
 
     def getFechaNacimiento(User user){
         def fechaNacimiento
-        printf('\ngetFechaNacimiento in:'+user.fechaNacimiento)
-        printf('\nid user:'+user.id)
 
         if(user.fechaNacimiento){
             def fechaNacimientoIn = user.fechaNacimiento.toString().replace(' ',' | ')
-            printf('\nFecha remplace:'+fechaNacimientoIn)
             String[] fechaNacimientoSplit0 = fechaNacimientoIn.split(' | ')
             String[] fechaNacimientoSplit1 = fechaNacimientoSplit0[0].split('-')
 
@@ -40,7 +37,6 @@ class UserController {
             def yyyy = fechaNacimientoSplit1[0]
 
             fechaNacimiento = dd+'/'+mm+'/'+yyyy
-            printf('\nFinal Fecha:'+ fechaNacimiento)
 
         }
         return fechaNacimiento

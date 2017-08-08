@@ -21,7 +21,7 @@
                                 <g:elseif test="${c.name=="Funcionario"}">face</g:elseif>
                                 <g:elseif test="${c.name=="Institucion"}">business</g:elseif>
                                 <g:else>settings_applications</g:else></i>
-                            <p class=""><strong>${c.name}</strong></p>
+                            <p class=""><strong><g:message code="${c.name.toString().toLowerCase()}.label" /></strong></p>
                         </div>
                     </div>
                 </a>

@@ -21,7 +21,7 @@
                 <g:each var="v" in="${direccionList}">
                     <tr>
                         <td>${v.comuna.ciudad.region.pais.name}, ${v.comuna.ciudad.region.name}, ${v.comuna.name},${v.address}</td>
-                        <td>${v.usuario.nombre} ${v.usuario.paterno} ${v.usuario.materno}</td>
+                        <td>${v.user.nombre} ${v.user.paterno} ${v.user.materno}</td>
                         <td>
                             <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
                             <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
@@ -38,7 +38,7 @@
 </div>
 <!-- Menu flotante Crear -->
 <div class="fixed-action-btn">
-    <a class="create waves-effect waves-light btn-floating btn-large teal tooltipped" href="#modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
+    <a class="create modal-trigger waves-effect waves-light btn-floating btn-large teal tooltipped" data-target="modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
 </div>
 
 <!-- Modal Creacion Structure -->
@@ -48,12 +48,12 @@
         <div class="row">
             <g:form action="save" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]">
                 <g:if test="${params.idUsuario == null}">
-                    <div id="usuarioDiv" class="input-field col s12">
-                        <input id="usuario" name="usuario" class="typeahead" placeholder="Usuario">
+                    <div id="userDiv" class="input-field col s12">
+                        <input id="user" name="user" class="typeahead" placeholder="Usuario">
                     </div>
                 </g:if>
                 <g:else>
-                    <input name="usuario" value="${params.idUsuario}|" hidden>
+                    <input name="user" value="${params.idUsuario}|" hidden>
                 </g:else>
 
                 <div id="comunaDiv" class="input-field col s12">
@@ -68,7 +68,7 @@
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.create.label', default: 'Create')}" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar ${controllerName}"><i class="material-icons right">send</i></button>
                     <g:if test="${params.r}">
-                        <g:link controller="usuario" action="show" id="${params.idUsuario}" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                        <g:link controller="user" action="show" id="${params.idUsuario}" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
                     </g:if>
                     <g:else>
                         <a class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></a>
@@ -93,7 +93,7 @@
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
                     <g:if test="${params.r}">
-                        <g:link controller="usuario" action="show" id="${params.idUsuario}" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                        <g:link controller="user" action="show" id="${params.idUsuario}" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
                     </g:if>
                     <g:else>
                         <g:link action="index" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
@@ -143,8 +143,8 @@
             '${it.id} | ${it.name} ${it.ciudad.region.name} ${it.ciudad.region.pais.name}',
             </g:each>
         ];
-        var usuario = [
-            <g:each in="${gestem.Usuario.list()}">
+        var user = [
+            <g:each in="${userList}">
             '${it.id} | ${it.nombre} ${it.paterno} ${it.materno}',
             </g:each>
         ];
@@ -156,13 +156,13 @@
             name: 'comuna',
             source: substringMatcher(comuna)
         });
-        $('#usuarioDiv .typeahead').typeahead({
+        $('#userDiv .typeahead').typeahead({
             hint: true,
             highlight: true,
             minLength: 1
         }, {
-            name: 'usuario',
-            source: substringMatcher(usuario)
+            name: 'user',
+            source: substringMatcher(user)
         });
     });
 </script>

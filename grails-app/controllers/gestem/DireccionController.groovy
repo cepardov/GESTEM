@@ -14,6 +14,7 @@ class DireccionController {
 
     def index(Integer max,Direccion direccion) {
         def direccionByUser = Direccion.findAllByUser(User.findById(params.idUser))
+        def userList = User.findAll()
         def direccions = Direccion.list(params)
 
         idUser = params.idUser
@@ -29,7 +30,7 @@ class DireccionController {
         } else if(params.idUser!=null){
             respond new Direccion(params), model:[direccionCount: Direccion.countByUser(User.findById(params.idUser)), direccionList: direccionByUser]
         } else {
-            respond new Direccion(params), model:[direccionCount: Direccion.count(), direccionList:direccions]
+            respond new Direccion(params), model:[direccionCount: Direccion.count(), direccionList:direccions, userList:userList]
         }
 
     }

@@ -127,7 +127,7 @@
                 <g:elseif test="${c.name=="Comuna"}">location_on</g:elseif>
                 <g:elseif test="${c.name=="Funcionario"}">face</g:elseif>
                 <g:elseif test="${c.name=="Institucion"}">business</g:elseif>
-                <g:else>settings_applications</g:else></i>${c.name}</g:link></li>
+                <g:else>settings_applications</g:else></i><g:message code="${c.name.toString().toLowerCase()}.label" /></g:link></li>
         </g:each>
         <li><g:link controller="login" action="logout"><i class="material-icons">exit_to_app</i>Cerrar Sesión</g:link></li>
         <li><div class="divider"></div></li>
