@@ -15,13 +15,41 @@ class UserController {
     
     def index(Integer max,User user) {
         //printf('User='+springSecurityService.currentUserId)
-        def users = User.list(params)
+        def query = params.q.toString().length()
+        def userList
+        def userCount
+        printf('query lenght='+query+'\n')
+
+        if(params.q && query>2){
+            def userCriteria = User.createCriteria()
+            userList = userCriteria.list(params){
+                if(params.q){
+                    or{
+                        ilike('username','%'+params.q+'%')
+                        ilike('nombre','%'+params.q+'%')
+                        ilike('segNombre','%'+params.q+'%')
+                        ilike('paterno','%'+params.q+'%')
+                        ilike('materno','%'+params.q+'%')
+                    }
+                }
+            }
+            userCount = userList.findAll().size()
+        } else {
+            if(params.q){
+                flash.message = "El termino de búsqueda debe ser mayor a 3 caracteres"
+            }
+            userList = User.list(params)
+            userCount = User.count()
+        }
+
+        //def users = User.list(params)
         def userType = UserType.list()
         params.max = Math.min(max ?: 10, 100)
+
         if(params.id!=null){
-            respond user, model:[userCount: User.count(), userList:users, userTypeList:userType]
+            respond user, model:[userCount: userCount, userList:userList, userTypeList:userType]
         }else{
-            respond new User(params), model:[userCount: User.count(), userList:users, userTypeList:userType]
+            respond new User(params), model:[userCount: userCount, userList:userList, userTypeList:userType]
         }
     }
 
@@ -90,27 +118,39 @@ class UserController {
 
     @Transactional
     def save(User user) {
-        if (user == null) {
-            transactionStatus.setRollbackOnly()
-            notFound()
-            return
-        }
+        printf('\nValidación de rut\n')
+        def rut = params.rut
+        printf('Params rut='+rut+'\n')
+        boolean rutExist = User.findByRut(rut)
 
-        if (user.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond user.errors, view:'show'
-            return
-        }
-
-        user.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
-                redirect(controller:"user", action: "index")
+        if(!rutExist){
+            if (user == null) {
+                transactionStatus.setRollbackOnly()
+                notFound()
+                return
             }
-            '*' { respond user, [status: CREATED] }
+
+            if (user.hasErrors()) {
+                transactionStatus.setRollbackOnly()
+                respond user.errors, view:'show'
+                return
+            }
+
+            user.save flush:true
+
+            request.withFormat {
+                form multipartForm {
+                    flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
+                    redirect(controller:"user", action: "index")
+                }
+                '*' { respond user, [status: CREATED] }
+            }
+        } else {
+            flash.message = "El susario con RUT:"+rut+" ya existe."
+            redirect (controller: "user", action: "index")
         }
+
+
     }
     
     def eliminar(){

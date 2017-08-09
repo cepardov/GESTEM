@@ -79,6 +79,14 @@
                                     <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
                                 </a>
                             </g:else>
+                            <g:if test="${controllerName}">
+                                <g:if test="${actionName == 'index'}">
+                                    <ul class="right">
+                                        <li><g:link class="material-icons grey-text tooltipped" action="index" params="[q:'']" data-position="top" data-delay="50" data-tooltip="Buscar Usuario"><i class="material-icons">search</i></g:link></li>
+                                        <li><a class="dropdown-button grey-text tooltipped" data-activates="order" data-position="top" data-delay="50" data-tooltip="Ordenar Lista">Ordenar Lista<i class="material-icons right">arrow_drop_down</i></a></li>
+                                    </ul>
+                                </g:if>
+                            </g:if>
                         </div>
                     </div>
                 </nav>

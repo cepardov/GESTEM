@@ -6,6 +6,39 @@
     <title><g:message code="default.list.label" args="[entityName]" /></title>
 </head>
 <body>
+<ul id="order" class="dropdown-content">
+    <li><g:link action="index" params="[sort: 'rut', order: 'asc']">RUT Asendente</g:link></li>
+    <li><g:link action="index" params="[sort: 'rut', order: 'desc']">RUT descendente</g:link></li>
+    <li class="divider"></li>
+    <li><g:link action="index" params="[sort: 'username', order: 'asc']">Usuario Asendente</g:link></li>
+    <li><g:link action="index" params="[sort: 'username', order: 'desc']">Usuario descendente</g:link></li>
+    <li class="divider"></li>
+    <li><g:link action="index" params="[sort: 'nombre', order: 'asc']">Nombre Asendente</g:link></li>
+    <li><g:link action="index" params="[sort: 'nombre', order: 'desc']">Nombre descendente</g:link></li>
+    <li class="divider"></li>
+    <li><g:link action="index" params="[sort: 'paterno', order: 'asc']">Paterno Asendente</g:link></li>
+    <li><g:link action="index" params="[sort: 'paterno', order: 'desc']">Paterno descendente</g:link></li>
+</ul>
+<g:if test="${params.q != null}">
+    <div class="container">
+        <div class="row center-align">
+            <h5>Buscar un usuario</h5>
+            <g:form class="col s12" action="index" method="get">
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input id="icon_prefix" name="q" value="${params.q}" type="text" class="validate">
+                    <label for="icon_prefix">First Name</label>
+                </div>
+                <div class="col s12 center-align">
+                    <g:link class="waves-effect waves-light btn" action="index"><i class="material-icons left">close</i>Cerrar Búsqueda</g:link>
+                    <button class="btn waves-effect waves-light" type="submit">Buscar Usuario
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </g:form>
+        </div>
+    </div>
+</g:if>
 <div class="slider col s12 m12">
     <div id="list-user" class="content scaffold-list" role="main">
         <div class="row">
@@ -57,7 +90,7 @@
             <g:form action="save">
                 <div class="row">
                     <div class="input-field col s12 m2">
-                        <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k"/>
+                        <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k" oninput="checkRut(this)"/>
                         <label for="rut">RUT</label>
                     </div>
                     <div class="input-field col s12 m2">
@@ -91,7 +124,7 @@
                                 <option value="${v.id}" <g:if test="${v.name == params.userTipe}">selected</g:if>>${v.name}</option>
                             </g:each>
                         </select>
-                        <label>País</label>
+                        <label>Tipo Usuario</label>
                     </div>
                 </div>
 
