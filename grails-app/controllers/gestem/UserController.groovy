@@ -152,6 +152,40 @@ class UserController {
 
 
     }
+
+    def saveRole (){
+        def userId = User.findById(params.user)
+        def roleId = Role.findById(params.role)
+
+        if(userId == null || roleId == null){
+            flash.message = "No se puede realizar la operación, intente más tarde."
+        } else {
+            UserRole.create(userId,roleId,true)
+            flash.message = "Se ha asignado Rol "+roleId.name+" a este usuario correctamente"
+        }
+        if(params.r != "showUser"){
+            redirect (controller: "user", action: "index")
+        } else {
+            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+        }
+    }
+
+    def deleteRole(){
+        def userId = User.findById(params.idUser)
+        def roleId = Role.findById(params.idRole)
+
+        if(userId == null || roleId == null){
+            flash.message = "No se puede realizar la operación, intente más tarde."
+        } else {
+            UserRole.remove(userId,roleId)
+            flash.message = "Se ha removido el rol"
+        }
+        if(params.r != "showUser"){
+            redirect (controller: "user", action: "index")
+        } else {
+            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+        }
+    }
     
     def eliminar(){
         def user = User.get(params.id)

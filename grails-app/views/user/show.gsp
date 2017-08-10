@@ -152,14 +152,14 @@
                         <td>[100${v.role.id}] ${v.role.name}</td>
                         <td>${v.role.description}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light red tooltipped" controller="userRole" action="eliminar" params="[r : 'showUser',idUser : this.user.id, idRole:v.role.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="deleteRole" params="[r : 'showUser',idUser : this.user.id, idRole:v.role.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>
                 </g:each>
                 </tbody>
             </table>
         </div>
-        <g:form action="save" controller="userRole" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
+        <g:form action="saveRole" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
             <input name="user" value="${this.user.id}" hidden>
             <div class="input-field col s12 m6">
                 <select name="role" required="" id="role">
