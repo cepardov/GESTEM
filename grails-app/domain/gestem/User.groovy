@@ -3,6 +3,7 @@ package gestem
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import grails.compiler.GrailsCompileStatic
+import org.grails.datastore.mapping.query.Query
 
 @GrailsCompileStatic
 @EqualsAndHashCode(includes='username')
@@ -27,7 +28,7 @@ class User implements Serializable {
 	boolean passwordExpired
 
 	static hasMany = [direccion:Direccion, telefono:Telefono, correo:Correo]
-	static belongsTo = [userType:UserType]
+	static belongsTo = [userType:UserType, institucion:Institucion]
 
 	Set<Role> getAuthorities() {
 		(UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>
@@ -40,6 +41,8 @@ class User implements Serializable {
 		fechaNacimiento blank:true, nullable: true
 		genero blank:true, nullable: true
 		nacionalidad blank:true, nullable: true
+
+		institucion nullable: true, blank: true
 	}
 
 	//static mapping = {

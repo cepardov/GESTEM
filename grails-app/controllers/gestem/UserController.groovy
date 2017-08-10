@@ -18,7 +18,6 @@ class UserController {
         def query = params.q.toString().length()
         def userList
         def userCount
-        printf('query lenght='+query+'\n')
 
         if(params.q && query>2){
             def userCriteria = User.createCriteria()
@@ -44,12 +43,13 @@ class UserController {
 
         //def users = User.list(params)
         def userType = UserType.list()
+        def institucionList = Institucion.list()
         params.max = Math.min(max ?: 10, 100)
 
         if(params.id!=null){
-            respond user, model:[userCount: userCount, userList:userList, userTypeList:userType]
+            respond user, model:[userCount: userCount, userList:userList, userTypeList:userType, institucionList:institucionList]
         }else{
-            respond new User(params), model:[userCount: userCount, userList:userList, userTypeList:userType]
+            respond new User(params), model:[userCount: userCount, userList:userList, userTypeList:userType, institucionList:institucionList]
         }
     }
 

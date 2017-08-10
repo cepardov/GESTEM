@@ -7,6 +7,10 @@
 
 <body>
 <div class="container">
+    <sec:ifLoggedIn>
+        <h4>Institucion Cargada:<sec:loggedInUserInfo field='asd'/></h4>
+    </sec:ifLoggedIn>
+
     <h3>Gestem</h3>
     <p>Es un proyecto de software para la gestión de educación que reemplazará completamente a <strong>Napsis</strong>
      que pretende ser inicialmente gratuito para el <strong>Liceo Pedro Aguirre Cerda</strong> bajo la licencia GLP V3.0 CL

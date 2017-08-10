@@ -36,6 +36,16 @@ class mUserDetailsService implements GrailsUserDetailsService {
             new SimpleGrantedAuthority(it.authority)
         }
 
+        def institucionDat
+        try{
+            institucionDat = user.institucion.name
+
+            printf('try Ins='+institucionDat+'\n')
+        } catch (Exception e){
+            printf('Error:'+e.getMessage()+'\n')
+            institucionDat = "Sin Institucion asignada"
+        }
+        printf('instu='+institucionDat+'\n')
         return new mUserDetails(
                 user.username,
                 user.password,
@@ -45,7 +55,8 @@ class mUserDetailsService implements GrailsUserDetailsService {
                 !user.accountLocked,
                 authorities ?: NO_ROLES,
                 user.id,
-                user.nombre + " " + user.paterno+" "+user.materno
+                user.nombre + " " + user.paterno+" "+user.materno,
+                institucionDat
         )
     }
 }

@@ -121,10 +121,19 @@
                         <select name="userType.id" required="" id="userType">
                             <option value="" disabled <g:if test="${!params.userType}">selected</g:if>>Seleccione Tipo Usuario</option>
                             <g:each var="v" in="${userTypeList}">
-                                <option value="${v.id}" <g:if test="${v.name == params.userTipe}">selected</g:if>>${v.name}</option>
+                                <option value="${v.id}" <g:if test="${v.name == params.userType}">selected</g:if>>${v.name}</option>
                             </g:each>
                         </select>
                         <label>Tipo Usuario</label>
+                    </div>
+                    <div class="input-field col s12 m2">
+                        <select name="institucion" required="" id="institucion">
+                            <option value="" disabled <g:if test="${!params.institucion}">selected</g:if>>Seleccione Institucion</option>
+                            <g:each var="v" in="${institucionList}">
+                                <option value="${v.id}" <g:if test="${v.name == params.institucion}">selected</g:if>>${v.name}</option>
+                            </g:each>
+                        </select>
+                        <label>Institución</label>
                     </div>
                 </div>
 
