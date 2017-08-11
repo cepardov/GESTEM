@@ -10,7 +10,7 @@ buildscript {
     }
 }
 
-version "0.49"
+version "0.55"
 group "gestem"
 
 apply plugin:"eclipse"

@@ -12,12 +12,14 @@ class UserController {
 
     def springSecurityService
 
-    
+    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
     def index(Integer max,User user) {
-        //printf('User='+springSecurityService.currentUserId)
+        def loggedUserInfo = User.findByUsername(sec.username())
+        printf('loggedUserInfo='+loggedUserInfo.institucion+'\n')
         def query = params.q.toString().length()
         def userList
         def userCount
+        def institucionList
 
         if(params.q && query>2){
             def userCriteria = User.createCriteria()
@@ -37,13 +39,20 @@ class UserController {
             if(params.q){
                 flash.message = "El termino de búsqueda debe ser mayor a 3 caracteres"
             }
-            userList = User.list(params)
-            userCount = User.count()
+            if(!loggedUserInfo.institucion){
+                userList = User.list(params)
+                institucionList = Institucion.list()
+                userCount = User.count()
+            } else {
+                userList = User.findAllByInstitucion(loggedUserInfo.institucion)
+                institucionList = Institucion.findAllByCode(loggedUserInfo.institucion.code)
+                userCount = userList.size()
+            }
         }
 
         //def users = User.list(params)
         def userType = UserType.list()
-        def institucionList = Institucion.list()
+
         params.max = Math.min(max ?: 10, 100)
 
         if(params.id!=null){
@@ -71,7 +80,7 @@ class UserController {
         return fechaNacimiento
     }
 
-    
+    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
     def show(User user) {
         if(params.id!=null){
             def direccionList = Direccion.findAllByUser(User.findById(params.id))
@@ -116,6 +125,7 @@ class UserController {
         respond new User(params)
     }
 
+    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
     @Transactional
     def save(User user) {
         printf('\nValidación de rut\n')
@@ -186,7 +196,8 @@ class UserController {
             redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
         }
     }
-    
+
+    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
     def eliminar(){
         def user = User.get(params.id)
         int roleUser = UserRole.countByUser(user)
@@ -199,7 +210,7 @@ class UserController {
         redirect (controller: "user", action: "index")
     }
 
-    
+    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
     @Transactional
     def update(User user) {
         if(params.fechaNacimientoDat){
@@ -237,7 +248,6 @@ class UserController {
         }
     }
 
-    
     protected void notFound() {
         printf('\nNOT FOUND\n')
         request.withFormat {
