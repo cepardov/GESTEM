@@ -8,7 +8,7 @@
 <body>
 <div class="container">
     <sec:ifLoggedIn>
-        <h4>Institucion Cargada:<sec:loggedInUserInfo field='asd'/></h4>
+        <h4>Institucion Cargada:<sec:loggedInUserInfo field='institucion'/></h4>
     </sec:ifLoggedIn>
 
     <h3>Gestem</h3>

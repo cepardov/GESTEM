@@ -37,38 +37,38 @@
                         </ul>
                         <div class="col s12 light">
                             <g:if test="${request.getRequestURI().toString()=='/'}">
-                                <a href="" class="breadcrumb-2 flow-text"><g:message code="controllerName.null.name" /></a>
+                                <a href="" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.null.name" /></a>
                             </g:if>
                             <g:else>
-                                <a href="/" class="breadcrumb-2 flow-text"><g:message code="controllerName.null.name" /></a>
+                                <a href="/" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.null.name" /></a>
                                 <g:if test="${controllerName != 'dashboard'}">
-                                    <a href="<g:createLink controller="dashboard" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.dashboard.name" /></a>
+                                    <a href="<g:createLink controller="dashboard" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.dashboard.name" /></a>
                                 </g:if>
                                 <g:if test="${params.paisId}">
-                                    <a href="<g:createLink controller="pais" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.pais.name" /></a>
+                                    <a href="<g:createLink controller="pais" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.pais.name" /></a>
                                 </g:if>
                                 <g:if test="${params.regionId}">
-                                    <a href="<g:createLink controller="region" action="index" params="[paisId: params.paisId]"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.region.name" /></a>
+                                    <a href="<g:createLink controller="region" action="index" params="[paisId: params.paisId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.region.name" /></a>
                                 </g:if>
                                 <g:if test="${params.ciudadId}">
-                                    <a href="<g:createLink controller="ciudad" action="index" params="[regionId: params.regionId]"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.ciudad.name" /></a>
+                                    <a href="<g:createLink controller="ciudad" action="index" params="[regionId: params.regionId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.ciudad.name" /></a>
                                 </g:if>
 
                                 <g:if test="${actionName == 'show'}">
-                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.${controllerName}.name" /></a>
-                                    <a href="<g:createLink controller="${controllerName}" action="show"/>" class="breadcrumb-2 flow-text">Mostar <g:message code="controllerName.${controllerName}.name" /></a>
+                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.${controllerName}.name" /></a>
+                                    <a href="<g:createLink controller="${controllerName}" action="show"/>" class="breadcrumb-2 flow-text hide-on-med-and-down">Mostar <g:message code="controllerName.${controllerName}.name" /></a>
                                 </g:if>
                                 <g:else>
-                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text"><g:message code="controllerName.${controllerName}.name" /></a>
+                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.${controllerName}.name" /></a>
                                 </g:else>
                             </g:else>
                             <g:if test="${actionName == 'show'}">
-                                <a class="flow-text grey-text">
+                                <a class="flow-text grey-text hide-on-med-and-down">
                                     | ${params.name} ${params.lastName}
                                 </a>
                             </g:if>
                             <g:else>
-                                <a class="flow-text right grey-text">
+                                <a class="flow-text right grey-text hide-on-med-and-down">
                                     <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
                                     <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
                                     <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>

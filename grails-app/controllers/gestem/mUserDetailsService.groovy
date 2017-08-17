@@ -43,7 +43,7 @@ class mUserDetailsService implements GrailsUserDetailsService {
             printf('try Ins='+institucionDat+'\n')
         } catch (Exception e){
             printf('Error:'+e.getMessage()+'\n')
-            institucionDat = "Sin Institucion asignada"
+            institucionDat = null
         }
         printf('instu='+institucionDat+'\n')
         return new mUserDetails(
