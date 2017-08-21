@@ -163,6 +163,7 @@ class UserController {
 
     }
 
+    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
     def saveRole (){
         def userId = User.findById(params.user)
         def roleId = Role.findById(params.role)
@@ -180,6 +181,7 @@ class UserController {
         }
     }
 
+    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
     def deleteRole(){
         def userId = User.findById(params.idUser)
         def roleId = Role.findById(params.idRole)
