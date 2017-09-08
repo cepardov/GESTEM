@@ -14,7 +14,15 @@
     <nav class="nav-extended white">
         <div class="nav-wrapper blue darken-2">
             <ul class="left">
-                <a href="http://gestem.liceopac.cl:8080" class="brand-logo"><i class="material-icons">cloud</i>GESTEM</a>
+                <a href="/" class="brand-logo">
+                    <i class="material-icons">cloud</i>
+                    GESTEM
+                    <sec:ifLoggedIn>
+                        <g:if test="${sec.loggedInUserInfo(field: 'institucion')}">
+                             <li class="right flow-text">&nbsp;<sec:loggedInUserInfo field='institucion'/></li>
+                        </g:if>
+                    </sec:ifLoggedIn>
+                </a>
                 <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             </ul>
             <ul class="right">

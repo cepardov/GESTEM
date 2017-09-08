@@ -40,12 +40,10 @@ class mUserDetailsService implements GrailsUserDetailsService {
         try{
             institucionDat = user.institucion.name
 
-            printf('try Ins='+institucionDat+'\n')
+            printf('mUserDetailsService institucionDat='+institucionDat+'\n')
         } catch (Exception e){
-            printf('Error:'+e.getMessage()+'\n')
             institucionDat = null
         }
-        printf('instu='+institucionDat+'\n')
         return new mUserDetails(
                 user.username,
                 user.password,

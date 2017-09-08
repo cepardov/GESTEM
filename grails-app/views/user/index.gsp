@@ -129,6 +129,9 @@
                     <div class="input-field col s12 m2">
                         <select name="institucion" required="" id="institucion">
                             <option value="" disabled <g:if test="${!sec.loggedInUserInfo(field: 'institucion')}">selected</g:if>>Seleccione Institucion</option>
+                            <g:if test="${!sec.loggedInUserInfo(field: 'institucion')}">
+                                <option value="">Aplicación</option>
+                            </g:if>
                             <g:each var="v" in="${institucionList}">
                                 <option value="${v.id}" <g:if test="${v.name == sec.loggedInUserInfo(field: 'institucion')}">selected</g:if>>${v.name}</option>
                             </g:each>

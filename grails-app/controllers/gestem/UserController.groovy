@@ -4,7 +4,6 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('ROLE_SUPERADMIN')
 @Transactional(readOnly = true)
 class UserController {
 
@@ -12,7 +11,7 @@ class UserController {
 
     def springSecurityService
 
-    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def index(Integer max,User user) {
         def loggedUserInfo = User.findByUsername(sec.username())
         printf('loggedUserInfo='+loggedUserInfo.institucion+'\n')
@@ -80,7 +79,7 @@ class UserController {
         return fechaNacimiento
     }
 
-    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def show(User user) {
         if(params.id!=null){
             def direccionList = Direccion.findAllByUser(User.findById(params.id))
@@ -125,7 +124,7 @@ class UserController {
         respond new User(params)
     }
 
-    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def save(User user) {
         printf('\nValidación de rut\n')
@@ -163,7 +162,7 @@ class UserController {
 
     }
 
-    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def saveRole (){
         def userId = User.findById(params.user)
         def roleId = Role.findById(params.role)
@@ -181,10 +180,12 @@ class UserController {
         }
     }
 
-    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def deleteRole(){
         def userId = User.findById(params.idUser)
         def roleId = Role.findById(params.idRole)
+
+        printf('userID='+userId+' roleID='+roleId+'\n')
 
         if(userId == null || roleId == null){
             flash.message = "No se puede realizar la operación, intente más tarde."
@@ -199,7 +200,7 @@ class UserController {
         }
     }
 
-    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def eliminar(){
         def user = User.get(params.id)
         int roleUser = UserRole.countByUser(user)
@@ -212,7 +213,7 @@ class UserController {
         redirect (controller: "user", action: "index")
     }
 
-    @Secured(['ROLE_SUPERADMIN','ROLE_ADMIN'])
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def update(User user) {
         if(params.fechaNacimientoDat){

@@ -18,8 +18,16 @@ class BootStrap {
             new UserType(name: 'Administrador', description: 'Primer usuario del sistema').save(failOnError: true)
 
             //Roles
-            def superRole = new Role(authority: 'ROLE_SUPERADMIN', name: 'Super Usuario', description: 'Super Usuario').save(failOnError: true)
-            def adminRole = new Role(authority: 'ROLE_ADMIN', name: 'Administrador', description: 'Usuario admiinistrador').save(failOnError: true)
+            def superRole = new Role(authority: 'ROLE_LEVEL0', name: 'Super Usuario', description: 'Super Usuario').save(failOnError: true)
+            def adminRole = new Role(authority: 'ROLE_LEVEL1', name: 'Administrador', description: 'Usuario administrador').save(failOnError: true)
+
+            new Role(authority: 'ROLE_LEVEL2', name: 'UTP', description: 'Unidad Técnico Pedagogica').save(failOnError: true)
+            new Role(authority: 'ROLE_LEVEL3', name: 'Coordinador Departamento', description: 'Jefe de departamento').save(failOnError: true)
+            new Role(authority: 'ROLE_LEVEL4', name: 'Profesor Jefe', description: 'Profesor Jefe').save(failOnError: true)
+            new Role(authority: 'ROLE_LEVEL5', name: 'Profesor Asignatura', description: 'Profesor Asignatura').save(failOnError: true)
+            new Role(authority: 'ROLE_LEVEL6', name: 'Apoderado', description: 'Apoderado').save(failOnError: true)
+
+
 
             //Users
             def superUser = new User(rut: "17213233-2", nombre: "Cristian", segNombre: "Esteban", paterno: "Pardo", materno: "Velasquez", userType: '1', username: 'admin', password: 'admin').save(failOnError: true)
