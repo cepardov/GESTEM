@@ -7,8 +7,17 @@
     <asset:stylesheet src="autocomplete.css"/>
 </head>
 <body>
-<g:if test="${actionName != 'save'}">
-    <div class="row">
+
+<div class="col s12">
+    <ul class="tabs grey lighten-4 z-depth-1">
+        <li class="tab col s3"><a class="blue-grey-text" href="#datospersonales">Datos Personales</a></li>
+        <li class="tab col s3"><a class="blue-grey-text" href="#ubicacion">Contacto y ubicación</a></li>
+        <li class="tab col s3"><a class="blue-grey-text" href="#roles">Perfil de usuario</a></li>
+        <li class="tab col s3 disabled"><a class="blue-grey-text" href="#">Datos Apoderado</a></li>
+    </ul>
+</div>
+<div class="row">
+    <div id="datospersonales" class="col s12">
         <g:form class="col s12" resource="${this.user}" method="PUT">
             <h3>Datos Personales</h3>
             <div class="row">
@@ -47,6 +56,9 @@
                 </div>
             </div>
         </g:form>
+    </div>
+
+    <div id="ubicacion" class="col s12">
         <h3 id="direccion">Direcciones</h3>
         <div class="row">
             <table class="responsive-table bordered highlight-2 centered">
@@ -137,6 +149,8 @@
         <div class="pagination">
             <g:paginate total="${userCount ?: 0}" />
         </div>
+    </div>
+    <div id="roles" class="col s12">
         <h3>Roles de Usuario</h3>
         <div class="row">
             <table class="responsive-table bordered highlight-2 centered">
@@ -179,6 +193,23 @@
         <div class="pagination">
             <g:paginate total="${userCount ?: 0}" />
         </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<g:if test="${actionName != 'save'}">
+    <div class="row">
+
+
+
+
+
+
     </div>
 
 

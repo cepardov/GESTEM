@@ -24,6 +24,9 @@ $(document).ready(function(){
         format: 'dd/mm/yyyy',
         firstDay: 1 // Start with Monday
     });
+    //$('.tabs').tabs({
+    //    swipeable: true
+    //});
 });
 function showToast(message, duration){
     Materialize.toast(message, duration);

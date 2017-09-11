@@ -15,7 +15,6 @@ table.highlight-2 > tbody > tr:hover {
     font-size: 18px;
     color: rgba(0, 0, 0, 0.3);
 }
-
 .breadcrumb-2 i,
 .breadcrumb-2 [class^="mdi-"], .breadcrumb-2 [class*="mdi-"],
 .breadcrumb-2 i.material-icons {
