@@ -49,16 +49,19 @@ class UserController {
             }
         }
 
-        //def users = User.list(params)
-        def userType = UserType.list()
 
         params.max = Math.min(max ?: 10, 100)
 
         if(params.id!=null){
-            respond user, model:[userCount: userCount, userList:userList, userTypeList:userType, institucionList:institucionList]
+            respond user, model:[userCount: userCount, userList:userList, institucionList:institucionList]
         }else{
-            respond new User(params), model:[userCount: userCount, userList:userList, userTypeList:userType, institucionList:institucionList]
+            respond new User(params), model:[userCount: userCount, userList:userList, institucionList:institucionList]
         }
+    }
+
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
+    def alumnos(Integer max, User user) {
+
     }
 
     def getFechaNacimiento(User user){
@@ -245,7 +248,11 @@ class UserController {
         request.withFormat {
             form multipartForm {
                 flash.message = message(code: 'default.updated.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
-                redirect(controller:"user", action: "index")
+                switch (params.r) {
+                    case 'index': redirect(controller: "user", action: "index"); break
+                    case 'show': redirect(controller: "user", action: "show", id: params.id); break
+                    default: redirect(controller: "user", action: "index");
+                }
             }
             '*'{ respond user, [status: OK] }
         }

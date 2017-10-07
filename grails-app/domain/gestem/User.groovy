@@ -28,7 +28,7 @@ class User implements Serializable {
 	boolean passwordExpired
 
 	static hasMany = [direccion:Direccion, telefono:Telefono, correo:Correo]
-	static belongsTo = [userType:UserType, institucion:Institucion]
+	static belongsTo = [institucion:Institucion]
 
 	Set<Role> getAuthorities() {
 		(UserRole.findAllByUser(this) as List<UserRole>)*.role as Set<Role>

@@ -4,7 +4,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('ROLE_SUPERADMIN')
+@Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
 @Transactional(readOnly = true)
 class CiudadController {
 

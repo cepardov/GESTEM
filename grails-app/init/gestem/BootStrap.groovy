@@ -15,7 +15,6 @@ class BootStrap {
             new Institucion(code: '7720', name: 'Liceo Pedro Aguirre Cerda', sostenedor: "1").save(failOnError: true)
             new Institucion(code: '7721', name: 'Rosita Novaro', sostenedor: '1').save(failOnError: true)
 
-            new UserType(name: 'Administrador', description: 'Primer usuario del sistema').save(failOnError: true)
 
             //Roles
             def superRole = new Role(authority: 'ROLE_LEVEL0', name: 'Super Usuario', description: 'Super Usuario').save(failOnError: true)

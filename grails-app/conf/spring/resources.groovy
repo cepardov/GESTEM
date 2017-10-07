@@ -1,5 +1,4 @@
 import gestem.UserPasswordEncoderListener
-import gestem.UserPasswordEncoderListener
 import gestem.mUserDetailsService
 // Place your Spring DSL code here
 beans = {

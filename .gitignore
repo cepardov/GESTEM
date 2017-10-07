@@ -48,4 +48,3 @@ fabric.properties
 # "temporary" build files
 /target
 /archivos
-/src

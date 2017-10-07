@@ -18,7 +18,7 @@
 </div>
 <div class="row">
     <div id="datospersonales" class="col s12">
-        <g:form class="col s12" resource="${this.user}" method="PUT">
+        <g:form class="col s12" resource="${this.user}" method="PUT" params="[r: 'show']">
             <h3>Datos Personales</h3>
             <div class="row">
                 <div class="input-field col s12 m1">
