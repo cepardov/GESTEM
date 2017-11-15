@@ -15,7 +15,6 @@ class UserController {
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def index(Integer max,User user) {
         def loggedUserInfo = User.findByUsername(sec.username())
-        printf('loggedUserInfo='+loggedUserInfo.institucion+'\n')
         def query = params.q.toString().length()
         def userList
         def userCount
@@ -207,13 +206,20 @@ class UserController {
 
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def eliminar(){
+        def loggedUserInfo = User.findByUsername(sec.username())
+        def loggedUserId = loggedUserInfo.id
         def user = User.get(params.id)
-        int roleUser = UserRole.countByUser(user)
-        if(roleUser>0){
-            flash.message = "Error: Este usuario tiene "+roleUser+" asignados, elimine los roles primero."
+
+        if(user.id != loggedUserId){
+            int roleUser = UserRole.countByUser(user)
+            if(roleUser>0){
+                flash.message = "Error: Este usuario tiene "+roleUser+" asignados, elimine los roles primero."
+            } else {
+                user.delete(flush:true)
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
+            }
         } else {
-            user.delete(flush:true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
+            flash.message = "Ouch! No puede eliminar su propia cuanta."
         }
         redirect (controller: "user", action: "index")
     }
