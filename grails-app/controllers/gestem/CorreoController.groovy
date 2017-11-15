@@ -12,6 +12,7 @@ class CorreoController {
 
     def idUser
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def index(Integer max,Correo correo) {
         def correoByUser = Correo.findAllByUser(User.findById(params.idUser))
         def correos = Correo.list(params)
@@ -42,6 +43,7 @@ class CorreoController {
         respond new Correo(params)
     }
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def save(Correo correo) {
         if (correo == null) {
@@ -66,7 +68,7 @@ class CorreoController {
                 if(params.r != "showUser"){
                     redirect (controller: "correo", action: "index")
                 } else {
-                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", fragment: "ubicacion", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*' { respond correo, [status: CREATED] }
@@ -77,6 +79,7 @@ class CorreoController {
         respond correo
     }
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def eliminar(){
         def correo = Correo.get(params.id)
         correo.delete(flush:true)
@@ -84,10 +87,11 @@ class CorreoController {
         if(params.r != "showUser"){
             redirect (controller: "correo", action: "index")
         } else {
-            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+            redirect(controller: "user", fragment: "ubicacion", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
         }
     }
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def update(Correo correo) {
         if (correo == null) {
@@ -110,7 +114,7 @@ class CorreoController {
                 if(params.r != "showUser"){
                     redirect (controller: "correo", action: "index")
                 } else {
-                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", fragment: "ubicacion", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*'{ respond correo, [status: OK] }

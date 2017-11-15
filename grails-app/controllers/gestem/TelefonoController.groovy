@@ -12,6 +12,7 @@ class TelefonoController {
 
     def idUser
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def index(Integer max,Telefono telefono) {
         def telefonoByUser = Telefono.findAllByUser(User.findById(params.idUser))
         def telefonos = Telefono.list(params)
@@ -42,6 +43,7 @@ class TelefonoController {
         respond new Telefono(params)
     }
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def save(Telefono telefono) {
         if (telefono == null) {
@@ -66,7 +68,7 @@ class TelefonoController {
                 if(params.r != "showUser"){
                     redirect (controller: "telefono", action: "index")
                 } else {
-                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", fragment: "ubicacion", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*' { respond telefono, [status: CREATED] }
@@ -77,6 +79,7 @@ class TelefonoController {
         respond telefono
     }
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def eliminar(){
         def telefono = Telefono.get(params.id)
         telefono.delete(flush:true)
@@ -84,10 +87,11 @@ class TelefonoController {
         if(params.r != "showUser"){
             redirect (controller: "telefono", action: "index")
         } else {
-            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+            redirect(controller: "user", fragment: "ubicacion", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
         }
     }
 
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def update(Telefono telefono) {
         if (telefono == null) {
@@ -110,7 +114,7 @@ class TelefonoController {
                 if(params.r != "showUser"){
                     redirect (controller: "telefono", action: "index")
                 } else {
-                    redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+                    redirect(controller: "user", fragment: "ubicacion", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
                 }
             }
             '*'{ respond telefono, [status: OK] }
