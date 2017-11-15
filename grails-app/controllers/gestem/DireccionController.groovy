@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
 @Transactional(readOnly = true)
 class DireccionController {
 
@@ -11,7 +12,6 @@ class DireccionController {
 
     def idUser
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def index(Integer max,Direccion direccion) {
         def direccionByUser = Direccion.findAllByUser(User.findById(params.idUser))
         def userList = User.findAll()
@@ -35,17 +35,14 @@ class DireccionController {
 
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def show(Direccion direccion) {
         respond direccion
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def create() {
         respond new Direccion(params)
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def save() {
 
@@ -111,12 +108,10 @@ class DireccionController {
         }
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def edit(Direccion direccion) {
         respond direccion
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def eliminar(){
         def direccion = Direccion.get(params.id)
         direccion.delete(flush:true)
@@ -128,7 +123,6 @@ class DireccionController {
         }
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def update(Direccion direccion) {
         if (direccion == null) {
@@ -158,7 +152,6 @@ class DireccionController {
         }
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def delete(){
         eliminar()
     }

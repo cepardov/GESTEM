@@ -4,7 +4,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured('ROLE_SUPERADMIN')
+@Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
 @Transactional(readOnly = true)
 class TelefonoController {
 
@@ -12,7 +12,6 @@ class TelefonoController {
 
     def idUser
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def index(Integer max,Telefono telefono) {
         def telefonoByUser = Telefono.findAllByUser(User.findById(params.idUser))
         def telefonos = Telefono.list(params)
@@ -35,17 +34,14 @@ class TelefonoController {
 
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def show(Telefono telefono) {
         respond telefono
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def create() {
         respond new Telefono(params)
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def save(Telefono telefono) {
         if (telefono == null) {
@@ -77,12 +73,10 @@ class TelefonoController {
         }
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def edit(Telefono telefono) {
         respond telefono
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def eliminar(){
         def telefono = Telefono.get(params.id)
         telefono.delete(flush:true)
@@ -94,7 +88,6 @@ class TelefonoController {
         }
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def update(Telefono telefono) {
         if (telefono == null) {
@@ -124,7 +117,6 @@ class TelefonoController {
         }
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def delete(){
         eliminar()
     }

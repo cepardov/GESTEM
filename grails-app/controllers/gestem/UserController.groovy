@@ -4,6 +4,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
 @Transactional(readOnly = true)
 class UserController {
 
@@ -59,7 +60,6 @@ class UserController {
         }
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def alumnos(Integer max, User user) {
 
     }
@@ -67,17 +67,19 @@ class UserController {
     def getFechaNacimiento(User user){
         def fechaNacimiento
 
-        if(user.fechaNacimiento){
-            def fechaNacimientoIn = user.fechaNacimiento.toString().replace(' ',' | ')
-            String[] fechaNacimientoSplit0 = fechaNacimientoIn.split(' | ')
-            String[] fechaNacimientoSplit1 = fechaNacimientoSplit0[0].split('-')
+        if(user != null){
+            if(user.fechaNacimiento){
+                def fechaNacimientoIn = user.fechaNacimiento.toString().replace(' ',' | ')
+                String[] fechaNacimientoSplit0 = fechaNacimientoIn.split(' | ')
+                String[] fechaNacimientoSplit1 = fechaNacimientoSplit0[0].split('-')
 
-            def dd = fechaNacimientoSplit1[2]
-            def mm = fechaNacimientoSplit1[1]
-            def yyyy = fechaNacimientoSplit1[0]
+                def dd = fechaNacimientoSplit1[2]
+                def mm = fechaNacimientoSplit1[1]
+                def yyyy = fechaNacimientoSplit1[0]
 
-            fechaNacimiento = dd+'/'+mm+'/'+yyyy
+                fechaNacimiento = dd+'/'+mm+'/'+yyyy
 
+            }
         }
         return fechaNacimiento
     }

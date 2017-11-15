@@ -2,14 +2,13 @@ package gestem
 
 import grails.plugin.springsecurity.annotation.Secured
 
+@Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
 class AlumnoController {
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def index() {
 
     }
 
-    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def list(Integer max, User user) {
 
 
