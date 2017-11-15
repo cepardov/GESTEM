@@ -168,15 +168,21 @@ class UserController {
 
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def saveRole (){
+        def loggedUserInfo = User.findByUsername(sec.username())
         def userId = User.findById(params.user)
         def roleId = Role.findById(params.role)
 
-        if(userId == null || roleId == null){
-            flash.message = "No se puede realizar la operación, intente más tarde."
+        if(userId.id != loggedUserInfo.id){
+            if(userId == null || roleId == null){
+                flash.message = "No se puede realizar la operación, intente más tarde."
+            } else {
+                UserRole.create(userId,roleId,true)
+                flash.message = "Se ha asignado Rol "+roleId.name+" a este usuario correctamente"
+            }
         } else {
-            UserRole.create(userId,roleId,true)
-            flash.message = "Se ha asignado Rol "+roleId.name+" a este usuario correctamente"
+            flash.message = "Lo siento! No puedes asignarte roles. Consulte con su administrador."
         }
+
         if(params.r != "showUser"){
             redirect (controller: "user", action: "index")
         } else {
@@ -186,17 +192,21 @@ class UserController {
 
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def deleteRole(){
+        def loggedUserInfo = User.findByUsername(sec.username())
         def userId = User.findById(params.idUser)
         def roleId = Role.findById(params.idRole)
 
-        printf('userID='+userId+' roleID='+roleId+'\n')
-
-        if(userId == null || roleId == null){
-            flash.message = "No se puede realizar la operación, intente más tarde."
+        if(userId.id != loggedUserInfo.id){
+            if(userId == null || roleId == null){
+                flash.message = "No se puede realizar la operación, intente más tarde."
+            } else {
+                UserRole.remove(userId,roleId)
+                flash.message = "Se ha removido el rol"
+            }
         } else {
-            UserRole.remove(userId,roleId)
-            flash.message = "Se ha removido el rol"
+            flash.message = "Lo siento! No puedes eliminar tus roles. Consulte con su administrador."
         }
+
         if(params.r != "showUser"){
             redirect (controller: "user", action: "index")
         } else {
