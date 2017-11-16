@@ -3,9 +3,11 @@ package gestem
 class Educacion {
     String code
     String name
-    Date fRes
+    String fRes
     String description
     Boolean enable
+
+    static belongsTo = [institucion:Institucion]
 
     static constraints = {
         fRes blank:true, nullable: true

@@ -13,7 +13,8 @@
                 <thead>
                 <tr>
                     <th>Institucion</th>
-                    <th>Codigo</th>
+                    <th>Resolución</th>
+                    <th>Fecha Res.</th>
                     <th>Nombre</th>
                     <th>Estado</th>
                 </tr>
@@ -21,13 +22,21 @@
                 <tbody>
                 <g:each var="v" in="${educacionList}">
                     <tr>
-                        <td>[] </td>
+                        <td>[${v.institucion.code}] ${v.institucion.name}</td>
                         <td>${v.code}</td>
+                        <td>${v.fRes}</td>
                         <td>${v.name}</td>
-                        <td>${v.enable}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[educacionId:params.educacionId, educacionName:params.educacionName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
-                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" params="[educacionId:params.educacionId, educacionName:params.educacionName]" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
+                            <div class="switch">
+                                <label>
+                                    <input type="checkbox" onclick="checkEnable(this)" <g:if test="${v.enable == true}">checked</g:if>>
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[institucionId:params.institucionId, institucionName:params.institucionName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" params="[institucionId:params.institucionId, institucionName:params.institucionName]" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>
                 </g:each>
@@ -52,19 +61,24 @@
             <g:form action="save" params="[educacionId : params.educacionId, educacionName : params.educacionName]">
                 <div class="row">
                     <div class="input-field col s12 m2">
-                        <f:input property="enable" id="enable" bean="educacion"/>
-                        <label for="enable">Habilitado</label>
+                        <select name="institucion.id" required="" id="institucion">
+                            <option value="" disabled <g:if test="${!params.institucionName}">selected</g:if>>Seleccione Institucion</option>
+                            <g:each var="v" in="${institucionList}">
+                                <option value="${v.id}" <g:if test="${v.name == params.institucionName}">selected</g:if>>${v.name}</option>
+                            </g:each>
+                        </select>
+                        <label>Institucion</label>
                     </div>
                     <div class="input-field col s12 m2">
                         <f:input property="code" id="code" bean="educacion"/>
-                        <label for="code">Codigo</label>
+                        <label for="code">Resolucion</label>
                     </div>
-                    <div class="input-field col s12 m7">
+                    <div class="input-field col s12 m8">
                         <f:input property="name" id="name" bean="educacion"/>
                         <label for="name">Nombre</label>
                     </div>
                     <div class="col s12 m2">
-                        <label for="fRes">Fecha Nacimiento</label>
+                        <label for="fRes">Fecha Resolucion</label>
                         <input type="text" value="${fRes}" name="fRes" id="fRes" class="datepicker">
                     </div>
                     <div class="input-field col s12 m10">
@@ -88,12 +102,37 @@
     <div class="modal-content">
         <h5>Editar ${controllerName}</h5>
         <div class="row">
-            <g:form class="col s12" resource="${this.educacion}" method="PUT" params="[educacionId : params.educacionId, educacionName : params.educacionName]">
+            <g:form class="col s12" resource="${this.educacion}" method="PUT" params="[institucionId:params.institucionId, institucionName:params.institucionName]">
+                <div class="input-field col s12 m2">
+                    <select name="institucion.id" required="">
+                        <option value="" disabled <g:if test="${!params.institucionName}">selected</g:if>>Seleccione Institucion</option>
+                        <g:each var="v" in="${institucionList}">
+                            <option value="${v.id}" <g:if test="${v.name == params.institucionName}">selected</g:if>>${v.name}</option>
+                        </g:each>
+                    </select>
+                    <label>Institucion</label>
+                </div>
+                <div class="input-field col s12 m2">
+                    <f:input property="code" id="code" bean="educacion"/>
+                    <label for="code">Resolucion</label>
+                </div>
+                <div class="input-field col s12 m8">
+                    <f:input property="name" id="name" bean="educacion"/>
+                    <label for="name">Nombre</label>
+                </div>
+                <div class="col s12 m2">
+                    <label for="fRes">Fecha Resolucion</label>
+                    <input type="text" value="${fRes}" name="fRes" class="datepicker">
+                </div>
+                <div class="input-field col s12 m10">
+                    <f:input property="description" id="description" bean="educacion"/>
+                    <label for="description">Descripción</label>
+                </div>
 
                 <!-- Menu Modal Update-->
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <g:link action="index" params="[educacionId : params.educacionId, educacionName : params.educacionName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    <g:link action="index" params="[institucionId:params.institucionId, institucionName:params.institucionName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
                 </div>
             </g:form>
         </div>
@@ -109,5 +148,20 @@
         </g:eachError>
     </ul>
 </g:hasErrors>
+
+<script>
+    function checkEnable(checkBox)
+    {
+        if (checkBox.checked)
+        {
+            console.log("True");
+
+        }
+        else
+        {
+            console.log("False");
+        }
+    }
+</script>
 </body>
 </html>

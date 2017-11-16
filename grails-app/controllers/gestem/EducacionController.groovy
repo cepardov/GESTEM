@@ -11,13 +11,23 @@ class EducacionController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
     def index(Integer max,Educacion educacion) {
+        def educacionsByInstitucion = Educacion.findAllByInstitucion(Institucion.findById(params.institucionId))
         def educacions = Educacion.list(params)
-        params.max = Math.min(max ?: 10, 100)
-        if(params.id!=null){
+        def institucion = Institucion.findAll()
+
+        println "\nInstitucion ID="+params.institucionId
+
+        params.max = Math.min(max ?: 20, 100)
+        if(params.id!=null&&params.institucionId!=null){
+            respond educacion, model:[educacionCount: Educacion.countByInstitucion(Institucion.findById(params.institucionId)), educacionList:educacionsByInstitucion]
+        }else if(params.id!=null){
             respond educacion, model:[educacionCount: Educacion.count(), educacionList:educacions]
-        }else{
+        }else if(params.institucionId!=null) {
+            respond new Educacion(params), model: [educacionCount: Educacion.countByInstitucion(Institucion.findById(params.institucionId)), educacionList: educacionsByInstitucion, institucionList:institucion]
+        }else {
             respond new Educacion(params), model:[educacionCount: Educacion.count(), educacionList:educacions]
         }
+
     }
 
     def show(Educacion educacion) {
@@ -60,12 +70,12 @@ class EducacionController {
     def eliminar(){
         def educacion = Educacion.get(params.id)
 
-        if(Region.countByEducacion(educacion)>0){
-            flash.message = "No tiene suficientes privilegios para eliminar en cascada"
-        } else {
+        //if(Region.countByEducacion(educacion)>0){
+        //    flash.message = "No tiene suficientes privilegios para eliminar en cascada"
+        //} else {
             educacion.delete(flush:true)
             flash.message = message(code: 'default.deleted.message', args: [message(code: 'educacion.label', default: 'Educacion'), educacion.id, educacion.code, educacion.name, ''])
-        }
+        //}
         redirect (controller: "educacion", action: "index")
     }
 

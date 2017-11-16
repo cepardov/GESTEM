@@ -19,7 +19,7 @@
                 </thead>
                 <tbody>
                 <g:each var="v" in="${institucionList}">
-                    <tr>
+                    <tr onclick="location='<g:createLink controller="educacion" action="index" params="[institucionId : v.id, institucionName : v.name]"/>'">
                         <td>[${v.sostenedor.code}] ${v.sostenedor.name}</td>
                         <td>${v.code}</td>
                         <td>${v.name}</td>

@@ -131,9 +131,7 @@ class UserController {
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def save(User user) {
-        printf('\nValidación de rut\n')
         def rut = params.rut
-        printf('Params rut='+rut+'\n')
         boolean rutExist = User.findByRut(rut)
 
         if(!rutExist){
@@ -244,6 +242,7 @@ class UserController {
             def mm = fechaNacimientoSplit[1]
             def yyyy = fechaNacimientoSplit[2]
             Date date = new Date().parse("d/M/yyyy H:m:s", dd+'/'+mm+'/'+yyyy+' 00:00:00.0')
+            println "Fecha Final:"+date+"\n"
             user.setFechaNacimiento(date)
         } else {
 
