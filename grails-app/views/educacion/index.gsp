@@ -21,6 +21,7 @@
                 </thead>
                 <tbody>
                 <g:each var="v" in="${educacionList}">
+                    <g:form class="col s12" resource="${this.educacion}" method="PUT" id="${v.id}" params="[notify:'none']">
                     <tr>
                         <td>[${v.institucion.code}] ${v.institucion.name}</td>
                         <td>${v.code}</td>
@@ -29,7 +30,7 @@
                         <td>
                             <div class="switch">
                                 <label>
-                                    <input type="checkbox" onclick="checkEnable(this)" <g:if test="${v.enable == true}">checked</g:if>>
+                                    <g:checkBox name="enable" value="${v.enable}" onChange="document.getElementById('updateCheck${v.id}').click();"/>
                                     <span class="lever"></span>
                                 </label>
                             </div>
@@ -39,6 +40,8 @@
                             <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" params="[institucionId:params.institucionId, institucionName:params.institucionName]" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>
+                        <button id="updateCheck${v.id}" name="create" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" hidden></button>
+                    </g:form>
                 </g:each>
                 </tbody>
             </table>
@@ -60,16 +63,22 @@
         <div class="row">
             <g:form action="save" params="[educacionId : params.educacionId, educacionName : params.educacionName]">
                 <div class="row">
-                    <div class="input-field col s12 m2">
-                        <select name="institucion.id" required="" id="institucion">
-                            <option value="" disabled <g:if test="${!params.institucionName}">selected</g:if>>Seleccione Institucion</option>
-                            <g:each var="v" in="${institucionList}">
-                                <option value="${v.id}" <g:if test="${v.name == params.institucionName}">selected</g:if>>${v.name}</option>
-                            </g:each>
-                        </select>
-                        <label>Institucion</label>
-                    </div>
-                    <div class="input-field col s12 m2">
+                    <g:if test="${gestem.Institucion.findByName(sec.loggedInUserInfo(field: "institucion"))}">
+                        <input type="text" value="${gestem.Institucion.findByName(sec.loggedInUserInfo(field: "institucion")).id}" name="institucion.id" hidden>
+                        <div class="input-field col s12 m4"><!-- next field -->
+                    </g:if>
+                    <g:else>
+                        <div class="input-field col s12 m2">
+                            <select name="institucion.id" required="" id="institucion">
+                                <option value="" disabled <g:if test="${!params.institucionName}">selected</g:if>>Seleccione Institucion</option>
+                                <g:each var="v" in="${institucionList}">
+                                    <option value="${v.id}" <g:if test="${v.name == params.institucionName}">selected</g:if>>${v.name}</option>
+                                </g:each>
+                            </select>
+                            <label>Institucion</label>
+                        </div>
+                        <div class="input-field col s12 m2"><!-- next field -->
+                    </g:else>
                         <f:input property="code" id="code" bean="educacion"/>
                         <label for="code">Resolucion</label>
                     </div>
@@ -102,18 +111,9 @@
     <div class="modal-content">
         <h5>Editar ${controllerName}</h5>
         <div class="row">
-            <g:form class="col s12" resource="${this.educacion}" method="PUT" params="[institucionId:params.institucionId, institucionName:params.institucionName]">
+            <g:form class="col s12" resource="${this.educacion}" method="PUT">
                 <div class="input-field col s12 m2">
-                    <select name="institucion.id" required="">
-                        <option value="" disabled <g:if test="${!params.institucionName}">selected</g:if>>Seleccione Institucion</option>
-                        <g:each var="v" in="${institucionList}">
-                            <option value="${v.id}" <g:if test="${v.name == params.institucionName}">selected</g:if>>${v.name}</option>
-                        </g:each>
-                    </select>
-                    <label>Institucion</label>
-                </div>
-                <div class="input-field col s12 m2">
-                    <f:input property="code" id="code" bean="educacion"/>
+                <f:input property="code" id="code" bean="educacion"/>
                     <label for="code">Resolucion</label>
                 </div>
                 <div class="input-field col s12 m8">
@@ -122,17 +122,16 @@
                 </div>
                 <div class="col s12 m2">
                     <label for="fRes">Fecha Resolucion</label>
-                    <input type="text" value="${fRes}" name="fRes" class="datepicker">
+                    <input type="text" value="${this.educacion.fRes}" name="fRes" id="fRes" class="datepicker">
                 </div>
                 <div class="input-field col s12 m10">
                     <f:input property="description" id="description" bean="educacion"/>
                     <label for="description">Descripción</label>
                 </div>
-
                 <!-- Menu Modal Update-->
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <g:link action="index" params="[institucionId:params.institucionId, institucionName:params.institucionName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    <g:link action="index" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
                 </div>
             </g:form>
         </div>
@@ -148,20 +147,5 @@
         </g:eachError>
     </ul>
 </g:hasErrors>
-
-<script>
-    function checkEnable(checkBox)
-    {
-        if (checkBox.checked)
-        {
-            console.log("True");
-
-        }
-        else
-        {
-            console.log("False");
-        }
-    }
-</script>
 </body>
 </html>

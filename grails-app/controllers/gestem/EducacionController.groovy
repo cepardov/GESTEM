@@ -97,7 +97,9 @@ class EducacionController {
 
         request.withFormat {
             form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'educacion.label', default: 'Educacion'), educacion.id, educacion.code, educacion.name, ''])
+                if(params.notify!='none'){
+                    flash.message = message(code: 'default.updated.message', args: [message(code: 'educacion.label', default: 'Educacion'), educacion.id, educacion.code, educacion.name, ''])
+                }
                 redirect(controller:"educacion", action: "index")
             }
             '*'{ respond educacion, [status: OK] }
