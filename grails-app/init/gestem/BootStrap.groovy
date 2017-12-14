@@ -29,8 +29,8 @@ class BootStrap {
 
 
             //Users
-            def superUser = new User(rut: "17213233-2", nombre: "Cristian", segNombre: "Esteban", paterno: "Pardo", materno: "Velasquez", userType: '1', username: 'admin', password: 'admin').save(failOnError: true)
-            def adminUserOne = new User(rut: "14625724-0", nombre: "Alex", segNombre: "Carlos", paterno: "Cartes", materno: "Perez", userType: '1', username: 'acartes', password: '123', institucion: '1').save(failOnError: true)
+            def superUser = new User(rut: "17213233-2", nombre: "Cristian", segNombre: "Esteban", paterno: "Pardo", materno: "Velasquez", userType: '1', username: 'admin', password: 'admin', isStudent: false).save(failOnError: true)
+            def adminUserOne = new User(rut: "14625724-0", nombre: "Alex", segNombre: "Carlos", paterno: "Cartes", materno: "Perez", userType: '1', username: 'acartes', password: '123', institucion: '1', isStudent: false).save(failOnError: true)
 
             printf('superRole='+superRole+'\n')
             printf('superUser='+superUser+'\n')

@@ -22,6 +22,7 @@ class User implements Serializable {
 	Date fechaNacimiento
 	String genero
 	String nacionalidad
+	boolean isStudent
 	boolean enabled = true
 	boolean accountExpired
 	boolean accountLocked

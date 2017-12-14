@@ -134,6 +134,8 @@ class UserController {
         def rut = params.rut
         boolean rutExist = User.findByRut(rut)
 
+        //user.setIsStudent(true)
+
         if(!rutExist){
             if (user == null) {
                 transactionStatus.setRollbackOnly()

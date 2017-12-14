@@ -1,6 +1,9 @@
 package gestem
 
 import grails.plugin.springsecurity.annotation.Secured
+import grails.gorm.transactions.Transactional
+
+import static org.springframework.http.HttpStatus.CREATED
 
 @Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
 class AlumnoController {
@@ -9,64 +12,51 @@ class AlumnoController {
         println "\n\nHello\n\n"
         def loggedUserInfo = User.findByUsername(sec.username())
         def institucionName = loggedUserInfo.institucion
-        def alumno = User.findAllByInstitucion(institucionName)
+        def alumno = User.findAllByIsStudent(true)
+        //def alumno = UserRole.findAllByUserAndRole(User.findAllByInstitucion(institucionName),Role.findByName('Apoderado').id)
+
 
         params.max = Math.min(max ?: 20, 100)
 
         println "\n\nAlumno Index: Alumnos ="+User.count()+" registros\n"
-        respond user, model: [alumnoCount:User.count(), alumnoList:alumno]
+        respond new User(params), model: [alumnoCount:User.count(), alumnoList:alumno]
     }
 
-    def list(Integer max, User user) {
+    @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
+    @Transactional
+    def save(User user) {
+        def rut = params.rut
+        boolean rutExist = User.findByRut(rut)
 
+        //user.setIsStudent(true)
 
-        def loggedUserInfo = User.findByUsername(sec.username())
+        if(!rutExist){
+            if (user == null) {
+                transactionStatus.setRollbackOnly()
+                notFound()
+                return
+            }
 
-        def query = params.q.toString().length()
-        def userList
-        def userCount
-        def institucionList
+            if (user.hasErrors()) {
+                transactionStatus.setRollbackOnly()
+                respond user.errors, view:'show'
+                return
+            }
 
-        if(params.q && query>2){
-            def userCriteria = User.createCriteria()
-            userList = userCriteria.list(params){
-                if(params.q){
-                    or{
-                        ilike('username','%'+params.q+'%')
-                        ilike('nombre','%'+params.q+'%')
-                        ilike('segNombre','%'+params.q+'%')
-                        ilike('paterno','%'+params.q+'%')
-                        ilike('materno','%'+params.q+'%')
-                    }
+            user.save flush:true
+
+            request.withFormat {
+                form multipartForm {
+                    flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
+                    redirect(controller:"user", action: "index")
                 }
+                '*' { respond user, [status: CREATED] }
             }
-            userCount = userList.findAll().size()
         } else {
-            if(params.q){
-                flash.message = "El termino de búsqueda debe ser mayor a 3 caracteres"
-            }
-            if(!loggedUserInfo.institucion){
-                userList = User.list(params)
-                institucionList = Institucion.list()
-                userCount = User.count()
-            } else {
-                userList = User.findAllByInstitucion(loggedUserInfo.institucion)
-                institucionList = Institucion.findAllByCode(loggedUserInfo.institucion.code)
-                userCount = userList.size()
-            }
+            flash.message = "El susario con RUT:"+rut+" ya existe."
+            redirect (controller: "user", action: "index")
         }
 
-
-        params.max = Math.min(max ?: 10, 100)
-
-        if(params.id!=null){
-            respond user, model:[userCount: userCount, userList:userList, institucionList:institucionList]
-        }else{
-            respond new User(params), model:[userCount: userCount, userList:userList, institucionList:institucionList]
-        }
-    }
-
-    def show(){
 
     }
 }

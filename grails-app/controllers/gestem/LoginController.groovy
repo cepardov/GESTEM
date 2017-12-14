@@ -1,7 +1,5 @@
 package gestem
 
-import grails.plugin.springsecurity.annotation.Secured
-
 class LoginController extends grails.plugin.springsecurity.LoginController {
 
     def index() {

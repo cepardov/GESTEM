@@ -1,7 +1,9 @@
 package gestem
 
+import grails.gorm.transactions.Transactional
+
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
+
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
