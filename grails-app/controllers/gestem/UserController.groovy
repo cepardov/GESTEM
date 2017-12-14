@@ -227,7 +227,11 @@ class UserController {
         } else {
             flash.message = "Ouch! No puede eliminar su propia cuanta."
         }
-        redirect (controller: "user", action: "index")
+
+        switch (params.r){
+            case 'alumnoIndex': redirect(controller: "alumno", action: "index"); break
+            default: redirect (controller: "user", action: "index")
+        }
     }
 
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
