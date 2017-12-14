@@ -43,7 +43,7 @@ class UserController {
                 institucionList = Institucion.list()
                 userCount = User.count()
             } else {
-                userList = User.findAllByInstitucion(loggedUserInfo.institucion)
+                userList = User.findAllByInstitucionAndIsStudent(loggedUserInfo.institucion, false)
                 institucionList = Institucion.findAllByCode(loggedUserInfo.institucion.code)
                 userCount = userList.size()
             }
@@ -57,10 +57,6 @@ class UserController {
         }else{
             respond new User(params), model:[userCount: userCount, userList:userList, institucionList:institucionList]
         }
-    }
-
-    def alumnos(Integer max, User user) {
-
     }
 
     def getFechaNacimiento(User user){

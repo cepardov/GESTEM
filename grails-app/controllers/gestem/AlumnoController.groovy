@@ -25,10 +25,14 @@ class AlumnoController {
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     @Transactional
     def save(User user) {
+        def loggedUserInfo = User.findByUsername(sec.username())
+        def institucion = loggedUserInfo.institucion
+
         def rut = params.rut
         boolean rutExist = User.findByRut(rut)
 
-        //user.setIsStudent(true)
+        user.setIsStudent(true)
+        user.setInstitucion(institucion)
 
         if(!rutExist){
             if (user == null) {
@@ -48,13 +52,13 @@ class AlumnoController {
             request.withFormat {
                 form multipartForm {
                     flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), user.id, user.nombre, user.paterno, user.materno])
-                    redirect(controller:"user", action: "index")
+                    redirect(controller:"alumno", action: "index")
                 }
                 '*' { respond user, [status: CREATED] }
             }
         } else {
             flash.message = "El susario con RUT:"+rut+" ya existe."
-            redirect (controller: "user", action: "index")
+            redirect (controller: "alumno", action: "index")
         }
 
 
