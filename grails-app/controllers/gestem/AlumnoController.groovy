@@ -8,6 +8,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND
 import static org.springframework.http.HttpStatus.OK
 
 @Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
+@Transactional(readOnly = true)
 class AlumnoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
