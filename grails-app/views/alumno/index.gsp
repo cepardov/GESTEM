@@ -56,7 +56,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <g:each var="v" in="${userList}">
+                <g:each var="v" in="${alumnoList}">
                     <tr onclick="location='<g:createLink controller="user" action="show" id="${v.id}" params="[name : v.nombre, lastName : v.paterno]"/>'">
                         <td>${v.rut}</td>
                         <td>${v.username}</td>
@@ -79,5 +79,7 @@
         </div>
     </div>
 </div>
+
+
 </body>
 </html>

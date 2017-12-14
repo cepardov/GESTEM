@@ -1,11 +1,11 @@
 package gestem
 
-import grails.test.mixin.*
+import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
+import grails.validation.ValidationException
 import spock.lang.*
 
-@TestFor(EducacionController)
-@Mock(Educacion)
-class EducacionControllerSpec extends Specification {
+class EducacionControllerSpec extends Specification implements ControllerUnitTest<EducacionController>, DomainUnitTest<Educacion> {
 
     def populateValidParams(params) {
         assert params != null
@@ -16,137 +16,212 @@ class EducacionControllerSpec extends Specification {
     }
 
     void "Test the index action returns the correct model"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * list(_) >> []
+            1 * count() >> 0
+        }
 
         when:"The index action is executed"
-            controller.index()
+        controller.index()
 
         then:"The model is correct"
-            !model.educacionList
-            model.educacionCount == 0
+        !model.educacionList
+        model.educacionCount == 0
     }
 
     void "Test the create action returns the correct model"() {
         when:"The create action is executed"
-            controller.create()
+        controller.create()
 
         then:"The model is correctly created"
-            model.educacion!= null
+        model.educacion!= null
     }
 
-    void "Test the save action correctly persists an instance"() {
+    void "Test the save action with a null instance"() {
+        when:"Save is called for a domain instance that doesn't exist"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+        controller.save(null)
 
-        when:"The save action is executed with an invalid instance"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'POST'
-            def educacion = new Educacion()
-            educacion.validate()
-            controller.save(educacion)
+        then:"A 404 error is returned"
+        response.redirectedUrl == '/educacion/index'
+        flash.message != null
+    }
 
-        then:"The create view is rendered again with the correct model"
-            model.educacion!= null
-            view == 'create'
+    void "Test the save action correctly persists"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * save(_ as Educacion)
+        }
 
         when:"The save action is executed with a valid instance"
-            response.reset()
-            populateValidParams(params)
-            educacion = new Educacion(params)
+        response.reset()
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+        populateValidParams(params)
+        def educacion = new Educacion(params)
+        educacion.id = 1
 
-            controller.save(educacion)
+        controller.save(educacion)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/educacion/show/1'
-            controller.flash.message != null
-            Educacion.count() == 1
+        response.redirectedUrl == '/educacion/show/1'
+        controller.flash.message != null
     }
 
-    void "Test that the show action returns the correct model"() {
+    void "Test the save action with an invalid instance"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * save(_ as Educacion) >> { Educacion educacion ->
+                throw new ValidationException("Invalid instance", educacion.errors)
+            }
+        }
+
+        when:"The save action is executed with an invalid instance"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+        def educacion = new Educacion()
+        controller.save(educacion)
+
+        then:"The create view is rendered again with the correct model"
+        model.educacion != null
+        view == 'create'
+    }
+
+    void "Test the show action with a null id"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * get(null) >> null
+        }
+
         when:"The show action is executed with a null domain"
-            controller.show(null)
+        controller.show(null)
 
         then:"A 404 error is returned"
-            response.status == 404
+        response.status == 404
+    }
+
+    void "Test the show action with a valid id"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * get(2) >> new Educacion()
+        }
 
         when:"A domain instance is passed to the show action"
-            populateValidParams(params)
-            def educacion = new Educacion(params)
-            controller.show(educacion)
+        controller.show(2)
 
         then:"A model is populated containing the domain instance"
-            model.educacion == educacion
+        model.educacion instanceof Educacion
     }
 
-    void "Test that the edit action returns the correct model"() {
-        when:"The edit action is executed with a null domain"
-            controller.edit(null)
+    void "Test the edit action with a null id"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * get(null) >> null
+        }
+
+        when:"The show action is executed with a null domain"
+        controller.edit(null)
 
         then:"A 404 error is returned"
-            response.status == 404
+        response.status == 404
+    }
 
-        when:"A domain instance is passed to the edit action"
-            populateValidParams(params)
-            def educacion = new Educacion(params)
-            controller.edit(educacion)
+    void "Test the edit action with a valid id"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * get(2) >> new Educacion()
+        }
+
+        when:"A domain instance is passed to the show action"
+        controller.edit(2)
 
         then:"A model is populated containing the domain instance"
-            model.educacion == educacion
+        model.educacion instanceof Educacion
     }
 
-    void "Test the update action performs an update on a valid domain instance"() {
-        when:"Update is called for a domain instance that doesn't exist"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'PUT'
-            controller.update(null)
+
+    void "Test the update action with a null instance"() {
+        when:"Save is called for a domain instance that doesn't exist"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'PUT'
+        controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/educacion/index'
-            flash.message != null
+        response.redirectedUrl == '/educacion/index'
+        flash.message != null
+    }
 
-        when:"An invalid domain instance is passed to the update action"
-            response.reset()
-            def educacion = new Educacion()
-            educacion.validate()
-            controller.update(educacion)
+    void "Test the update action correctly persists"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * save(_ as Educacion)
+        }
 
-        then:"The edit view is rendered again with the invalid instance"
-            view == 'edit'
-            model.educacion == educacion
+        when:"The save action is executed with a valid instance"
+        response.reset()
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'PUT'
+        populateValidParams(params)
+        def educacion = new Educacion(params)
+        educacion.id = 1
 
-        when:"A valid domain instance is passed to the update action"
-            response.reset()
-            populateValidParams(params)
-            educacion = new Educacion(params).save(flush: true)
-            controller.update(educacion)
+        controller.update(educacion)
 
         then:"A redirect is issued to the show action"
-            educacion != null
-            response.redirectedUrl == "/educacion/show/$educacion.id"
-            flash.message != null
+        response.redirectedUrl == '/educacion/show/1'
+        controller.flash.message != null
     }
 
-    void "Test that the delete action deletes an instance if it exists"() {
+    void "Test the update action with an invalid instance"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * save(_ as Educacion) >> { Educacion educacion ->
+                throw new ValidationException("Invalid instance", educacion.errors)
+            }
+        }
+
+        when:"The save action is executed with an invalid instance"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'PUT'
+        controller.update(new Educacion())
+
+        then:"The edit view is rendered again with the correct model"
+        model.educacion != null
+        view == 'edit'
+    }
+
+    void "Test the delete action with a null instance"() {
         when:"The delete action is called for a null instance"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'DELETE'
-            controller.delete(null)
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'DELETE'
+        controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/educacion/index'
-            flash.message != null
+        response.redirectedUrl == '/educacion/index'
+        flash.message != null
+    }
 
-        when:"A domain instance is created"
-            response.reset()
-            populateValidParams(params)
-            def educacion = new Educacion(params).save(flush: true)
-
-        then:"It exists"
-            Educacion.count() == 1
+    void "Test the delete action with an instance"() {
+        given:
+        controller.educacionService = Mock(EducacionService) {
+            1 * delete(2)
+        }
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(educacion)
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'DELETE'
+        controller.delete(2)
 
-        then:"The instance is deleted"
-            Educacion.count() == 0
-            response.redirectedUrl == '/educacion/index'
-            flash.message != null
+        then:"The user is redirected to index"
+        response.redirectedUrl == '/educacion/index'
+        flash.message != null
     }
 }
+
+
+
+
+
+

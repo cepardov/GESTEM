@@ -1,13 +1,9 @@
 package gestem
 
-import grails.test.mixin.TestFor
+import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-/**
- * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
- */
-@TestFor(Enseñanza)
-class EnseñanzaSpec extends Specification {
+class EnseñanzaSpec extends Specification implements DomainUnitTest<Enseñanza> {
 
     def setup() {
     }

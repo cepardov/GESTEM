@@ -5,8 +5,16 @@ import grails.plugin.springsecurity.annotation.Secured
 @Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
 class AlumnoController {
 
-    def index() {
+    def index(Integer max, User user) {
+        println "\n\nHello\n\n"
+        def loggedUserInfo = User.findByUsername(sec.username())
+        def institucionName = loggedUserInfo.institucion
+        def alumno = User.findAllByInstitucion(institucionName)
 
+        params.max = Math.min(max ?: 20, 100)
+
+        println "\n\nAlumno Index: Alumnos ="+User.count()+" registros\n"
+        respond user, model: [alumnoCount:User.count(), alumnoList:alumno]
     }
 
     def list(Integer max, User user) {

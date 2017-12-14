@@ -1,11 +1,11 @@
 package gestem
 
-import grails.test.mixin.*
+import grails.testing.gorm.DomainUnitTest
+import grails.testing.web.controllers.ControllerUnitTest
+import grails.validation.ValidationException
 import spock.lang.*
 
-@TestFor(UserRoleController)
-@Mock(UserRole)
-class UserRoleControllerSpec extends Specification {
+class UserRoleControllerSpec extends Specification implements ControllerUnitTest<UserRoleController>, DomainUnitTest<UserRole> {
 
     def populateValidParams(params) {
         assert params != null
@@ -16,137 +16,212 @@ class UserRoleControllerSpec extends Specification {
     }
 
     void "Test the index action returns the correct model"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * list(_) >> []
+            1 * count() >> 0
+        }
 
         when:"The index action is executed"
-            controller.index()
+        controller.index()
 
         then:"The model is correct"
-            !model.userRoleList
-            model.userRoleCount == 0
+        !model.userRoleList
+        model.userRoleCount == 0
     }
 
     void "Test the create action returns the correct model"() {
         when:"The create action is executed"
-            controller.create()
+        controller.create()
 
         then:"The model is correctly created"
-            model.userRole!= null
+        model.userRole!= null
     }
 
-    void "Test the save action correctly persists an instance"() {
+    void "Test the save action with a null instance"() {
+        when:"Save is called for a domain instance that doesn't exist"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+        controller.save(null)
 
-        when:"The save action is executed with an invalid instance"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'POST'
-            def userRole = new UserRole()
-            userRole.validate()
-            controller.save(userRole)
+        then:"A 404 error is returned"
+        response.redirectedUrl == '/userRole/index'
+        flash.message != null
+    }
 
-        then:"The create view is rendered again with the correct model"
-            model.userRole!= null
-            view == 'create'
+    void "Test the save action correctly persists"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * save(_ as UserRole)
+        }
 
         when:"The save action is executed with a valid instance"
-            response.reset()
-            populateValidParams(params)
-            userRole = new UserRole(params)
+        response.reset()
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+        populateValidParams(params)
+        def userRole = new UserRole(params)
+        userRole.id = 1
 
-            controller.save(userRole)
+        controller.save(userRole)
 
         then:"A redirect is issued to the show action"
-            response.redirectedUrl == '/userRole/show/1'
-            controller.flash.message != null
-            UserRole.count() == 1
+        response.redirectedUrl == '/userRole/show/1'
+        controller.flash.message != null
     }
 
-    void "Test that the show action returns the correct model"() {
+    void "Test the save action with an invalid instance"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * save(_ as UserRole) >> { UserRole userRole ->
+                throw new ValidationException("Invalid instance", userRole.errors)
+            }
+        }
+
+        when:"The save action is executed with an invalid instance"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'POST'
+        def userRole = new UserRole()
+        controller.save(userRole)
+
+        then:"The create view is rendered again with the correct model"
+        model.userRole != null
+        view == 'create'
+    }
+
+    void "Test the show action with a null id"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * get(null) >> null
+        }
+
         when:"The show action is executed with a null domain"
-            controller.show(null)
+        controller.show(null)
 
         then:"A 404 error is returned"
-            response.status == 404
+        response.status == 404
+    }
+
+    void "Test the show action with a valid id"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * get(2) >> new UserRole()
+        }
 
         when:"A domain instance is passed to the show action"
-            populateValidParams(params)
-            def userRole = new UserRole(params)
-            controller.show(userRole)
+        controller.show(2)
 
         then:"A model is populated containing the domain instance"
-            model.userRole == userRole
+        model.userRole instanceof UserRole
     }
 
-    void "Test that the edit action returns the correct model"() {
-        when:"The edit action is executed with a null domain"
-            controller.edit(null)
+    void "Test the edit action with a null id"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * get(null) >> null
+        }
+
+        when:"The show action is executed with a null domain"
+        controller.edit(null)
 
         then:"A 404 error is returned"
-            response.status == 404
+        response.status == 404
+    }
 
-        when:"A domain instance is passed to the edit action"
-            populateValidParams(params)
-            def userRole = new UserRole(params)
-            controller.edit(userRole)
+    void "Test the edit action with a valid id"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * get(2) >> new UserRole()
+        }
+
+        when:"A domain instance is passed to the show action"
+        controller.edit(2)
 
         then:"A model is populated containing the domain instance"
-            model.userRole == userRole
+        model.userRole instanceof UserRole
     }
 
-    void "Test the update action performs an update on a valid domain instance"() {
-        when:"Update is called for a domain instance that doesn't exist"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'PUT'
-            controller.update(null)
+
+    void "Test the update action with a null instance"() {
+        when:"Save is called for a domain instance that doesn't exist"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'PUT'
+        controller.update(null)
 
         then:"A 404 error is returned"
-            response.redirectedUrl == '/userRole/index'
-            flash.message != null
+        response.redirectedUrl == '/userRole/index'
+        flash.message != null
+    }
 
-        when:"An invalid domain instance is passed to the update action"
-            response.reset()
-            def userRole = new UserRole()
-            userRole.validate()
-            controller.update(userRole)
+    void "Test the update action correctly persists"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * save(_ as UserRole)
+        }
 
-        then:"The edit view is rendered again with the invalid instance"
-            view == 'edit'
-            model.userRole == userRole
+        when:"The save action is executed with a valid instance"
+        response.reset()
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'PUT'
+        populateValidParams(params)
+        def userRole = new UserRole(params)
+        userRole.id = 1
 
-        when:"A valid domain instance is passed to the update action"
-            response.reset()
-            populateValidParams(params)
-            userRole = new UserRole(params).save(flush: true)
-            controller.update(userRole)
+        controller.update(userRole)
 
         then:"A redirect is issued to the show action"
-            userRole != null
-            response.redirectedUrl == "/userRole/show/$userRole.id"
-            flash.message != null
+        response.redirectedUrl == '/userRole/show/1'
+        controller.flash.message != null
     }
 
-    void "Test that the delete action deletes an instance if it exists"() {
+    void "Test the update action with an invalid instance"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * save(_ as UserRole) >> { UserRole userRole ->
+                throw new ValidationException("Invalid instance", userRole.errors)
+            }
+        }
+
+        when:"The save action is executed with an invalid instance"
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'PUT'
+        controller.update(new UserRole())
+
+        then:"The edit view is rendered again with the correct model"
+        model.userRole != null
+        view == 'edit'
+    }
+
+    void "Test the delete action with a null instance"() {
         when:"The delete action is called for a null instance"
-            request.contentType = FORM_CONTENT_TYPE
-            request.method = 'DELETE'
-            controller.delete(null)
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'DELETE'
+        controller.delete(null)
 
         then:"A 404 is returned"
-            response.redirectedUrl == '/userRole/index'
-            flash.message != null
+        response.redirectedUrl == '/userRole/index'
+        flash.message != null
+    }
 
-        when:"A domain instance is created"
-            response.reset()
-            populateValidParams(params)
-            def userRole = new UserRole(params).save(flush: true)
-
-        then:"It exists"
-            UserRole.count() == 1
+    void "Test the delete action with an instance"() {
+        given:
+        controller.userRoleService = Mock(UserRoleService) {
+            1 * delete(2)
+        }
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(userRole)
+        request.contentType = FORM_CONTENT_TYPE
+        request.method = 'DELETE'
+        controller.delete(2)
 
-        then:"The instance is deleted"
-            UserRole.count() == 0
-            response.redirectedUrl == '/userRole/index'
-            flash.message != null
+        then:"The user is redirected to index"
+        response.redirectedUrl == '/userRole/index'
+        flash.message != null
     }
 }
+
+
+
+
+
+

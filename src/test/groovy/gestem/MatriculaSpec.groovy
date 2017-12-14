@@ -1,13 +1,9 @@
 package gestem
 
-import grails.test.mixin.TestFor
+import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-/**
- * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
- */
-@TestFor(Matricula)
-class MatriculaSpec extends Specification {
+class MatriculaSpec extends Specification implements DomainUnitTest<Matricula> {
 
     def setup() {
     }
