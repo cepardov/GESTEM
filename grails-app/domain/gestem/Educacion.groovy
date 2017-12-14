@@ -7,6 +7,7 @@ class Educacion {
     String description
     Boolean enable
 
+    static hasMany = [asignatura:Asignatura]
     static belongsTo = [institucion:Institucion]
 
     static constraints = {
