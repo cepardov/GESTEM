@@ -136,7 +136,7 @@
         <div class="modal-content">
             <h5>Editar Usuario</h5>
             <div class="row">
-                <g:form class="col s12" resource="${this.user}" method="PUT" params="[r:'index']">
+                <g:form class="col s12" resource="${this.user}" method="PUT" params="[r:'alumnoIndex']">
                     <div class="row">
                         <div class="input-field col s12 m2">
                             <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k"/>

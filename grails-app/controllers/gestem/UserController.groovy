@@ -1,7 +1,7 @@
 package gestem
 
+import grails.gorm.transactions.Transactional
 import static org.springframework.http.HttpStatus.*
-import grails.transaction.Transactional
 import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['ROLE_LEVEL0','ROLE_LEVELX'])
@@ -266,6 +266,8 @@ class UserController {
                 switch (params.r) {
                     case 'index': redirect(controller: "user", action: "index"); break
                     case 'show': redirect(controller: "user", action: "show", id: params.id); break
+                    case 'alumnoIndex': redirect(controller: "alumno", action: "index"); break
+                    case 'alumnoShow': redirect(controller: "alumno", action: "show", params: params.id); break
                     default: redirect(controller: "user", action: "index");
                 }
             }
