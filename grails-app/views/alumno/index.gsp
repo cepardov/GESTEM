@@ -65,7 +65,7 @@
                         <td>${v.paterno}</td>
                         <td>${v.materno}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light blue tooltipped" action="show" params="[name : v.nombre, lastName : v.paterno]" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Ver Usuario"><i class="material-icons">remove_red_eye</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light blue tooltipped" controller="user" action="show" params="[r:'alumno',name : v.nombre, lastName : v.paterno]" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Ver Usuario"><i class="material-icons">remove_red_eye</i></g:link>
                             <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Editar Usuario"><i class="material-icons">edit</i></g:link>
                             <g:link class="btn-floating waves-effect waves-light red tooltipped" controller="user" action="eliminar" id="${v.id}" params="[r:'alumnoIndex']" data-position="left" data-delay="50" data-tooltip="Eliminar Usuario"><i class="material-icons">delete</i></g:link>
                         </td>
