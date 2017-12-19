@@ -48,12 +48,13 @@
                                 <a href="" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.null.name" /></a>
                             </g:if>
                             <g:else>
-                                <a href="/" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.null.name" /></a>
                                 <g:if test="${controllerName != 'dashboard'}">
                                     <a href="<g:createLink controller="dashboard" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.dashboard.name" /></a>
                                 </g:if>
+
+                                <!--
                                 <g:if test="${params.paisId}">
-                                    <a href="<g:createLink controller="pais" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.pais.name" /></a>
+                                    <a href="<g:createLink controller="pais" action="index" params="[]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.pais.name" /></a>
                                 </g:if>
                                 <g:if test="${params.regionId}">
                                     <a href="<g:createLink controller="region" action="index" params="[paisId: params.paisId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.region.name" /></a>
@@ -61,6 +62,11 @@
                                 <g:if test="${params.ciudadId}">
                                     <a href="<g:createLink controller="ciudad" action="index" params="[regionId: params.regionId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.ciudad.name" /></a>
                                 </g:if>
+                                <g:if test="${params.comunaId}">
+                                    <a href="<g:createLink controller="comuna" action="index" params="[ciudadId: params.comunaId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.ciudad.name" /></a>
+                                </g:if>
+                                -->
+
 
                                 <g:if test="${actionName == 'show'}">
                                     <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.${controllerName}.name" /></a>
@@ -87,7 +93,7 @@
                                     <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
                                 </a>
                             </g:else>
-                            <g:if test="${controllerName}">
+                            <g:if test="${controllerName != 'dashboard'}">
                                 <g:if test="${actionName == 'index'}">
                                     <ul class="right">
                                         <li><g:link class="material-icons grey-text tooltipped" action="index" params="[q:'']" data-position="top" data-delay="50" data-tooltip="Buscar Usuario"><i class="material-icons">search</i></g:link></li>

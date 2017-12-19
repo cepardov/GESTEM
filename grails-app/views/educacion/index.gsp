@@ -7,48 +7,46 @@
 </head>
 <body>
 <div class="slider col s12 m12">
-    <div id="list-educacion" class="content scaffold-list" role="main">
-        <div class="row">
-            <table class="responsive-table bordered highlight-2 centered">
-                <thead>
-                <tr>
-                    <th>Institucion</th>
-                    <th>Resolución</th>
-                    <th>Fecha Res.</th>
-                    <th>Nombre</th>
-                    <th>Estado</th>
+    <div class="row">
+        <table class="responsive-table bordered highlight-2 centered">
+            <thead>
+            <tr>
+                <th>Institucion</th>
+                <th>Resolución</th>
+                <th>Fecha Res.</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <g:each var="v" in="${educacionList}">
+                <g:form class="col s12" resource="${this.educacion}" method="PUT" id="${v.id}" params="[notify:'none']">
+                    <tr onclick="location='<g:createLink controller="asignatura" action="index" params="[paisId: params.paisId, regionId: params.regionId, ciudadId: params.ciudadId, comunaId : params.comunaId, sostenedorId: params.sostenedorId, institucionId: params.institucionId, educacionId: v.id, educacionName: v.name]"/>'">
+                    <td>[${v.institucion.code}] ${v.institucion.name}</td>
+                    <td>${v.code}</td>
+                    <td>${v.fRes}</td>
+                    <td>${v.name}</td>
+                    <td>
+                        <div class="switch">
+                            <label>
+                                <g:checkBox name="enable" value="${v.enable}" onChange="document.getElementById('updateCheck${v.id}').click();"/>
+                                <span class="lever"></span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[institucionId:params.institucionId, institucionName:params.institucionName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
+                        <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" params="[institucionId:params.institucionId, institucionName:params.institucionName]" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                <g:each var="v" in="${educacionList}">
-                    <g:form class="col s12" resource="${this.educacion}" method="PUT" id="${v.id}" params="[notify:'none']">
-                    <tr>
-                        <td>[${v.institucion.code}] ${v.institucion.name}</td>
-                        <td>${v.code}</td>
-                        <td>${v.fRes}</td>
-                        <td>${v.name}</td>
-                        <td>
-                            <div class="switch">
-                                <label>
-                                    <g:checkBox name="enable" value="${v.enable}" onChange="document.getElementById('updateCheck${v.id}').click();"/>
-                                    <span class="lever"></span>
-                                </label>
-                            </div>
-                        </td>
-                        <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[institucionId:params.institucionId, institucionName:params.institucionName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
-                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" params="[institucionId:params.institucionId, institucionName:params.institucionName]" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
-                        </td>
-                    </tr>
-                        <button id="updateCheck${v.id}" name="create" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" hidden></button>
-                    </g:form>
-                </g:each>
-                </tbody>
-            </table>
-        </div>
-        <div class="pagination">
-            <g:paginate total="${educacionCount ?: 0}" />
-        </div>
+                    <button id="updateCheck${v.id}" name="create" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" hidden></button>
+                </g:form>
+            </g:each>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        <g:paginate total="${educacionCount ?: 0}" />
     </div>
 </div>
 <!-- Menu flotante Crear -->
