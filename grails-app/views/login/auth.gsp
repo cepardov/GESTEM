@@ -31,5 +31,9 @@
     </div>
     <div class="col m4"></div>
 </div>
+<!-- Login Errors -->
+<g:if test="${params.login_error}">
+    <script>document.getElementById("icon_prefix").focus();</script>
+</g:if>
 </body>
 </html>
