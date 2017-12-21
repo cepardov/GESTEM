@@ -8,5 +8,6 @@ class Comuna {
     static belongsTo = [ciudad:Ciudad]
 
     static constraints = {
+        code unique: true, blank: false, nullable: false
     }
 }

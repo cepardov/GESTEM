@@ -8,5 +8,6 @@ class Region {
     static belongsTo = [pais:Pais]
 
     static constraints = {
+        code unique: true, blank: false, nullable: false
     }
 }

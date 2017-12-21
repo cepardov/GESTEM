@@ -12,6 +12,7 @@ class Institucion {
     static belongsTo = [sostenedor:Sostenedor]
 
     static constraints = {
+        code unique: true, blank: false, nullable: false
         nRes blank:true, nullable: true
         fRes blank:true, nullable: true
         phone blank:true, nullable: true

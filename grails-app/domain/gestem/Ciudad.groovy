@@ -8,5 +8,6 @@ class Ciudad {
     static belongsTo = [region:Region]
 
     static constraints = {
+        code unique: true, blank: false, nullable: false
     }
 }

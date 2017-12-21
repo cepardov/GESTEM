@@ -8,5 +8,6 @@ class Sostenedor {
     static belongsTo = [comuna:Comuna]
 
     static constraints = {
+        code unique: true, blank: false, nullable: false
     }
 }

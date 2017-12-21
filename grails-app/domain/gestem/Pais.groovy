@@ -7,5 +7,6 @@ class Pais {
     static hasMany = [region:Region]
 
     static constraints = {
+        code unique: true, blank: false, nullable: false
     }
 }
