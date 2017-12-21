@@ -38,7 +38,7 @@ class PaisController {
 
         if (pais.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond pais.errors, view:'create'
+            respond pais.errors, view:'index'
             return
         }
 
@@ -79,7 +79,7 @@ class PaisController {
 
         if (pais.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond pais.errors, view:'edit'
+            respond pais.errors, view:'index'
             return
         }
 
