@@ -87,7 +87,7 @@ class ComunaController {
 
         if (comuna.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond comuna.errors, view:'edit'
+            respond comuna.errors, view:'index'
             return
         }
 

@@ -89,7 +89,7 @@ class CiudadController {
 
         if (ciudad.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond ciudad.errors, view:'edit'
+            respond ciudad.errors, view:'index'
             return
         }
 

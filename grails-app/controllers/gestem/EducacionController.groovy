@@ -48,7 +48,7 @@ class EducacionController {
 
         if (educacion.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond educacion.errors, view:'create'
+            respond educacion.errors, view:'index'
             return
         }
 
@@ -89,7 +89,7 @@ class EducacionController {
 
         if (educacion.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond educacion.errors, view:'edit'
+            respond educacion.errors, view:'index'
             return
         }
 

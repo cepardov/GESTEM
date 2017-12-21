@@ -86,7 +86,7 @@ class SostenedorController {
 
         if (sostenedor.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond sostenedor.errors, view:'edit'
+            respond sostenedor.errors, view:'index'
             return
         }
 

@@ -45,7 +45,7 @@
     </div>
 </g:if>
 <g:else>
-    <div class="fixed-action-btn">
+    <div class="fixed-action-btn <g:hasErrors bean="${this.asignatura}">hiddendiv</g:hasErrors>">
         <div class="row">
             <div class="col s12 m5 right">
                 <div class="card-panel teal z-depth-4">
@@ -135,11 +135,15 @@
     <a type="hidden" href="#modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
 </g:if>
 <g:hasErrors bean="${this.asignatura}">
-    <ul class="errors" role="alert">
+    <ul class="errors red-text" role="alert">
         <g:eachError bean="${this.asignatura}" var="error">
             <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
         </g:eachError>
     </ul>
+
+    <div class="fixed-action-btn">
+        <a class="create modal-trigger waves-effect waves-light btn-floating btn-large teal tooltipped" data-target="modalCreate" data-position="left" data-delay="50" data-tooltip="Agregar ${controllerName}"><i class="material-icons">add</i></a>
+    </div>
 </g:hasErrors>
 </body>
 </html>

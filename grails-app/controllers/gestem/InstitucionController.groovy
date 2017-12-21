@@ -91,7 +91,7 @@ class InstitucionController {
 
         if (institucion.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond institucion.errors, view:'edit'
+            respond institucion.errors, view:'index'
             return
         }
 

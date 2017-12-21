@@ -93,7 +93,7 @@ class RegionController {
 
         if (region.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond region.errors, view:'edit'
+            respond region.errors, view:'index'
             return
         }
 

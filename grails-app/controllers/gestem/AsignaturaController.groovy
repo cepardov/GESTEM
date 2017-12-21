@@ -39,6 +39,10 @@ class AsignaturaController {
 
         if (asignatura.hasErrors()) {
             transactionStatus.setRollbackOnly()
+            //asignatura.errors.allErrors.each {
+            //    flash.message = message(it.defaultMessage)
+            //}
+            //redirect(controller:"asignatura", action: "index")
             respond asignatura.errors, view:'index'
             return
         }
@@ -80,7 +84,7 @@ class AsignaturaController {
 
         if (asignatura.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond asignatura.errors, view:'edit'
+            respond asignatura.errors, view:'index'
             return
         }
 

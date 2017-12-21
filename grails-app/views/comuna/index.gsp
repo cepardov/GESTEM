@@ -108,7 +108,7 @@
     <a type="hidden" href="#modalEdicion" data-position="left" data-delay="50" id="clickButton"></a>
 </g:if>
 <g:hasErrors bean="${this.comuna}">
-    <ul class="errors" role="alert">
+    <ul class="errors red-text" role="alert">
         <g:eachError bean="${this.comuna}" var="error">
             <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
         </g:eachError>
