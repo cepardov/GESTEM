@@ -19,12 +19,12 @@
                 </thead>
                 <tbody>
                 <g:each var="v" in="${sostenedorList}">
-                    <tr onclick="location='<g:createLink controller="institucion" action="index" params="[paisId: params.paisId, regionId: params.regionId, ciudadId: params.ciudadId, comunaId: params.comunaId, sostenedorId: v.id, sostenedorName : v.name]"/>'">
+                    <tr>
                         <td>[${v.comuna.code}] ${v.comuna.name}</td>
                         <td>${v.code}</td>
                         <td>${v.name}</td>
                         <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[comunaId : params.comunaId, comunaName : params.comunaName]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
+                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" id="${v.id}" params="[]" data-position="left" data-delay="50" data-tooltip="Editar ${controllerName}"><i class="material-icons">edit</i></g:link>
                             <g:link class="btn-floating waves-effect waves-light red tooltipped" action="eliminar" id="${v.id}" data-position="left" data-delay="50" data-tooltip="Eliminar ${controllerName}"><i class="material-icons">delete</i></g:link>
                         </td>
                     </tr>
@@ -58,13 +58,12 @@
                         <label for="name">Nombre</label>
                     </div>
                     <div class="input-field col s12 m2">
-                        <select name="comuna.id" required="" id="comuna">
-                            <option value="" disabled <g:if test="${!params.comunaName}">selected</g:if>>Seleccione Pais</option>
+                        <select name="comuna.id" required="true" id="comuna">
+                            <option value="" disabled <g:if test="${!params.comunaName}">selected</g:if>>Seleccione Comuna</option>
                             <g:each var="v" in="${comunaList}">
                                 <option value="${v.id}" <g:if test="${v.name == params.comunaName}">selected</g:if>>${v.name}</option>
                             </g:each>
                         </select>
-                        <label>Materialize Select</label>
                     </div>
                 </div>
 
@@ -98,7 +97,7 @@
                 <!-- Menu Modal Update-->
                 <div class="fixed-action-btn">
                     <button name="create" class="save waves-effect waves-light btn-floating btn-large teal tooltipped" value="${message(code: 'default.button.update.label', default: 'Update')}" type="submit" data-position="left" data-delay="50" data-tooltip="Actualizar ${controllerName}"><i class="material-icons right">send</i></button>
-                    <g:link action="index" params="[comunaId : params.comunaId, comunaName : params.comunaName]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
+                    <g:link action="index" params="[]" class="modal-action modal-close waves-effect waves-light btn-floating btn-large red tooltipped" href="#!" data-position="left" data-delay="50" data-tooltip="Cancelar"><i class="material-icons">cancel</i></g:link>
                 </div>
             </g:form>
         </div>

@@ -46,7 +46,7 @@
     <div class="modal-content">
         <h5>Crear ${controllerName}</h5>
         <div class="row">
-            <g:form action="save" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]">
+            <g:form action="save" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" autocomplete="off">
                 <g:if test="${params.idUsuario == null}">
                     <div id="userDiv" class="input-field col s12">
                         <input id="user" name="user" class="typeahead" placeholder="Usuario">
@@ -84,7 +84,7 @@
     <div class="modal-content">
         <h5>Editar ${controllerName}</h5>
         <div class="row">
-            <g:form class="col s12" resource="${this.direccion}" method="PUT" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]">
+            <g:form class="col s12" resource="${this.direccion}" method="PUT" params="[r : params.r, idUsuario : params.idUsuario, name : params.name, lastName : params.lastName]" autocomplete="off">
                 <div  class="input-field inline col s12 m4">
                     <f:input property="address" id="address" bean="direccion"/>
                     <label for="address">Dirección</label>

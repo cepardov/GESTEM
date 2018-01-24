@@ -11,12 +11,12 @@ class PaisController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "POST"]
 
     def index(Integer max,Pais pais) {
-        def paiss = Pais.list(params)
+        def paisList = Pais.list(params)
         params.max = Math.min(max ?: 10, 100)
         if(params.id!=null){
-            respond pais, model:[paisCount: Pais.count(), paisList:paiss]
+            respond pais, model:[paisCount: Pais.count(), paisList:paisList]
         }else{
-            respond new Pais(params), model:[paisCount: Pais.count(), paisList:paiss]
+            respond new Pais(params), model:[paisCount: Pais.count(), paisList:paisList]
         }
     }
 

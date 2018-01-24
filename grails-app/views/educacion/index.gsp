@@ -21,7 +21,7 @@
             <tbody>
             <g:each var="v" in="${educacionList}">
                 <g:form class="col s12" resource="${this.educacion}" method="PUT" id="${v.id}" params="[notify:'none']">
-                    <tr onclick="location='<g:createLink controller="asignatura" action="index" params="[paisId: params.paisId, regionId: params.regionId, ciudadId: params.ciudadId, comunaId : params.comunaId, sostenedorId: params.sostenedorId, institucionId: params.institucionId, educacionId: v.id, educacionName: v.name]"/>'">
+                    <tr>
                     <td>[${v.institucion.code}] ${v.institucion.name}</td>
                     <td>${v.code}</td>
                     <td>${v.fRes}</td>

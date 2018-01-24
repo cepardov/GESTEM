@@ -6,6 +6,7 @@ class BootStrap {
 
     def init = { servletContext ->
         printf('Init BootStrap...\n')
+        log.info('Init Bootstrap...')
         if(Environment.current == Environment.DEVELOPMENT) {
             new Pais(code: "CL", name: "Chile").save(failOnError: true)
             new Region(code: "X", name: "Los Lagos", pais: "1").save(failOnError: true)
@@ -47,8 +48,8 @@ class BootStrap {
                 it.flush()
                 it.clear()
             }
+            log.info('...End Boostrap')
         }
-        printf('...Init BootStrap\n')
     }
     def destroy = {
     }

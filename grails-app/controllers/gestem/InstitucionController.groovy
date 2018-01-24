@@ -10,20 +10,30 @@ class InstitucionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def loggedUserInfo
+
     def index(Integer max,Institucion institucion) {
+        loggedUserInfo = User.findByUsername(sec.username())
+
         def institucionsBySostenedor = Institucion.findAllBySostenedor(Sostenedor.findById(params.sostenedorId))
-        def institucions = Institucion.list(params)
+        def institucionList
         def sostenedor = Sostenedor.findAll()
+
+        if (loggedUserInfo.institucion){
+            institucionList = Institucion.findAllWhere(id: loggedUserInfo.institucion.id)
+        } else {
+            institucionList = Institucion.list(params)
+        }
 
         params.max = Math.min(max ?: 20, 100)
         if(params.id!=null&&params.sostenedorId!=null){
             respond institucion, model:[institucionCount: Institucion.countBySostenedor(Sostenedor.findById(params.sostenedorId)), institucionList:institucionsBySostenedor]
         }else if(params.id!=null){
-            respond institucion, model:[institucionCount: Institucion.count(), institucionList:institucions]
+            respond institucion, model:[institucionCount: Institucion.count(), institucionList:institucionList]
         }else if(params.sostenedorId!=null) {
             respond new Institucion(params), model: [institucionCount: Institucion.countBySostenedor(Sostenedor.findById(params.sostenedorId)), institucionList: institucionsBySostenedor, sostenedorList:sostenedor]
         }else {
-            respond new Institucion(params), model:[institucionCount: Institucion.count(), institucionList:institucions, sostenedorList:sostenedor]
+            respond new Institucion(params), model:[institucionCount: Institucion.count(), institucionList:institucionList, sostenedorList:sostenedor]
         }
 
     }

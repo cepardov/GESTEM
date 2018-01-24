@@ -7,7 +7,7 @@ class Educacion {
     String description
     Boolean enable
 
-    static hasMany = [asignatura:Asignatura]
+    static hasMany = [cursos:Curso]
     static belongsTo = [institucion:Institucion]
 
     static constraints = {
@@ -15,5 +15,9 @@ class Educacion {
         fRes blank:true, nullable: true
         description blank:true, nullable: true
         enable blank:true, nullable: true
+    }
+
+    String toString(){
+        return name
     }
 }

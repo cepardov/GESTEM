@@ -5,7 +5,7 @@ class Asignatura {
     String name
     String description
 
-    static belongsTo = [educacion:Educacion]
+    //static belongsTo = [educacion:Educacion]
 
     static constraints = {
         code unique: true, blank: false, nullable: false
