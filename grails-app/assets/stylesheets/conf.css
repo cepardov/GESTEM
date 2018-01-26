@@ -1,45 +1,7 @@
-.v-aling {
-    vertical-align: middle;
-}
-.activo {
-    font-weight: 500;
-}
 table.highlight-2 > tbody > tr {
     transition: background-color .25s ease;
 }
 
 table.highlight-2 > tbody > tr:hover {
     background-color: #ced2cb;
-}
-.breadcrumb-2 {
-    font-size: 18px;
-    color: rgba(0, 0, 0, 0.3);
-}
-.breadcrumb-2 i,
-.breadcrumb-2 [class^="mdi-"], .breadcrumb-2 [class*="mdi-"],
-.breadcrumb-2 i.material-icons {
-    display: inline-block;
-    float: left;
-    font-size: 24px;
-}
-
-.breadcrumb-2:before {
-    content: '\E5CC';
-    color: rgba(0, 0, 0, 0.4);
-    vertical-align: top;
-    display: inline-block;
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 25px;
-    margin: 0 10px 0 8px;
-    -webkit-font-smoothing: antialiased;
-}
-
-.breadcrumb-2:first-child:before {
-    display: none;
-}
-
-.breadcrumb-2:last-child {
-    color: #626262;
 }

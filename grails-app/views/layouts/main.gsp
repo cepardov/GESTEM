@@ -1,216 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><g:layoutTitle default="Grails"/></title>
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title><g:layoutTitle default="Gestem"/></title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <asset:stylesheet src="materialize.css" media="screen,projection"/>
+    <asset:stylesheet src="print.css" media="print"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
     <g:layoutHead/>
 </head>
-
-<body class="grey lighten-4">
+<body class="grey lighten-3">
 <div class="navbar-fixed">
-    <nav class="nav-extended white">
+    <nav class="nav-extended">
         <div class="nav-wrapper blue darken-2">
-            <ul class="left">
-                <a href="/" class="brand-logo">
-                    <i class="material-icons">cloud</i>
-                    GESTEM
-                    <sec:ifLoggedIn>
-                        <g:if test="${sec.loggedInUserInfo(field: 'institucion')}">
-                             <li class="right flow-text">&nbsp;<sec:loggedInUserInfo field='institucion'/></li>
-                        </g:if>
-                    </sec:ifLoggedIn>
-                </a>
-                <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+            <a href="/" class="brand-logo">GESTEM
+                <sec:ifLoggedIn>
+                    <g:if test="${sec.loggedInUserInfo(field: 'institucion')}">
+                        <span class="flow-text hide-on-med-and-down"><sec:loggedInUserInfo field='institucion'/></span>
+                    </g:if>
+                    <g:else>
+                        <span class="flow-text hide-on-med-and-down">Consola administración</span>
+                    </g:else>
+                </sec:ifLoggedIn>
+                <sec:ifNotLoggedIn>
+                    <span class="flow-text hide-on-med-and-down grey-text text-lighten-1">
+                        Gestión Educacional
+                    </span>
+                </sec:ifNotLoggedIn>
+            </a>
+            <a href="#" data-target="mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <sec:ifLoggedIn>
+                    <li><a class="dropdown-trigger" href="#!" data-target="menu-functions">Herramientas<i class="material-icons right">arrow_drop_down</i></a></li>
+                    <li><a class="dropdown-trigger" href="#!" data-target="menu-user"><sec:loggedInUserInfo field='fullName'/><i class="material-icons right">arrow_drop_down</i></a></li>
+                </sec:ifLoggedIn>
+                <sec:ifNotLoggedIn>
+                    <li><g:link controller="login" action="auth">Inicio de Sesión</g:link></li>
+                </sec:ifNotLoggedIn>
             </ul>
-            <ul class="right">
-                <ul class="hide-on-med-and-down">
-                    <sec:ifLoggedIn>
-                        <li><a class="dropdown-button" href="#!" data-activates="dropdown1"><sec:loggedInUserInfo field='fullName'/><i class="material-icons right">arrow_drop_down</i></a></li>
-                    </sec:ifLoggedIn>
-                    <sec:ifNotLoggedIn>
-                        <li><g:link controller="login" action="auth">Inicio de Sesión</g:link></li>
-                    </sec:ifNotLoggedIn>
-                </ul>
+            <ul class="sidenav" id="mobile">
+                <!-- Menu Mobile -->
+                <li><g:link controller="login" action="logout">Salir</g:link></li>
+                <li class="divider"></li>
+                <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+                    <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
+                </g:each>
             </ul>
         </div>
         <div class="nav-content">
             <sec:ifLoggedIn>
-                <nav>
+                <nav class="hide-on-med-and-down">
                     <div class="nav-wrapper white z-depth-1">
-                        <ul class="left">
-                            <a href="#" data-activates="slide-out" class="button-collapse show-on-large grey-text"><i class="material-icons">menu</i></a>
-                        </ul>
-                        <div class="col s12 light">
+                        <ul>
+                            <g:if test="${controllerName}">
+                                <li><a href="javascript:history.back()"><i class="material-icons grey-text darken-3">keyboard_backspace</i></a></li>
+                            </g:if>
+
                             <g:if test="${request.getRequestURI().toString()=='/'}">
-                                <a href="" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.null.name" /></a>
+                                <li><span class="flow-text grey-text"><g:message code="controllerName.null.name" /></span></li>
                             </g:if>
                             <g:else>
-                                <g:if test="${controllerName != 'dashboard'}">
-                                    <a href="<g:createLink controller="dashboard" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.dashboard.name" /></a>
-                                </g:if>
-
-                                <!--
-                                <g:if test="${params.paisId}">
-                                    <a href="<g:createLink controller="pais" action="index" params="[]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.pais.name" /></a>
-                                </g:if>
-                                <g:if test="${params.regionId}">
-                                    <a href="<g:createLink controller="region" action="index" params="[paisId: params.paisId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.region.name" /></a>
-                                </g:if>
-                                <g:if test="${params.ciudadId}">
-                                    <a href="<g:createLink controller="ciudad" action="index" params="[regionId: params.regionId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.ciudad.name" /></a>
-                                </g:if>
-                                <g:if test="${params.comunaId}">
-                                    <a href="<g:createLink controller="comuna" action="index" params="[ciudadId: params.comunaId]"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.ciudad.name" /></a>
-                                </g:if>
-                                -->
-
-
-                                <g:if test="${actionName == 'show'}">
-                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.${controllerName}.name" /></a>
-                                    <a href="<g:createLink controller="${controllerName}" action="show"/>" class="breadcrumb-2 flow-text hide-on-med-and-down">Mostar <g:message code="controllerName.${controllerName}.name" /></a>
+                                <g:if test="${controllerName == 'user'}">
+                                    <g:if test="${this.user.isStudent}">
+                                        <li><g:link controller="alumno" action="index" class="flow-text grey-text"><g:message code="alumno.label" /></g:link></li>
+                                    </g:if>
+                                    <g:else>
+                                        <li><a href="/${controllerName}" class="flow-text grey-text"><g:message code="controllerName.${controllerName}.name" /></a></li>
+                                    </g:else>
                                 </g:if>
                                 <g:else>
-                                    <a href="<g:createLink controller="${controllerName}" action="index"/>" class="breadcrumb-2 flow-text hide-on-med-and-down"><g:message code="controllerName.${controllerName}.name" /></a>
+                                    <li><a href="/${controllerName}" class="flow-text grey-text"><g:message code="controllerName.${controllerName}.name" /></a></li>
                                 </g:else>
                             </g:else>
+
+                            <g:if test="${controllerName == 'user' && actionName == 'show'}">
+                                <li><a class="flow-text grey-text">${user.nombre} ${user.paterno}</a></li>
+                            </g:if>
+
                             <g:if test="${actionName == 'show'}">
-                                <a class="flow-text grey-text hide-on-med-and-down">
-                                    | ${params.name} ${params.lastName}
-                                </a>
+                                <li class="right"><a onclick="window.print()" class="grey-text"><i class="material-icons">print</i></a></li>
+                                <li class="right"><a onclick="myFunction()" class="grey-text"><i class="material-icons">save</i></a></li>
                             </g:if>
-                            <g:else>
-                                <a class="flow-text right grey-text hide-on-med-and-down">
-                                    <g:if test="${controllerName == 'dashboard'}">${grailsApplication.controllerClasses.count {this}} elementos</g:if>
-                                    <g:if test="${controllerName == 'pais'}">${paisCount ?: 0} elementos</g:if>
-                                    <g:if test="${controllerName == 'usuario'}">${usuarioCount ?: 0} elementos</g:if>
-                                    <g:if test="${controllerName == 'region'}">${regionCount ?: 0} elementos</g:if>
-                                    <g:if test="${controllerName == 'user'}">${userCount ?: 0} elementos</g:if>
-                                    <g:if test="${controllerName == 'pago'}">${pagoCount ?: 0} elementos</g:if>
-                                    <g:if test="${controllerName == 'reserva'}">${reservaCount ?: 0} elementos</g:if>
-                                    <g:if test="${controllerName == 'sucursal'}">${sucursalCount ?: 0} elementos</g:if>
-                                </a>
-                            </g:else>
-                            <g:if test="${controllerName != 'dashboard'}">
-                                <g:if test="${actionName == 'index'}">
-                                    <ul class="right">
-                                        <li><g:link class="material-icons grey-text tooltipped" action="index" params="[q:'']" data-position="top" data-delay="50" data-tooltip="Buscar Usuario"><i class="material-icons">search</i></g:link></li>
-                                        <li><a class="dropdown-button grey-text tooltipped" data-activates="order" data-position="top" data-delay="50" data-tooltip="Ordenar Lista">Ordenar Lista<i class="material-icons right">arrow_drop_down</i></a></li>
-                                    </ul>
-                                </g:if>
-                            </g:if>
-                        </div>
+                        </ul>
                     </div>
                 </nav>
             </sec:ifLoggedIn>
         </div>
     </nav>
-</div>
-
-<br>
-<br>
-
-<sec:ifLoggedIn>
-    <ul id="dropdown1" class="dropdown-content">
-        <li><g:link controller="login" action="logout">Salir</g:link></li>
-        <li class="divider"></li>
-        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
-        </g:each>
-    </ul>
-    <ul id="session" class="dropdown-content">
-        <li><g:link controller="login" action="logout">Cerrar Sesión</g:link></li>
-        <li class="divider"></li>
-        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-            <li><g:link controller="${c.logicalPropertyName}">${c.name}</g:link></li>
-        </g:each>
-    </ul>
-</sec:ifLoggedIn>
-
-
-
-<ul id="slide-out" class="side-nav">
     <sec:ifLoggedIn>
-        <li><div class="userView">
-            <div class="background">
-                <asset:image src="material-design.jpg"/>
-            </div>
-            <a href="#!user"><img class="circle" src="http://materializecss.com/images/yuna.jpg"></a>
-            <a href="#!name"><span class="white-text name">NEW_SECURITY</span></a>
-            <a href="#!email"><span class="white-text email">NEW_SECURITY@liceopac.cl</span></a>
-        </div></li>
-        <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
-            <li><g:link controller="${c.logicalPropertyName}"><i class="material-icons">
-                <g:if test="${c.name=="Usuario"}">person</g:if>
-                <g:elseif test="${c.name=="Dashboard"}">dashboard</g:elseif>
-                <g:elseif test="${c.name=="Ciudad"}">location_city</g:elseif>
-                <g:elseif test="${c.name=="Comuna"}">location_on</g:elseif>
-                <g:elseif test="${c.name=="Funcionario"}">face</g:elseif>
-                <g:elseif test="${c.name=="Institucion"}">business</g:elseif>
-                <g:else>settings_applications</g:else></i><g:message code="${c.name.toString().toLowerCase()}.label" /></g:link></li>
-        </g:each>
-        <li><g:link controller="login" action="logout"><i class="material-icons">exit_to_app</i>Cerrar Sesión</g:link></li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+        <ul id="menu-user" class="dropdown-content">
+            <li><a href="#!"><sec:loggedInUserInfo field='fullName'/></a></li>
+            <li class="divider"></li>
+            <li><g:link controller="login" action="logout">Salir</g:link></li>
+        </ul>
+        <ul id="menu-functions" class="dropdown-content">
+            <g:each var="c" in="${grailsApplication.controllerClasses.sort { it.name } }">
+                <g:if test="${c.logicalPropertyName == 'login'}"></g:if>
+                <g:elseif test="${c.logicalPropertyName == 'logout'}"></g:elseif>
+                <g:elseif test="${c.logicalPropertyName == 'dashboard'}"></g:elseif>
+                <g:else>
+                    <li><g:link controller="${c.logicalPropertyName}"><g:message code="${c.logicalPropertyName}.label" /></g:link></li>
+                </g:else>
+            </g:each>
+        </ul>
     </sec:ifLoggedIn>
-    <sec:ifNotLoggedIn>
-        <li><div class="userView">
-            <div class="background">
-                <asset:image src="material-design.jpg"/>
-            </div>
-            <a href="#!user"><asset:image src="cropped-Logo.png" width="128"/></a>
-            <a href="#!name"><span class="white-text flow-text"><strong>Liceo Pedro Aguirre Cerda</strong></span></a>
-        </div></li>
-        <li><a href="http://gestem.liceopac.cl:8080"><i class="material-icons">home</i>Inicio</a></li>
-        <li><g:link controller="login" action="login"><i class="material-icons">vpn_key</i>Inicio de Sesión</g:link></li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Subheader</a></li>
-        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
-    </sec:ifNotLoggedIn>
-</ul>
 
+</div>
+<br>
+<br>
 <br>
 <g:layoutBody/>
-<!--Import jQuery before materialize.js-->
 <asset:javascript src="jquery-3.2.1.min.js"/>
 <asset:javascript src="materialize.js"/>
-<asset:javascript src="config.js"/>
-<asset:javascript src="typeahead.bundle.min.js"/>
+<asset:javascript src="init-v1.js"/>
+
 <g:if test="${flash.message}">
     <script>
-        window.onload=function(){Materialize.toast('${flash.message}', 10000);}
+        window.onload=function(){M.toast({html: '${flash.message}'});}
     </script>
 </g:if>
-<!-- Specific modals -->
-<g:if test="${controllerName == 'user'}">
-    <g:if test="${actionName == 'show'}">
-        <g:if test="${params.idDireccion}">
-            <script>
-                $(document).ready(function(){
-                    $('#modalEdicionDireccion').modal('open');
-                });
-            </script>
-        </g:if>
-        <g:if test="${params.idTelefono}">
-            <script>
-                $(document).ready(function(){
-                    $('#modalEdicionTelefono').modal('open');
-                });
-            </script>
-        </g:if>
-        <g:if test="params.idCorreo">
-            <script>
-                $(document).ready(function(){
-                    $('#modalEdicionCorreo').modal('open');
-                });
-            </script>
-        </g:if>
-    </g:if>
-</g:if>
-
 <!-- Generic Modals -->
 <g:if test="${actionName == 'index'}">
     <g:if test="${params.id}">
@@ -221,5 +129,6 @@
         </script>
     </g:if>
 </g:if>
+
 </body>
 </html>

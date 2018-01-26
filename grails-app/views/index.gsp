@@ -4,12 +4,11 @@
     <meta name="layout" content="main"/>
     <title></title>
 </head>
-
 <body>
 <div class="container">
     <h3>Gestem</h3>
     <p>Es un proyecto de software para la gestión de educación que reemplazará completamente a <strong>Napsis</strong>
-     que pretende ser inicialmente gratuito para el <strong>Liceo Pedro Aguirre Cerda</strong> bajo la licencia GLP V3.0 CL
+        que pretende ser inicialmente gratuito para el <strong>Liceo Pedro Aguirre Cerda</strong> bajo la licencia GLP V3.0 CL
     , hasta el momento se han creado ${grailsApplication.controllerClasses.size()} modulo(s) la cual puede tener acceso en el listado de abajo.
     El desarrollo esta a cargo del Ingeniero (E) Informática <strong>Cristian Pardo</strong></p>
     <p>Este sistema esta desarrollado en Java ${System.getProperty('java.version')}, Groovy ${GroovySystem.getVersion()}

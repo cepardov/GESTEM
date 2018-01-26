@@ -4,32 +4,22 @@
     <meta name="layout" content="main" />
     <g:set var="entityName" value="${message(code: 'user.label', default: 'User')}" />
     <title><g:message code="default.show.label" args="[entityName]" /></title>
-    <asset:stylesheet src="autocomplete.css"/>
 </head>
-<body>
-
-<div class="col s12">
-    <ul class="tabs grey lighten-4 z-depth-1">
-        <li class="tab col s3"><a class="blue-grey-text" href="#datospersonales">Datos Personales</a></li>
-        <li class="tab col s3"><a class="blue-grey-text" href="#ubicacion">Contacto y ubicación</a></li>
-        <li class="tab col s3"><a class="blue-grey-text" href="#roles">Perfil de usuario</a></li>
-        <li class="tab col s3 disabled"><a class="blue-grey-text" href="#">Datos Apoderado</a></li>
-    </ul>
-</div>
-<div class="row">
-    <div id="datospersonales" class="col s12">
+<body class="red">
+<div class="container white z-depth-1">
+    <div class="row">
+        <h5 class="title grey white-text">Datos Personales</h5>
         <g:form class="col s12" resource="${this.user}" method="PUT" params="[r: 'show']">
-            <h3>Datos Personales</h3>
             <div class="row">
-                <div class="input-field col s12 m1">
-                    <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k"/>
+                <div class="input-field col s12 m2">
                     <label for="rut">RUT</label>
+                    <f:input class="tooltipped" length="12" maxlength="13" property="rut" id="rut" bean="user" data-position="bottom" data-delay="50" data-tooltip="Ej: 12345678-k"/>
                 </div>
-                <div class="input-field col s12 m1">
+                <div class="input-field col s12 m2">
                     <label for="nombre">Primer Nombre</label>
                     <f:input property="nombre" id="nombre" bean="user"/>
                 </div>
-                <div class="input-field col s12 m2">
+                <div class="input-field col s12 m3">
                     <label for="nombre">Nombres</label>
                     <f:input property="segNombre" id="segNombre" bean="user"/>
                 </div>
@@ -45,28 +35,25 @@
                     <label for="materno">Fecha Nacimiento</label>
                     <input type="text" value="${fechaNacimientoOut}" name="fechaNacimientoDat" class="datepicker">
                 </div>
-                <div class="input-field inline col s12 m2">
-                    <f:input property="username" id="username" bean="user"/>
+                <div class="input-field inline col s12 m3">
                     <label for="username">username</label>
+                    <f:input property="username" id="username" bean="user"/>
                 </div>
-                <div class="col s12 right-align">
-                    <button name="create" class="btn waves-effect waves-light tooltipped" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar Datos Personales">Guardar
+                <div class="col s12 right-align hide-on-large-only">
+                    <button id="subDatos" name="create" class="btn waves-effect waves-light tooltipped" type="submit" data-position="left" data-delay="50" data-tooltip="Guardar Datos Personales">Guardar
                         <i class="material-icons left">save</i>
                     </button>
                 </div>
             </div>
         </g:form>
     </div>
+</div>
 
-    <div id="ubicacion" class="col s12">
-        <h3 id="direccion">Direcciones</h3>
-        <div class="row">
+<div class="container white z-depth-1 print">
+    <div class="row">
+        <div class="col s12 m6">
+            <h5 class="grey white-text">Domicilios</h5>
             <table class="responsive-table bordered highlight-2 centered">
-                <thead>
-                <tr>
-                    <th>Direccion</th>
-                </tr>
-                </thead>
                 <tbody>
                 <g:each var="v" in="${direccionList}">
                     <tr>
@@ -86,17 +73,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination">
-            <g:paginate total="${userCount ?: 0}" />
-        </div>
-        <h3 id="telefono">Teléfono</h3>
-        <div class="row">
+        <div class="col s12 m6">
+            <h5 class="grey white-text">Teléfonos</h5>
             <table class="responsive-table bordered highlight-2 centered">
-                <thead>
-                <tr>
-                    <th>Teléfono</th>
-                </tr>
-                </thead>
                 <tbody>
                 <g:each var="v" in="${telefonoList}">
                     <tr>
@@ -116,103 +95,80 @@
                 </tbody>
             </table>
         </div>
-        <div class="pagination">
-            <g:paginate total="${userCount ?: 0}" />
-        </div>
-        <h3 id="correo">Correo Electrónico</h3>
-        <div class="row">
-            <table class="responsive-table bordered highlight-2 centered">
-                <thead>
-                <tr>
-                    <th>Correo</th>
-                </tr>
-                </thead>
-                <tbody>
-                <g:each var="v" in="${correoList}">
-                    <tr>
-                        <td>${v.email}</td>
-                        <td>
-                            <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" controller="user" action="show" id="${this.user.id}" params="[idCorreo : v.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Editar Teléfono"><i class="material-icons">edit</i></g:link>
-                            <g:link class="btn-floating waves-effect waves-light red tooltipped" controller="correo" action="eliminar" id="${v.id}" params="[r : 'showUser',idUser : this.user.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
-                        </td>
-                    </tr>
-                </g:each>
-                <tr>
-                    <td></td>
-                    <td>
-                        <a class="create modal-trigger btn-floating waves-effect waves-light green tooltipped" data-target="modalCreateCorreo" data-position="left" data-delay="50" data-tooltip="Agregar Correo"><i class="material-icons">add</i></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="pagination">
-            <g:paginate total="${userCount ?: 0}" />
-        </div>
-    </div>
-    <div id="roles" class="col s12">
-        <h3>Roles de Usuario</h3>
-        <div class="row">
-            <table class="responsive-table bordered highlight-2 centered">
-                <thead>
-                <tr>
-                    <th>Role</th>
-                    <th>Role Descipción</th>
-                </tr>
-                </thead>
-                <tbody>
-                <g:each var="v" in="${userRoleList}">
-                    <tr>
-                        <td>[100${v.role.id}] ${v.role.name}</td>
-                        <td>${v.role.description}</td>
-                        <td>
-                            <g:link class="btn-floating waves-effect waves-light red tooltipped" action="deleteRole" params="[r : 'showUser',idUser : this.user.id, idRole:v.role.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
-                        </td>
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
-        </div>
-        <g:form action="saveRole" params="[r : 'showUser', idUser : this.user.id, name : params.name, lastName : params.lastName]">
-            <input name="user" value="${this.user.id}" hidden>
-            <div class="input-field col s12 m6">
-                <select name="role" required="" id="role">
-                    <option value="" disabled selected>Seleccione Rol</option>
-                    <g:each var="v" in="${roleList}">
-                        <option value="${v.id}">${v.name}</option>
-                    </g:each>
-                </select>
-                <label>Agregar Roles</label>
-            </div>
-            <div class="col s12 m6">
-                <button name="create" class="btn waves-effect waves-light tooltipped" type="submit" data-position="left" data-delay="50" data-tooltip="Agregar Rol Seleccionado">Agregar
-                    <i class="material-icons left">save</i>
-                </button>
-            </div>
-        </g:form>
-        <div class="pagination">
-            <g:paginate total="${userCount ?: 0}" />
-        </div>
     </div>
 </div>
 
+<div class="container white z-depth-1">
+    <div class="col s12">
+        <h5 class="grey white-text">Correo</h5>
+        <table class="responsive-table bordered highlight centered">
+            <tbody>
+            <g:each var="v" in="${correoList}">
+                <tr>
+                    <td>${v.email}</td>
+                    <td>
+                        <g:link class="btn-floating waves-effect waves-light yellow darken-2 tooltipped" controller="user" action="show" id="${this.user.id}" params="[idCorreo : v.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Editar Teléfono"><i class="material-icons">edit</i></g:link>
+                        <g:link class="btn-floating waves-effect waves-light red tooltipped" controller="correo" action="eliminar" id="${v.id}" params="[r : 'showUser',idUser : this.user.id, name : params.name, lastName : params.lastName]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
+                    </td>
+                </tr>
+            </g:each>
+            <tr>
+                <td></td>
+                <td>
+                    <a class="create modal-trigger btn-floating waves-effect waves-light green tooltipped" data-target="modalCreateCorreo" data-position="left" data-delay="50" data-tooltip="Agregar Correo"><i class="material-icons">add</i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
+<div id="roles" class="container white z-depth-1">
+    <div class="col s12">
+        <h5 class="grey white-text">Privilegios de usuario</h5>
+        <table class="responsive-table bordered highlight-2 centered">
+            <tbody>
+            <g:each var="v" in="${userRoleList}">
+                <tr>
+                    <td>[100${v.role.id}] ${v.role.name}</td>
+                    <td>${v.role.description}</td>
+                    <td>
+                        <g:link class="btn-floating waves-effect waves-light red tooltipped" action="deleteRole" id="${v.role.id}" params="[r : 'showUser',idUser : this.user.id]" data-position="left" data-delay="50" data-tooltip="Eliminar Teléfono"><i class="material-icons">delete</i></g:link>
+                    </td>
+                </tr>
+            </g:each>
+            </tbody>
+        </table>
+        <g:if test="${sessionUserId != this.user.id}">
+            <div class="container">
+                <div class="row">
+                    <g:form action="saveRole" params="[r : 'showUser', idUser : this.user.id]">
+                        <input name="user" value="${this.user.id}" hidden>
+                        <div class="input-field col s6">
+                            <select name="role" required="" id="role">
+                                <option value="" disabled selected>Seleccione Rol</option>
+                                <g:each var="v" in="${roleList}">
+                                    <option value="${v.id}">${v.name}</option>
+                                </g:each>
+                            </select>
+                            <label>Agregar Roles</label>
+                        </div>
+                        <div class="col s6">
+                            <br>
+                            <button name="create" class="btn waves-effect waves-light tooltipped" type="submit" data-position="left" data-delay="50" data-tooltip="Agregar Rol Seleccionado">Agregar
+                                <i class="material-icons left">save</i>
+                            </button>
+                        </div>
+                    </g:form>
+                </div>
+            </div>
+        </g:if>
+    </div>
+</div>
 
-
-
-
+<br>
 
 <g:if test="${actionName != 'save'}">
-    <div class="row">
-
-
-
-
-
-
-    </div>
-
-
     <!-- Modal Create Direccion Structure -->
     <div id="modalCreateDireccion" class="modal bottom-sheet">
         <div class="modal-content">
@@ -359,39 +315,6 @@
             </div>
         </div>
     </g:if>
-
-    <asset:javascript src="jquery-3.2.1.min.js"/>
-    <asset:javascript src="typeahead.bundle.min.js"/>
-    <script>
-        $(document).ready(function() {
-            var substringMatcher = function(strs) {
-                return function findMatches(q, cb) {
-                    var matches, substringRegex;
-                    matches = [];
-                    substrRegex = new RegExp(q, 'i');
-                    $.each(strs, function(i, str) {
-                        if (substrRegex.test(str)) {
-                            matches.push(str);
-                        }
-                    });
-                    cb(matches);
-                };
-            };
-            var comuna = [
-                <g:each in="${gestem.Comuna.list()}">
-                '${it.id} | ${it.name} ${it.ciudad.region.name} ${it.ciudad.region.pais.name}',
-                </g:each>
-            ];
-            $('#comunaDiv .typeahead').typeahead({
-                hint: true,
-                highlight: true,
-                minLength: 1
-            }, {
-                name: 'comuna',
-                source: substringMatcher(comuna)
-            });
-        });
-    </script>
 </g:if>
 <g:else>
     <h5>Crear Usuario</h5>
@@ -438,6 +361,7 @@
 </g:else>
 <g:hasErrors bean="${this.user}">
     <g:eachError bean="${this.user}" var="error">
+        <h1>Error!</h1>
         <script>
             window.onload=function(){
                 Materialize.toast('<g:message error="${error}"/>', 10000);
@@ -445,5 +369,11 @@
         </script>
     </g:eachError>
 </g:hasErrors>
+
+<script>
+    function myFunction() {
+        document.getElementById("subDatos").click();
+    }
+</script>
 </body>
 </html>

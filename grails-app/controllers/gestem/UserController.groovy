@@ -81,6 +81,8 @@ class UserController {
 
     @Secured(['ROLE_LEVEL0','ROLE_LEVEL1'])
     def show(User user) {
+        def loggedUserInfo = User.findByUsername(sec.username())
+
         if(params.id!=null){
             def direccionList = Direccion.findAllByUser(User.findById(params.id))
             def telefonoList = Telefono.findAllByUser(User.findById(params.id))
@@ -113,6 +115,7 @@ class UserController {
                     userRoleList:userRoleList,
                     userRole:userRole,
                     fechaNacimientoOut: getFechaNacimiento(),
+                    sessionUserId: loggedUserInfo.id,
                     roleList:roleList
             ]
         } else {
@@ -182,7 +185,7 @@ class UserController {
         if(params.r != "showUser"){
             redirect (controller: "user", action: "index")
         } else {
-            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+            redirect(controller: "user", action: "show", id: params.idUser, fragment: "roles")
         }
     }
 
@@ -190,7 +193,7 @@ class UserController {
     def deleteRole(){
         def loggedUserInfo = User.findByUsername(sec.username())
         def userId = User.findById(params.idUser)
-        def roleId = Role.findById(params.idRole)
+        def roleId = Role.findById(params.id)
 
         if(userId.id != loggedUserInfo.id){
             if(userId == null || roleId == null){
@@ -206,7 +209,7 @@ class UserController {
         if(params.r != "showUser"){
             redirect (controller: "user", action: "index")
         } else {
-            redirect(controller: "user", action: "show", id: params.idUser, params: [name : params.name, lastName : params.lastName])
+            redirect(controller: "user", action: "show", id: userId.id, fragment: "roles")
         }
     }
 
